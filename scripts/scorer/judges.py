@@ -18,16 +18,37 @@ from .models import (
 
 DEFAULT_MODEL = "gemini/gemini-flash-latest"
 
-PROMPT_TEMPLATE = """You are an expert evaluator of AI Agent Skills.
+PROMPT_TEMPLATE = """You are an expert evaluator of Agent Skills per agentskills.io specification.
 
 Evaluate this skill and score 0-100.
 
 ## Rubric (100 points)
-- Frontmatter (20): gerund name, third-person description, trigger keywords
-- Structure (25): Quick Start, When to Use, Common Pitfalls sections
-- Content Quality (35): concrete examples, code hints, good formatting
-- Pitfalls (10): 5-10 specific mistakes explained
-- References (10): details in references/, one level deep
+
+### Frontmatter (20 points)
+- name: lowercase, hyphens only, 1-64 chars, matches directory name
+- description: 1-1024 chars, describes what skill does AND when to use it, includes trigger keywords
+
+### Structure (25 points)
+- Step-by-step instructions for agents
+- Examples of inputs and outputs
+- Common edge cases handled
+- Under 500 lines (detailed content in references/)
+
+### Content Quality (35 points)
+- Clear, actionable instructions agents can follow
+- Concrete examples with expected outcomes
+- Good markdown formatting
+- Progressive disclosure (main content concise, details in references)
+
+### Edge Cases (10 points)
+- Documents common pitfalls and how to avoid them
+- Handles error scenarios gracefully
+- Includes troubleshooting guidance
+
+### References (10 points)
+- Detailed documentation in references/ directory
+- Files are focused and under 5000 tokens each
+- One level deep (no nested reference chains)
 
 ## Skill: {skill_name} ({line_count} lines)
 ```markdown
