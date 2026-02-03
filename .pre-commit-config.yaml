@@ -20,6 +20,7 @@ repos:
         entry: bash -c 'for f in "$@"; do dir=$(dirname "$f"); uv run skills validate "$dir" || exit 1; done' --
         language: system
         files: 'SKILL\.md$'
+        exclude: 'SKILL_TEMPLATE/'
         pass_filenames: true
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
