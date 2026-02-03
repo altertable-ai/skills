@@ -1,0 +1,68 @@
+name: Skill Request
+description: Request a new skill or enhancement to an existing skill
+title: "[Skill]: "
+labels: ["skill-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new skill! Please provide details to help us understand your request.
+
+  - type: input
+    id: skill-name
+    attributes:
+      label: Proposed Skill Name
+      description: Use gerund form (verb-ing), lowercase with hyphens
+      placeholder: "e.g., analyzing-logs, building-pipelines"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What should this skill do? When should it be triggered?
+      placeholder: |
+        Describe the skill's purpose and trigger conditions.
+        Example: "Analyzes log files to identify patterns and anomalies.
+        Use when debugging issues, monitoring systems, or investigating incidents."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: skill-type
+    attributes:
+      label: Skill Type
+      description: What type of skill pattern does this follow?
+      options:
+        - Procedural (step-by-step task completion)
+        - Analytical (interpret data/outputs)
+        - Exploratory (build mental models, explain concepts)
+        - Decision Framework (help make choices)
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: Use Cases
+      description: Describe specific scenarios where this skill would be helpful
+      placeholder: |
+        - When a user asks...
+        - During debugging of...
+        - To help with...
+    validations:
+      required: true
+
+  - type: textarea
+    id: existing-skills
+    attributes:
+      label: Related Existing Skills
+      description: Are there existing skills that overlap or could be extended?
+      placeholder: "List any related skills or explain why a new skill is needed"
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other information that would help understand this request
