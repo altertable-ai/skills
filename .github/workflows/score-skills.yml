@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ci
     permissions:
+      contents: read
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
