@@ -1,0 +1,76 @@
+name: Validate Skills
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate skill structure
+        run: |
+          errors=0
+
+          # Find all SKILL.md files
+          for skill_dir in */; do
+            skill_name="${skill_dir%/}"
+
+            # Skip hidden directories and non-skill directories
+            [[ "$skill_name" == .* ]] && continue
+            [[ ! -f "$skill_dir/SKILL.md" ]] && continue
+
+            echo "Checking $skill_name..."
+
+            # Check SKILL.md exists
+            if [[ ! -f "$skill_dir/SKILL.md" ]]; then
+              echo "  ❌ Missing SKILL.md"
+              errors=$((errors + 1))
+              continue
+            fi
+
+            # Check frontmatter exists
+            if ! head -1 "$skill_dir/SKILL.md" | grep -q "^---$"; then
+              echo "  ❌ Missing frontmatter"
+              errors=$((errors + 1))
+            fi
+
+            # Check name field in frontmatter
+            if ! grep -q "^name:" "$skill_dir/SKILL.md"; then
+              echo "  ❌ Missing name in frontmatter"
+              errors=$((errors + 1))
+            fi
+
+            # Check description field in frontmatter
+            if ! grep -q "^description:" "$skill_dir/SKILL.md"; then
+              echo "  ❌ Missing description in frontmatter"
+              errors=$((errors + 1))
+            fi
+
+            # Check line count (should be under 500)
+            lines=$(wc -l < "$skill_dir/SKILL.md")
+            if [[ $lines -gt 500 ]]; then
+              echo "  ❌ SKILL.md exceeds 500 lines ($lines lines)"
+              errors=$((errors + 1))
+            fi
+
+            # Check naming convention (should be gerund form)
+            if [[ ! "$skill_name" =~ -ing($|-) ]] && [[ ! "$skill_name" =~ ^[a-z]+-ing$ ]]; then
+              echo "  ⚠️  Name may not follow gerund convention: $skill_name"
+            fi
+
+            echo "  ✓ Valid"
+          done
+
+          if [[ $errors -gt 0 ]]; then
+            echo ""
+            echo "Found $errors error(s)"
+            exit 1
+          fi
+
+          echo ""
+          echo "All skills valid!"
