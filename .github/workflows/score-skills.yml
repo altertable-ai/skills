@@ -1,0 +1,65 @@
+name: Score Skills
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '*/SKILL.md'
+      - '*/references/**'
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    environment: ci
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed skills
+        id: changed
+        uses: tj-actions/changed-files@v46
+        with:
+          files: |
+            */SKILL.md
+            */references/**
+          dir_names: true
+          dir_names_max_depth: 1
+          dir_names_exclude_current_dir: true
+
+      - name: Install uv
+        if: steps.changed.outputs.any_changed == 'true'
+        uses: astral-sh/setup-uv@v5
+
+      - name: Score skills
+        id: score
+        if: steps.changed.outputs.any_changed == 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          skills="${{ steps.changed.outputs.all_changed_files }}"
+          skills=$(echo "$skills" | tr ' ' '\n' | grep -v '^SKILL_TEMPLATE$' | tr '\n' ' ' | xargs)
+          if [ -z "$skills" ]; then
+            echo "No skills to score (only SKILL_TEMPLATE changed)"
+            echo "skipped=1" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          comment=$(uv run python scripts/score-skills.py $skills --pr_comment --min_score=70 2>&1) || failed=1
+          echo "comment<<EOF" >> $GITHUB_OUTPUT
+          echo "$comment" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "failed=${failed:-0}" >> $GITHUB_OUTPUT
+
+      - name: Comment PR
+        if: steps.changed.outputs.any_changed == 'true' && steps.score.outputs.skipped != '1'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: skill-score
+          message: ${{ steps.score.outputs.comment }}
+
+      - name: Check result
+        if: steps.score.outputs.failed == '1'
+        run: exit 1

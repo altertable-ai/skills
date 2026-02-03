@@ -1,22 +1,21 @@
 # Contributing to Skills
 
-Guidelines for creating and modifying skills following the [Anthropic Agent Skills](https://agentskills.io) standard.
+Guidelines for creating and modifying skills following the [Agent Skills Specification](https://agentskills.io).
 
 ## Creating a New Skill
 
 ### 1. Directory Structure
 
 ```bash
-mkdir -p skill-name/references
+cp -r SKILL_TEMPLATE my-new-skill
 ```
 
 ### 2. Naming Convention
 
 Use **gerund form** (verb + -ing), lowercase, hyphens only:
 
-- `analyzing-data` (correct)
-- `analyze-data` (incorrect)
-- `AnalyzeData` (incorrect)
+- `analyzing-data` ✓
+- `analyze-data` ✗
 
 ### 3. SKILL.md Requirements
 
@@ -24,8 +23,8 @@ Use **gerund form** (verb + -ing), lowercase, hyphens only:
 
 ```yaml
 ---
-name: skill-name          # Must match directory name, max 64 chars
-description: ...          # Max 1024 chars, third person, include trigger keywords
+name: skill-name
+description: Third-person description with trigger keywords
 ---
 ```
 
@@ -33,67 +32,37 @@ description: ...          # Max 1024 chars, third person, include trigger keywor
 
 - Write in **third person**: "Analyzes data..." not "I can help you..."
 - Include **trigger keywords** that help agents identify when to use the skill
-- Describe both **what** the skill does and **when** to use it
 
-**Good example:**
-```yaml
-description: Writes and executes SQL queries against the DuckDB Lakehouse. Use when analyzing data, building reports, aggregating metrics, or when the user asks about data in connections.
-```
-
-**Bad example:**
-```yaml
-description: Helps with queries.
-```
-
-### 4. Body Content Guidelines
+### 4. Body Content
 
 | Constraint | Limit |
 |------------|-------|
 | SKILL.md body | <500 lines |
-| Total skill tokens | <5000 tokens |
 | Reference depth | 1 level only |
 
 #### Recommended Sections
 
 1. **Quick Start** - Immediate, actionable example
 2. **When to Use This Skill** - Trigger conditions
-3. **Procedure** - Step-by-step instructions
-4. **Examples** - Concrete examples with code
-5. **Common Pitfalls** - Mistakes to avoid
-6. **Reference Files** - Links to detailed references
+3. **Common Pitfalls** - 5-10 mistakes to avoid
+4. **References** - Links to `references/` files
 
 ### 5. Reference Files
 
-Place detailed content in `references/` to enable progressive disclosure:
+Place detailed content in `references/`:
 
 ```markdown
-## Reference Files
-- [DuckDB functions](references/duckdb-functions.md)
-- [Query patterns](references/query-patterns.md)
+## References
+- [Topic details](references/topic.md)
 ```
 
-**Rules:**
-- Keep references **one level deep** (no nested references)
-- Use descriptive filenames: `filter-operators.md` not `doc1.md`
-- Add table of contents for files >100 lines
+Keep references **one level deep** (no nested directories).
 
-## Checklist Before Submitting
+## Testing
 
-- [ ] Name uses gerund form (`analyzing-*`, `creating-*`)
-- [ ] Description is in third person
-- [ ] Description includes trigger keywords
-- [ ] SKILL.md body is under 500 lines
-- [ ] Additional details are in separate reference files
-- [ ] No time-sensitive information
-- [ ] Consistent terminology throughout
-- [ ] Examples are concrete, not abstract
-- [ ] File references are one level deep
-
-## Testing Skills
-
-1. Check SKILL.md exists and has required frontmatter
-2. Ask an agent a question that should trigger the skill
-3. Verify it activates and behaves correctly
+```bash
+uv run skills validate ./skill-name
+```
 
 ## Style Guide
 
@@ -103,27 +72,13 @@ Use fenced code blocks with language hints:
 
 ````markdown
 ```sql
-SELECT * FROM events WHERE timestamp > current_date - INTERVAL 7 DAY
+SELECT * FROM events
 ```
 ````
-
-### Terminology
-
-Use consistent terms throughout:
-
-| Preferred | Avoid |
-|-----------|-------|
-| "connection" | "data source", "database" |
-| "semantic source" | "model", "semantic model" |
-| "dimension" | "attribute", "field" |
-| "measure" | "metric", "aggregate" |
-| "discovery" | "finding", "insight" (when referring to the entity) |
-| "watcher" | "agent", "monitor" |
 
 ### Formatting
 
 - Use headers to organize content
-- Keep paragraphs short (3-5 lines)
+- Keep paragraphs short
 - Use bullet points for lists
 - Use tables for structured data
-- Use bold for emphasis, not ALL CAPS

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Agent Skills Specification
+    url: https://agentskills.io/specification
+    about: Learn about the Agent Skills standard
+  - name: Contributing Guidelines
+    url: https://github.com/altertable-ai/skills/blob/main/CONTRIBUTING.md
+    about: Read our contribution guidelines before submitting
