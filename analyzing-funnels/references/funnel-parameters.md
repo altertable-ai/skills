@@ -10,9 +10,9 @@ Define steps by event name:
 
 ```yaml
 steps:
-  - event_name: page_view
-  - event_name: signup_started
-  - event_name: signup_completed
+  - event: page_view
+  - event: signup_started
+  - event: signup_completed
 ```
 
 ### Steps with Properties
@@ -21,12 +21,12 @@ Filter steps by event properties:
 
 ```yaml
 steps:
-  - event_name: page_view
+  - event: page_view
     filters:
       - property: page_type
         operator: Eq
         value: "landing"
-  - event_name: button_click
+  - event: button_click
     filters:
       - property: button_id
         operator: Eq
@@ -167,7 +167,7 @@ Apply to individual steps:
 
 ```yaml
 steps:
-  - event_name: page_view
+  - event: page_view
     filters:
       - property: page_path
         operator: StartsWith
@@ -206,7 +206,7 @@ Exclude users who did certain actions:
 
 ```yaml
 exclusions:
-  - event_name: cancelled
+  - event: cancelled
 ```
 
 ### Hold-out Steps
@@ -215,10 +215,10 @@ Optional steps that don't break the funnel:
 
 ```yaml
 steps:
-  - event_name: checkout_started
-  - event_name: apply_coupon
+  - event: checkout_started
+  - event: apply_coupon
     optional: true
-  - event_name: payment_submitted
+  - event: payment_submitted
 ```
 
 ### Counting Method

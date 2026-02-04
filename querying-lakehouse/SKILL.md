@@ -212,10 +212,10 @@ FROM current_period c, previous_period p
 WITH funnel AS (
   SELECT
     user_id,
-    MAX(CASE WHEN event_name = 'page_view' THEN 1 ELSE 0 END) as step1,
-    MAX(CASE WHEN event_name = 'add_to_cart' THEN 1 ELSE 0 END) as step2,
-    MAX(CASE WHEN event_name = 'checkout' THEN 1 ELSE 0 END) as step3,
-    MAX(CASE WHEN event_name = 'purchase' THEN 1 ELSE 0 END) as step4
+    MAX(CASE WHEN event ='page_view' THEN 1 ELSE 0 END) as step1,
+    MAX(CASE WHEN event ='add_to_cart' THEN 1 ELSE 0 END) as step2,
+    MAX(CASE WHEN event ='checkout' THEN 1 ELSE 0 END) as step3,
+    MAX(CASE WHEN event ='purchase' THEN 1 ELSE 0 END) as step4
   FROM events
   WHERE timestamp >= current_date - INTERVAL '30 days'
   GROUP BY user_id

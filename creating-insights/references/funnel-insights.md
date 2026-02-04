@@ -60,22 +60,22 @@ Save with funnel visualization.
 
 ```yaml
 steps:
-  - event_name: page_view
-  - event_name: add_to_cart
-  - event_name: checkout_started
-  - event_name: purchase_completed
+  - event: page_view
+  - event: add_to_cart
+  - event: checkout_started
+  - event: purchase_completed
 ```
 
 ### Steps with Filters
 
 ```yaml
 steps:
-  - event_name: page_view
+  - event: page_view
     filters:
       - property: page_type
         operator: Eq
         value: "product"
-  - event_name: add_to_cart
+  - event: add_to_cart
 ```
 
 ## Ordering Modes
@@ -142,11 +142,11 @@ conversion_window:
 
 ```yaml
 steps:
-  - event_name: product_viewed
-  - event_name: add_to_cart
-  - event_name: checkout_started
-  - event_name: payment_submitted
-  - event_name: order_completed
+  - event: product_viewed
+  - event: add_to_cart
+  - event: checkout_started
+  - event: payment_submitted
+  - event: order_completed
 conversion_window:
   value: 24
   unit: hours
@@ -157,10 +157,10 @@ ordering: Strict
 
 ```yaml
 steps:
-  - event_name: signup_page_viewed
-  - event_name: signup_form_started
-  - event_name: email_verified
-  - event_name: profile_completed
+  - event: signup_page_viewed
+  - event: signup_form_started
+  - event: email_verified
+  - event: profile_completed
 conversion_window:
   value: 7
   unit: days
@@ -170,9 +170,9 @@ conversion_window:
 
 ```yaml
 steps:
-  - event_name: feature_discovered
-  - event_name: feature_tried
-  - event_name: feature_used_repeatedly
+  - event: feature_discovered
+  - event: feature_tried
+  - event: feature_used_repeatedly
 conversion_window:
   value: 14
   unit: days
@@ -182,10 +182,10 @@ conversion_window:
 
 ```yaml
 steps:
-  - event_name: account_created
-  - event_name: first_project_created
-  - event_name: first_invite_sent
-  - event_name: first_value_moment
+  - event: account_created
+  - event: first_project_created
+  - event: first_invite_sent
+  - event: first_value_moment
 conversion_window:
   value: 30
   unit: days
