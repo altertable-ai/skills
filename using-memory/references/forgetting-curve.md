@@ -1,249 +1,73 @@
 # Forgetting Curve Reference
 
-Understanding memory decay and retention.
+## How It Works
 
-## The Forgetting Curve
+Memories decay over time without reinforcement, following the Ebbinghaus forgetting curve.
 
-### Concept
-
-Memory strength decays over time without reinforcement.
-
-```
-Strength
-  100% |*
-       | **
-       |   ***
-       |      ****
-       |          *****
-       |               ******
-    0% |________________________
-       0   1   2   3   4   5  Time
-```
-
-### Formula
-
-```
-Retention = e^(-t/S)
+**Formula:** `Relevance = e^(-t/S) × (importance / 10)`
 
 Where:
-- t = time since creation
-- S = stability (based on importance, reinforcement)
-```
+- `t` = hours since last access
+- `S` = stability (based on importance and access count)
 
 ## Decay Rates
 
-### Hourly Decay
+| Rate | Half-life | Use For |
+|------|-----------|---------|
+| Daily | ~24h | Session context, temporary notes |
+| Weekly | ~168h | Short-term patterns (default) |
+| Monthly | ~720h | Core knowledge, stable facts |
 
-**Half-life**: ~24 hours
+## Importance Effect
 
-**Use for**:
-- Session context
-- Temporary notes
-- Working memory
-- Quick references
+Higher importance = slower decay + higher initial relevance.
 
-**Behavior**:
-| Time | Retention |
-|------|-----------|
-| 1 hour | 95% |
-| 6 hours | 75% |
-| 24 hours | 50% |
-| 48 hours | 25% |
-| 72 hours | 12% |
-
-### Daily Decay
-
-**Half-life**: ~7 days (168 hours)
-
-**Use for**:
-- Short-term learnings
-- Recent events
-- Active projects
-- Current priorities
-
-**Behavior**:
-| Time | Retention |
-|------|-----------|
-| 1 day | 90% |
-| 3 days | 70% |
-| 7 days | 50% |
-| 14 days | 25% |
-| 30 days | 6% |
-
-### Weekly Decay
-
-**Half-life**: ~30 days (720 hours)
-
-**Use for**:
-- Medium-term knowledge
-- Project context
-- Recurring patterns
-- Seasonal information
-
-**Behavior**:
-| Time | Retention |
-|------|-----------|
-| 1 week | 85% |
-| 2 weeks | 72% |
-| 30 days | 50% |
-| 60 days | 25% |
-| 90 days | 12% |
-
-### Monthly Decay
-
-**Half-life**: ~180 days (4320 hours)
-
-**Use for**:
-- Core knowledge
-- Important learnings
-- Stable preferences
-- Long-term facts
-
-**Behavior**:
-| Time | Retention |
-|------|-----------|
-| 1 month | 90% |
-| 3 months | 70% |
-| 6 months | 50% |
-| 1 year | 25% |
-| 2 years | 6% |
-
-## Importance and Decay
-
-### Importance Mapping
-
-| Importance | Recommended Decay | Rationale |
-|------------|-------------------|-----------|
-| 9-10 | Monthly | Critical, must persist |
-| 7-8 | Weekly | Important, moderate retention |
-| 5-6 | Daily | Standard, normal lifecycle |
-| 3-4 | Daily | Minor, faster turnover |
-| 1-2 | Hourly | Trivial, quick expiration |
-
-### Combined Effect
-
-```
-Effective Decay = Base Decay × (1 + Importance/10)
-```
-
-Higher importance = slower effective decay
+| Importance | Decay Speed | Example |
+|------------|-------------|---------|
+| 9-10 | Very slow | Critical business rules |
+| 7-8 | Slow | Confirmed patterns |
+| 5-6 | Normal | Useful but unconfirmed |
+| 1-4 | Fast | Minor details |
 
 ## Reinforcement
 
-### Access Reinforcement
+Memories get stronger when accessed or validated.
 
-When memory is accessed:
-- Strength increases
+**Access reinforcement:**
+- Each search that returns a memory increases its strength
 - Decay timer resets
-- Importance may adjust
+- Memory stays relevant longer
 
-**Boost Formula**:
-```
-New Strength = Old Strength + (100 - Old Strength) × 0.3
-```
-
-### Validation Reinforcement
-
-When memory is validated as correct:
-- Larger strength boost
+**Validation reinforcement:**
+- When memory is confirmed correct, larger strength boost
 - Importance may increase
 - Decay rate may slow
 
-### Connection Reinforcement
+## Relevance Scores
 
-When memory connects to others:
-- Network effect
-- Mutual reinforcement
-- Longer retention
+| Score | Meaning |
+|-------|---------|
+| 0.8-1.0 | Highly relevant, just accessed or very important |
+| 0.5-0.8 | Relevant, recent or frequently accessed |
+| 0.2-0.5 | Moderately relevant, starting to decay |
+| 0.0-0.2 | Low relevance, candidate for removal |
 
-## Consolidation
+## Garbage Collection
 
-### What It Is
+Memories below relevance threshold (0.1) are automatically removed.
 
-Over time, memories consolidate:
-- Similar memories merge
-- Redundancy reduced
-- Core knowledge strengthened
+- Only AI-authored memories are garbage collected
+- User-created memories are never auto-deleted
+- Runs daily during off-peak hours
 
-### Process
+## Best Practices
 
-```
-Day 1: Memory A (80%)
-Day 1: Memory B (80%) [similar to A]
-Day 7: Memory A+B consolidated (90%)
-```
+**To keep memories alive:**
+- Search for them regularly (reinforcement)
+- Set appropriate importance (higher = slower decay)
+- Use monthly decay for core knowledge
 
-### Benefits
-
-- Reduced storage
-- Stronger retention
-- Cleaner knowledge base
-
-## Practical Guidelines
-
-### Setting Decay Rates
-
-| Memory Content | Decay Rate |
-|----------------|------------|
-| User preferences | Monthly |
-| Business rules | Monthly |
-| Recent events | Daily |
-| Session context | Hourly |
-| Procedures | Weekly/Monthly |
-| One-time facts | Daily |
-
-### When to Use Each Rate
-
-**Hourly**: Information that's only relevant now
-- Current query context
-- Active filters
-- Working calculations
-
-**Daily**: Information relevant this week
-- Recent discoveries
-- Active project context
-- Short-term learnings
-
-**Weekly**: Information relevant this quarter
-- Project knowledge
-- Medium-term patterns
-- Recurring events
-
-**Monthly**: Information relevant long-term
-- Core preferences
-- Stable business rules
-- Fundamental procedures
-
-## Monitoring Decay
-
-### Health Checks
-
-Monitor for:
-- Memories approaching expiration
-- Important memories decaying
-- Unreinforced knowledge
-
-### Maintenance Actions
-
-- Review aging memories
-- Reinforce important ones
-- Clean up expired
-- Consolidate similar
-
-## Edge Cases
-
-### Never Forget
-
-Some memories should never decay:
-- Set importance = 10
-- Set decay = monthly
-- Regularly reinforce
-- Mark as critical
-
-### Immediate Forget
-
-Some should expire immediately:
-- Set importance = 1
-- Set decay = hourly
-- Don't reinforce
-- Let expire naturally
+**To let memories fade:**
+- Set low importance
+- Use daily decay
+- Don't search for them
