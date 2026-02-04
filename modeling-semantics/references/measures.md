@@ -114,8 +114,8 @@ Custom SQL expression for complex calculations.
 - name: click_through_rate
   kind: Expression
   sql: |
-    COUNT(DISTINCT CASE WHEN event_name = 'click' THEN user_id END)::FLOAT /
-    NULLIF(COUNT(DISTINCT CASE WHEN event_name = 'impression' THEN user_id END), 0) * 100
+    COUNT(DISTINCT CASE WHEN event ='click' THEN user_id END)::FLOAT /
+    NULLIF(COUNT(DISTINCT CASE WHEN event ='impression' THEN user_id END), 0) * 100
 ```
 
 ### Conditional Sum

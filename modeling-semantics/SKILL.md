@@ -166,7 +166,7 @@ For each foreign key:
 
 ```yaml
 dimensions:
-  - name: event_name
+  - name: event
     type: String
     description: Type of event
   - name: timestamp

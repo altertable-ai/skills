@@ -70,7 +70,7 @@ From the selected source:
 
 ```yaml
 dimensions:
-  - name: event_name
+  - name: event
   - name: timestamp
     breakdown: Day
 ```
@@ -101,7 +101,7 @@ dimensions:
 
 ```yaml
 filters:
-  - dimension: event_name
+  - dimension: event
     operator: Eq
     value: "purchase"
 ```
@@ -189,7 +189,7 @@ visualization: Line
 source: events
 measures: [event_count]
 dimensions:
-  - name: event_name
+  - name: event
 visualization: BarList
 ```
 
@@ -210,7 +210,7 @@ visualization: Bar
 source: events
 measures: [event_count, unique_users]
 filters:
-  - dimension: event_name
+  - dimension: event
     operator: Eq
     value: "purchase"
 timeframe:

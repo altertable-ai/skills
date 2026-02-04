@@ -156,7 +156,7 @@ Only select columns you need:
 SELECT * FROM events
 
 -- Good: Select only needed columns
-SELECT user_id, event_name, timestamp FROM events
+SELECT user_id, event, timestamp FROM events
 ```
 
 ## Memory Management
