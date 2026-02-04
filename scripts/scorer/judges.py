@@ -6,8 +6,6 @@ import litellm
 from pydantic import BaseModel
 
 from .models import (
-    MAX_CONTENT_CHARS,
-    MAX_REFERENCE_CHARS,
     MAX_RETRIES,
     RETRY_DELAY,
     Issue,
@@ -114,13 +112,12 @@ def _build_prompt(skill: SkillContent) -> str:
     if skill.references:
         ref_parts = []
         for name, content in skill.references.items():
-            truncated = content[:MAX_REFERENCE_CHARS]
-            ref_parts.append(f"### {name}\n{truncated}")
+            ref_parts.append(f"### {name}\n{content}")
         ref_text = "\n\n".join(ref_parts)
 
     return PROMPT_TEMPLATE.format(
         skill_name=skill.name,
-        skill_content=skill.content[:MAX_CONTENT_CHARS],
+        skill_content=skill.content,
         line_count=skill.line_count,
         reference_files=ref_text,
         ref_count=len(skill.references),
