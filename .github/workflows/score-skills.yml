@@ -47,7 +47,7 @@ jobs:
             echo "skipped=1" >> $GITHUB_OUTPUT
             exit 0
           fi
-          comment=$(uv run python scripts/score-skills.py $skills --pr_comment --min_score=70 2>&1) || failed=1
+          comment=$(uv run --quiet python scripts/score-skills.py $skills --pr_comment --min_score=70) || failed=1
           echo "comment<<EOF" >> $GITHUB_OUTPUT
           echo "$comment" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
