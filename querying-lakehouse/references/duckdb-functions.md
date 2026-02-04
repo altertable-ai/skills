@@ -292,41 +292,10 @@ json_col->'key'           -- Extract JSON value
 json_col->>'key'          -- Extract as text
 json_col->'arr'->0        -- Array element
 
--- Standard ducklake functions
+-- Functions
 json_extract(json, path)
 json_extract_string(json, path)
-
--- Custom extension for schema-aware extraction
-json_extract_string_property(table.properties, '$.key')
 ```
-
-### json_extract_string_property
-
-A custom ducklake extension for intelligent property extraction. Use this when you have tables where properties may exist as dedicated columns or in JSON:
-
-```sql
--- Basic usage: extracts 'country' from JSON, or uses events.country column if it exists
-SELECT json_extract_string_property(events.properties, '$.country') FROM events;
-
--- Works with nested paths
-SELECT json_extract_string_property(events.properties, '$.settings.theme') FROM events;
-
--- Multiple properties in one query
-SELECT
-    json_extract_string_property(events.properties, '$.country') as country,
-    json_extract_string_property(events.properties, '$.language') as language
-FROM events;
-```
-
-**Benefits:**
-- Zero overhead when column exists (uses direct column reference)
-- Automatic VARCHAR casting for non-string columns
-- Supports bucketed STRUCT storage (a-z, _ buckets)
-- Enables schema evolution without query changes
-
-**Constraints:**
-- The JSON path must be a constant string literal
-- Always returns VARCHAR
 
 ### JSON Construction
 
