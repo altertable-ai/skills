@@ -206,17 +206,17 @@ Good titles are:
 
 ## Writing Descriptions
 
+**Descriptions must be 200 characters or less.**
+
 Include:
 - **What**: The key observation
 - **Context**: Comparison or benchmark
 - **Impact**: Business significance
-- **Recommendation**: Suggested action
+- **Recommendation**: Suggested action (if space permits)
 
 ### Example
 
-> Mobile conversion rate dropped from 3.2% to 2.5% over the past month,
-> a 20% decline. This coincides with the checkout redesign launched on
-> March 1st. Consider A/B testing the previous checkout flow.
+> Mobile conversion dropped 20% (3.2% to 2.5%) last month, coinciding with the March 1st checkout redesign. Consider A/B testing the previous flow.
 
 ## Visualization Selection
 
@@ -237,6 +237,30 @@ Include:
 - Wrong visualization for data type
 - Not previewing before creating
 - Creating duplicates of existing insights
+
+## Troubleshooting Rejected Discoveries
+
+**If `admin_rejected`:**
+- Review admin feedback for rejection reason
+- Check if finding meets quality threshold
+- Refine: make title more specific, add context to description
+- Re-create with improvements
+
+**If `rejected` by user:**
+- Finding may not be actionable enough
+- Consider: Is the insight significant? Is timing relevant?
+- Refine: strengthen the "so what" - why should they care?
+- Add clearer recommendation or next step
+
+**Common rejection reasons and fixes:**
+
+| Reason | Fix |
+|--------|-----|
+| "Already known" | Search for existing insights before creating |
+| "Not actionable" | Add specific recommendation |
+| "Too vague" | Include concrete numbers and timeframes |
+| "Wrong audience" | Check if insight matches user's domain |
+| "Stale data" | Verify timeframe is current |
 
 ## Reference Files
 
