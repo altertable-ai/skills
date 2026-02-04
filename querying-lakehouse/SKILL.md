@@ -150,11 +150,18 @@ CROSS JOIN weekly_avg w
 ### JSON Operations
 
 ```sql
--- Extract from JSON
+-- Extract from JSON using arrow operators
 SELECT
   properties->>'page_url' as page_url,
   properties->>'referrer' as referrer,
   (properties->>'amount')::FLOAT as amount
+FROM events
+
+-- Use json_extract_string_property when properties may exist as columns or in JSON
+-- Automatically uses column if it exists, falls back to JSON extraction
+SELECT
+  json_extract_string_property(events.properties_bucketed, '$.page_url') as page_url,
+  json_extract_string_property(events.properties_bucketed, '$.referrer') as referrer
 FROM events
 
 -- Check JSON field exists
@@ -260,5 +267,6 @@ ORDER BY 1, 2
 ## Reference Files
 
 - [DuckDB functions](references/duckdb-functions.md)
+- [Altertable DuckDB functions](references/altertable-duckdb-functions.md)
 - [Query patterns](references/query-patterns.md)
 - [Optimization tips](references/optimization.md)
