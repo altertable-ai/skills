@@ -363,3 +363,15 @@ END
 -- IIF (ternary)
 IIF(condition, true_value, false_value)
 ```
+
+## Metadata Tables
+
+Use these to explore available tables and their structure before writing queries.
+
+```sql
+-- List all tables
+SELECT table_name FROM duckdb_tables();
+
+-- List all columns for a table
+SELECT column_name, data_type FROM duckdb_columns() WHERE table_name = 'my_table';
+```

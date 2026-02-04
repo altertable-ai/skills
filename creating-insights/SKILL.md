@@ -238,6 +238,30 @@ Include:
 - Not previewing before creating
 - Creating duplicates of existing insights
 
+## Troubleshooting Rejected Discoveries
+
+**If `admin_rejected`:**
+- Review admin feedback for rejection reason
+- Check if finding meets quality threshold
+- Refine: make title more specific, add context to description
+- Re-create with improvements
+
+**If `rejected` by user:**
+- Finding may not be actionable enough
+- Consider: Is the insight significant? Is timing relevant?
+- Refine: strengthen the "so what" - why should they care?
+- Add clearer recommendation or next step
+
+**Common rejection reasons and fixes:**
+
+| Reason | Fix |
+|--------|-----|
+| "Already known" | Search for existing insights before creating |
+| "Not actionable" | Add specific recommendation |
+| "Too vague" | Include concrete numbers and timeframes |
+| "Wrong audience" | Check if insight matches user's domain |
+| "Stale data" | Verify timeframe is current |
+
 ## Reference Files
 
 - [SQL insights](references/sql-insights.md)
