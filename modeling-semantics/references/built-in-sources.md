@@ -14,7 +14,7 @@ Tracks user interactions and system events across applications.
 
 | Dimension | Type | Description |
 |-----------|------|-------------|
-| `event_name` | String | Type of event (e.g., page_view, click, purchase) |
+| `event` | String | Type of event (e.g., page_view, click, purchase) |
 | `timestamp` | Timestamp | When the event occurred |
 | `user_id` | UUID | User who triggered the event |
 | `distinct_id` | String | Anonymous identifier before identification |
@@ -41,7 +41,7 @@ Tracks user interactions and system events across applications.
 ### Example Queries
 
 Count events by type:
-- Dimension: `event_name`
+- Dimension: `event`
 - Measure: `event_count`
 
 Daily active users:
@@ -235,7 +235,7 @@ This allows querying orders with user identity dimensions.
 
 Common filters for events:
 - `timestamp` >= last 30 days
-- `event_name` = specific event
+- `event` = specific event
 - `properties->>'key'` = value
 
 ### Combining Sources

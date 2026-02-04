@@ -121,10 +121,10 @@ JOIN cohort_sizes c ON m.cohort_month = c.cohort_month
 
 ```sql
 SELECT
-  COUNT(DISTINCT CASE WHEN event_name = 'page_view' THEN user_id END) as step1_pageview,
-  COUNT(DISTINCT CASE WHEN event_name = 'signup_start' THEN user_id END) as step2_signup,
-  COUNT(DISTINCT CASE WHEN event_name = 'signup_complete' THEN user_id END) as step3_complete,
-  COUNT(DISTINCT CASE WHEN event_name = 'first_purchase' THEN user_id END) as step4_purchase
+  COUNT(DISTINCT CASE WHEN event ='page_view' THEN user_id END) as step1_pageview,
+  COUNT(DISTINCT CASE WHEN event ='signup_start' THEN user_id END) as step2_signup,
+  COUNT(DISTINCT CASE WHEN event ='signup_complete' THEN user_id END) as step3_complete,
+  COUNT(DISTINCT CASE WHEN event ='first_purchase' THEN user_id END) as step4_purchase
 FROM events
 WHERE timestamp >= current_date - INTERVAL '30 days'
 ```
@@ -135,20 +135,20 @@ WHERE timestamp >= current_date - INTERVAL '30 days'
 WITH user_events AS (
   SELECT
     user_id,
-    event_name,
+    event,
     timestamp,
     ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY timestamp) as event_order
   FROM events
-  WHERE event_name IN ('page_view', 'add_to_cart', 'checkout', 'purchase')
+  WHERE event IN ('page_view', 'add_to_cart', 'checkout', 'purchase')
     AND timestamp >= current_date - INTERVAL '30 days'
 ),
 funnel_progress AS (
   SELECT
     user_id,
-    MAX(CASE WHEN event_name = 'page_view' THEN event_order END) as step1_order,
-    MAX(CASE WHEN event_name = 'add_to_cart' THEN event_order END) as step2_order,
-    MAX(CASE WHEN event_name = 'checkout' THEN event_order END) as step3_order,
-    MAX(CASE WHEN event_name = 'purchase' THEN event_order END) as step4_order
+    MAX(CASE WHEN event ='page_view' THEN event_order END) as step1_order,
+    MAX(CASE WHEN event ='add_to_cart' THEN event_order END) as step2_order,
+    MAX(CASE WHEN event ='checkout' THEN event_order END) as step3_order,
+    MAX(CASE WHEN event ='purchase' THEN event_order END) as step4_order
   FROM user_events
   GROUP BY user_id
 )
@@ -324,7 +324,7 @@ SELECT * FROM events LIMIT 100
 -- Use date filters first
 SELECT * FROM events
 WHERE timestamp >= current_date - INTERVAL '7 days'
-  AND event_name = 'purchase'
+  AND event ='purchase'
 ```
 
 ### Efficient Joins

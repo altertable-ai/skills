@@ -196,7 +196,7 @@ employees
 events
 ├── id              # Unique event ID
 ├── timestamp       # When event occurred
-├── event_name      # Type of event
+├── event           # Type of event
 ├── user_id         # Who triggered it
 ├── properties      # JSON of event-specific data
 └── context         # JSON of contextual data
