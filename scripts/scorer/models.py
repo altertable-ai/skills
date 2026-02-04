@@ -6,8 +6,6 @@ from typing import Final, Literal
 from pydantic import BaseModel
 
 SKILL_FILENAME: Final[str] = "SKILL.md"
-MAX_CONTENT_CHARS: Final[int] = 8000
-MAX_REFERENCE_CHARS: Final[int] = 2000
 DEFAULT_MIN_SCORE: Final[int] = 70
 MAX_RETRIES: Final[int] = 3
 RETRY_DELAY: Final[float] = 1.0
