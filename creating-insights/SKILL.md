@@ -206,17 +206,17 @@ Good titles are:
 
 ## Writing Descriptions
 
+**Descriptions must be 200 characters or less.**
+
 Include:
 - **What**: The key observation
 - **Context**: Comparison or benchmark
 - **Impact**: Business significance
-- **Recommendation**: Suggested action
+- **Recommendation**: Suggested action (if space permits)
 
 ### Example
 
-> Mobile conversion rate dropped from 3.2% to 2.5% over the past month,
-> a 20% decline. This coincides with the checkout redesign launched on
-> March 1st. Consider A/B testing the previous checkout flow.
+> Mobile conversion dropped 20% (3.2% to 2.5%) last month, coinciding with the March 1st checkout redesign. Consider A/B testing the previous flow.
 
 ## Visualization Selection
 
