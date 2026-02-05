@@ -79,10 +79,10 @@ pending_review   admin_rejected (end state)
 |-------|-------------|-------------|
 | `pending_visualization_generation` | Waiting for chart to be generated | pending_admin_review |
 | `pending_admin_review` | Awaiting admin approval | pending_review, admin_rejected |
-| `pending_review` | Visible to users, awaiting feedback | accepted, rejected, ignored |
-| `accepted` | User found it useful | (terminal) |
-| `rejected` | User rejected it | (terminal) |
-| `ignored` | User dismissed without feedback | (terminal) |
+| `pending_review` | Approved by admin, awaiting user action | accepted, rejected, ignored |
+| `accepted` | Accepted by user | (terminal) |
+| `rejected` | Rejected by user | (terminal) |
+| `ignored` | Ignored by user | (terminal) |
 | `admin_rejected` | Admin rejected before user sees it | (terminal) |
 
 **Note:** AI agents only see discoveries in visible states (`pending_review`, `accepted`, `rejected`, `ignored`) via the `list_discoveries` tool.
