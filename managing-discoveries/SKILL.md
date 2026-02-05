@@ -22,6 +22,37 @@ A discovery is an insight that:
 - Managing discovery lifecycle
 - Detecting user intent from feedback
 
+## Listing Discoveries
+
+Use the `list_discoveries` tool to retrieve discoveries. Filter by status, data type, date range, or search query.
+
+### Filtering by Status
+
+Available statuses:
+- `pending_review` - Awaiting user review
+- `accepted` - User found it useful
+- `rejected` - User rejected it
+- `ignored` - User dismissed without feedback
+
+### Filtering by Data Type
+
+Filter discoveries by their data type to focus on specific categories:
+- `Discoveries::NewInsight` - Data-driven insights with charts
+- `Discoveries::FYI` - Informational updates (markdown content)
+- `Discoveries::ConnectData` - Data connection prompts
+- `Discoveries::NewSemanticModels` - Semantic model suggestions
+- `Discoveries::WebAnalyticsEventsDetected` - Web analytics event findings
+
+### Example Usage
+
+```
+# List pending insights
+list_discoveries(status: "pending_review", data_type: "Discoveries::NewInsight")
+
+# Search recent FYIs
+list_discoveries(data_type: "Discoveries::FYI", created_after: "2024-01-01T00:00:00Z")
+```
+
 ## Discovery Lifecycle
 
 ```
