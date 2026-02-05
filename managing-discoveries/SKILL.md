@@ -52,29 +52,6 @@ list_discoveries(data_type: "Discoveries::FYI", created_after: "2024-01-01T00:00
 
 ## Discovery Lifecycle
 
-```
-pending_visualization_generation
-            │
-            │ generate_visualization!
-            ▼
-    pending_admin_review
-            │
-     ┌──────┴──────┐
-     │             │
-     │ admin_review!  admin_reject!
-     ▼             ▼
-pending_review   admin_rejected (end state)
-     │
-     ├─────────┬─────────┐
-     │         │         │
-  accept!   reject!   ignore!
-     ▼         ▼         ▼
- accepted   rejected   ignored
-   (end states)
-```
-
-### State Flow
-
 | State | Description | Next States |
 |-------|-------------|-------------|
 | `pending_visualization_generation` | Waiting for chart to be generated | pending_admin_review |
@@ -84,8 +61,6 @@ pending_review   admin_rejected (end state)
 | `rejected` | Rejected by organization | (terminal) |
 | `ignored` | Ignored by organization | (terminal) |
 | `admin_rejected` | Admin rejected before organization sees it | (terminal) |
-
-**Note:** AI agents only see discoveries in visible states (`pending_review`, `accepted`, `rejected`, `ignored`) via the `list_discoveries` tool.
 
 ## Approval Workflow
 
