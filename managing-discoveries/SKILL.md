@@ -29,10 +29,10 @@ Use the `list_discoveries` tool to retrieve discoveries. Filter by status, data 
 ### Filtering by Status
 
 Available statuses:
-- `pending_review` - Awaiting user review
-- `accepted` - User found it useful
-- `rejected` - User rejected it
-- `ignored` - User dismissed without feedback
+- `pending_review` - Approved by admin, awaiting user action
+- `accepted` - Accepted by user
+- `rejected` - Rejected by user
+- `ignored` - Ignored by user
 
 ### Filtering by Data Type
 
