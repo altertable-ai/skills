@@ -45,10 +45,13 @@ Always validate queries before execution:
 
 ### Step 3: Explain Complex Queries
 
-For complex queries, get the execution plan:
-- Understand query performance
-- Identify potential bottlenecks
-- Optimize before running
+For complex queries, use the `explain_sql` tool to get the execution plan. This tool analyzes a DuckLake SQL query and returns execution plan information including table scan estimates and file statistics. Use it to understand query performance characteristics before execution.
+
+The tool returns:
+- Table scan details (table name, estimated rows, filters applied)
+- Total files and bytes in scanned tables
+- Estimated files and bytes that will be scanned
+- Optionally, the raw DuckLake EXPLAIN plan (set `include_plan: true`)
 
 ### Step 4: Execute and Analyze
 
