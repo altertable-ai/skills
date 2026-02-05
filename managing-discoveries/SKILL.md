@@ -29,10 +29,10 @@ Use the `list_discoveries` tool to retrieve discoveries. Filter by status, data 
 ### Filtering by Status
 
 Available statuses:
-- `pending_review` - Approved by admin, awaiting user action
-- `accepted` - Accepted by user
-- `rejected` - Rejected by user
-- `ignored` - Ignored by user
+- `pending_review` - Approved by admin, awaiting organization action
+- `accepted` - Accepted by organization
+- `rejected` - Rejected by organization
+- `ignored` - Ignored by organization
 
 ### Filtering by Data Type
 
@@ -79,11 +79,11 @@ pending_review   admin_rejected (end state)
 |-------|-------------|-------------|
 | `pending_visualization_generation` | Waiting for chart to be generated | pending_admin_review |
 | `pending_admin_review` | Awaiting admin approval | pending_review, admin_rejected |
-| `pending_review` | Approved by admin, awaiting user action | accepted, rejected, ignored |
-| `accepted` | Accepted by user | (terminal) |
-| `rejected` | Rejected by user | (terminal) |
-| `ignored` | Ignored by user | (terminal) |
-| `admin_rejected` | Admin rejected before user sees it | (terminal) |
+| `pending_review` | Approved by admin, awaiting organization action | accepted, rejected, ignored |
+| `accepted` | Accepted by organization | (terminal) |
+| `rejected` | Rejected by organization | (terminal) |
+| `ignored` | Ignored by organization | (terminal) |
+| `admin_rejected` | Admin rejected before organization sees it | (terminal) |
 
 **Note:** AI agents only see discoveries in visible states (`pending_review`, `accepted`, `rejected`, `ignored`) via the `list_discoveries` tool.
 
