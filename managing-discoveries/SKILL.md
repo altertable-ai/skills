@@ -36,12 +36,9 @@ Available statuses:
 
 ### Filtering by Data Type
 
-Filter discoveries by their data type to focus on specific categories:
+Filter discoveries by their data type. For AI agents, the main types are:
 - `Discoveries::NewInsight` - Data-driven insights with charts
 - `Discoveries::FYI` - Informational updates (markdown content)
-- `Discoveries::ConnectData` - Data connection prompts
-- `Discoveries::NewSemanticModels` - Semantic model suggestions
-- `Discoveries::WebAnalyticsEventsDetected` - Web analytics event findings
 
 ### Example Usage
 
@@ -56,21 +53,39 @@ list_discoveries(data_type: "Discoveries::FYI", created_after: "2024-01-01T00:00
 ## Discovery Lifecycle
 
 ```
-created → pending_approval → approved → delivered → reviewed
-                ↓
-            rejected
+pending_visualization_generation
+            │
+            │ generate_visualization!
+            ▼
+    pending_admin_review
+            │
+     ┌──────┴──────┐
+     │             │
+     │ admin_review!  admin_reject!
+     ▼             ▼
+pending_review   admin_rejected (end state)
+     │
+     ├─────────┬─────────┐
+     │         │         │
+  accept!   reject!   ignore!
+     ▼         ▼         ▼
+ accepted   rejected   ignored
+   (end states)
 ```
 
 ### State Flow
 
 | State | Description | Next States |
 |-------|-------------|-------------|
-| `created` | Just generated | pending_approval |
-| `pending_approval` | Awaiting review | approved, rejected |
-| `approved` | Ready for delivery | delivered |
-| `rejected` | Not suitable | (terminal) |
-| `delivered` | Sent to user | reviewed |
-| `reviewed` | User responded | (terminal) |
+| `pending_visualization_generation` | Waiting for chart to be generated | pending_admin_review |
+| `pending_admin_review` | Awaiting admin approval | pending_review, admin_rejected |
+| `pending_review` | Visible to users, awaiting feedback | accepted, rejected, ignored |
+| `accepted` | User found it useful | (terminal) |
+| `rejected` | User rejected it | (terminal) |
+| `ignored` | User dismissed without feedback | (terminal) |
+| `admin_rejected` | Admin rejected before user sees it | (terminal) |
+
+**Note:** AI agents only see discoveries in visible states (`pending_review`, `accepted`, `rejected`, `ignored`) via the `list_discoveries` tool.
 
 ## Approval Workflow
 
