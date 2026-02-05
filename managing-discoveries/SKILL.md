@@ -24,7 +24,7 @@ A discovery is an insight that:
 
 ## Listing Discoveries
 
-Use the `list_discoveries` tool to retrieve discoveries. Filter by status, data type, date range, or search query.
+Use the `list_discoveries` tool to retrieve discoveries. Filter by status, date range, or search query.
 
 ### Filtering by Status
 
@@ -34,20 +34,18 @@ Available statuses:
 - `rejected` - Rejected by organization
 - `ignored` - Ignored by organization
 
-### Filtering by Data Type
-
-Filter discoveries by their data type. For AI agents, the main types are:
-- `Discoveries::NewInsight` - Data-driven insights with charts
-- `Discoveries::FYI` - Informational updates (markdown content)
-
 ### Example Usage
 
 ```
-# List pending insights
-list_discoveries(status: "pending_review", data_type: "Discoveries::NewInsight")
+# List pending discoveries awaiting action
+list_discoveries(status: "pending_review")
 
-# Search recent FYIs
-list_discoveries(data_type: "Discoveries::FYI", created_after: "2024-01-01T00:00:00Z")
+# List discoveries by state if needed
+list_discoveries(status: "accepted")
+list_discoveries(status: "rejected")
+
+# Search recent discoveries
+list_discoveries(created_after: "2024-01-01T00:00:00Z")
 ```
 
 ## Discovery Lifecycle
@@ -114,40 +112,6 @@ Feedback informs:
 - Presentation style
 - Threshold calibration
 - Topic priorities
-
-## Discovery Types
-
-### Insight Discovery
-
-Data-driven finding:
-- Trend identified
-- Anomaly detected
-- Pattern found
-- Metric change
-
-### Alert Discovery
-
-Time-sensitive notification:
-- Threshold breach
-- Error spike
-- Data quality issue
-- System event
-
-### Summary Discovery
-
-Periodic overview:
-- Daily summary
-- Weekly report
-- Monthly review
-- Trend analysis
-
-### FYI Discovery
-
-Informational update:
-- Status change
-- Completion notice
-- Progress update
-- Acknowledgment
 
 ## Review Patterns
 
