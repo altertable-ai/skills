@@ -22,24 +22,45 @@ A discovery is an insight that:
 - Managing discovery lifecycle
 - Detecting user intent from feedback
 
+## Listing Discoveries
+
+Use the `list_discoveries` tool to retrieve discoveries. Filter by status, data type, date range, or search query.
+
+### Filtering by Status
+
+Available statuses:
+- `pending_review` - Approved by admin, awaiting organization action
+- `accepted` - Accepted by organization
+- `rejected` - Rejected by organization
+- `ignored` - Ignored by organization
+
+### Filtering by Data Type
+
+Filter discoveries by their data type. For AI agents, the main types are:
+- `Discoveries::NewInsight` - Data-driven insights with charts
+- `Discoveries::FYI` - Informational updates (markdown content)
+
+### Example Usage
+
+```
+# List pending insights
+list_discoveries(status: "pending_review", data_type: "Discoveries::NewInsight")
+
+# Search recent FYIs
+list_discoveries(data_type: "Discoveries::FYI", created_after: "2024-01-01T00:00:00Z")
+```
+
 ## Discovery Lifecycle
-
-```
-created → pending_approval → approved → delivered → reviewed
-                ↓
-            rejected
-```
-
-### State Flow
 
 | State | Description | Next States |
 |-------|-------------|-------------|
-| `created` | Just generated | pending_approval |
-| `pending_approval` | Awaiting review | approved, rejected |
-| `approved` | Ready for delivery | delivered |
-| `rejected` | Not suitable | (terminal) |
-| `delivered` | Sent to user | reviewed |
-| `reviewed` | User responded | (terminal) |
+| `pending_visualization_generation` | Waiting for chart to be generated | pending_admin_review |
+| `pending_admin_review` | Awaiting admin approval | pending_review, admin_rejected |
+| `pending_review` | Approved by admin, awaiting organization action | accepted, rejected, ignored |
+| `accepted` | Accepted by organization | (terminal) |
+| `rejected` | Rejected by organization | (terminal) |
+| `ignored` | Ignored by organization | (terminal) |
+| `admin_rejected` | Admin rejected before organization sees it | (terminal) |
 
 ## Approval Workflow
 
