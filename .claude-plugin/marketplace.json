@@ -1,0 +1,19 @@
+{
+  "name": "altertable-skills",
+  "owner": {
+    "name": "Altertable"
+  },
+  "metadata": {
+    "description": "Skills for Altertable AI agents",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "altertable-skills",
+      "description": "Complete skill set for Altertable AI agents. Covers data exploration, semantic modeling, chart and funnel analysis, web traffic analysis, segment building, watcher configuration, insight creation, memory management, discovery management, event tracking, external integrations, and platform understanding.",
+      "version": "0.1.0",
+      "source": "./",
+      "strict": false
+    }
+  ]
+}
