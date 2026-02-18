@@ -71,3 +71,6 @@ dmypy.json
 
 # Ruff
 .ruff_cache/
+
+# Node.js
+node_modules/
