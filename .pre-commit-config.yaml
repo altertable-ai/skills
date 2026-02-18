@@ -36,7 +36,7 @@ repos:
     hooks:
       - id: sync-agents-md
         name: sync AGENTS.md available skills
-        entry: bash scripts/sync-agents-md.sh
+        entry: python3 scripts/sync-agents-md.py
         language: system
         files: 'SKILL\.md$'
         exclude: 'SKILL_TEMPLATE/'
