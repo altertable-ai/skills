@@ -1,7 +1,7 @@
 ---
 name: deciding-actions
 compatibility: Cursor, VS Code, Claude Code, Altertable
-description: Decision matrices for choosing insight types, discovery actions, and avoiding duplicates. Use when deciding between funnel vs semantic vs SQL analysis, or when determining whether to create new vs update vs skip discoveries.
+description: Decision matrices for choosing insight types, discovery actions, and avoiding duplicates. Use when deciding between funnel, retention, semantic, segmentation, or SQL insights, or when determining whether to create, update, or skip discoveries.
 ---
 
 # Deciding Actions
@@ -16,13 +16,20 @@ This skill provides decision frameworks for:
 
 ## When to Use This Skill
 
-- Choosing between funnel, semantic, or SQL insights
+- Choosing between funnel, retention, semantic, or SQL insights
 - Deciding whether to create a new discovery
 - Checking for duplicate discoveries
 - Selecting the right analysis method
 - Planning discovery workflow
 
 ## Insight Type Decision Matrix
+
+### How to Use
+
+1. Match the user's question against the decision tree below
+2. If ambiguous, check the signal matrix for matching phrases
+3. If still ambiguous, use the disambiguation blocks to resolve the overlap
+4. Cross-check against the common misclassifications before creating
 
 ### Quick Decision Tree
 
@@ -32,13 +39,16 @@ User Question
 ├─ About conversion/steps/flow?
 │   └─ → FUNNEL INSIGHT
 │
+├─ About whether users come back after an event?
+│   └─ → RETENTION INSIGHT
+│
 ├─ About metrics/dimensions/trends?
 │   └─ → SEMANTIC INSIGHT
 │
 ├─ Complex/custom/joins needed?
 │   └─ → SQL INSIGHT
 │
-├─ About segments/cohorts?
+├─ About segments/cohorts (by attributes, not sequence)?
 │   └─ → SEGMENTATION INSIGHT
 │
 └─ Just informing/acknowledging?
@@ -47,38 +57,96 @@ User Question
 
 ### Detailed Decision Matrix
 
-| Signal | Funnel | Semantic | SQL | Segmentation | FYI |
-|--------|--------|----------|-----|--------------|-----|
-| "conversion rate" | ✓✓✓ | | | | |
-| "drop-off" | ✓✓✓ | | | | |
-| "steps to purchase" | ✓✓✓ | | | | |
-| "user journey" | ✓✓✓ | | | | |
-| "how many" | | ✓✓✓ | | | |
-| "trend over time" | | ✓✓✓ | | | |
-| "breakdown by" | | ✓✓✓ | | | |
-| "compare periods" | | ✓✓✓ | | | |
-| "join tables" | | | ✓✓✓ | | |
-| "custom calculation" | | | ✓✓✓ | | |
-| "raw data" | | | ✓✓✓ | | |
-| "complex query" | | | ✓✓✓ | | |
-| "users who" | | | | ✓✓✓ | |
-| "cohort of" | | | | ✓✓✓ | |
-| "segment where" | | | | ✓✓✓ | |
-| "acknowledge" | | | | | ✓✓✓ |
-| "got it" | | | | | ✓✓✓ |
-| "thanks" | | | | | ✓✓✓ |
+| Signal | Funnel | Retention | Semantic | SQL | Segmentation | FYI |
+|--------|--------|-----------|----------|-----|--------------|-----|
+| "conversion rate" | ✓✓✓ | | | | | |
+| "drop-off" | ✓✓✓ | | | | | |
+| "steps to purchase" | ✓✓✓ | | | | | |
+| "user journey" | ✓✓✓ | | | | | |
+| "stuck at step/level" | ✓✓✓ | | | | | |
+| "progression from X to Y" | ✓✓✓ | | | | | |
+| "did X but not Y" | ✓✓✓ | | | | | |
+| "come back" | | ✓✓✓ | | | | |
+| "return after" | | ✓✓✓ | | | | |
+| "retained" | | ✓✓✓ | | | | |
+| "churn" | | ✓✓✓ | | | | |
+| "how many" | | | ✓✓✓ | | | |
+| "trend over time" | | | ✓✓✓ | | | |
+| "breakdown by" | | | ✓✓✓ | | | |
+| "compare periods" | | | ✓✓✓ | | | |
+| "join tables" | | | | ✓✓✓ | | |
+| "custom calculation" | | | | ✓✓✓ | | |
+| "raw data" | | | | ✓✓✓ | | |
+| "complex query" | | | | ✓✓✓ | | |
+| "users who [have property]" | | | | | ✓✓✓ | |
+| "cohort of" | | | | | ✓✓✓ | |
+| "segment where" | | | | | ✓✓✓ | |
+| "acknowledge" | | | | | | ✓✓✓ |
+| "got it" | | | | | | ✓✓✓ |
+| "thanks" | | | | | | ✓✓✓ |
+
+**Disambiguation — Segmentation vs Funnel:**
+
+The phrase "users who" is ambiguous. Apply this test:
+
+| Pattern | Type | Why |
+|---------|------|-----|
+| "users who **have** property X" | Segmentation | Defining a group by attributes |
+| "users who **did** event A **then** event B" | Funnel | Sequential event analysis |
+| "users **stuck at** step/level X" | Funnel | Step-to-step progression |
+| "users who **completed** X but **not** Y" | Funnel | Measuring drop-off between steps |
+| "users **in** segment/group X" | Segmentation | Pre-defined cohort |
+
+**Key test:** Is the finding about *who users are* (properties/attributes → segmentation) or *what users did in sequence* (events/steps → funnel)?
+
+**Disambiguation — Semantic vs SQL:**
+
+Both produce metric values. Apply this test:
+
+| Factor | Semantic | SQL |
+|--------|----------|-----|
+| Metric/dimension exists in semantic model | ✓ | |
+| Requires joins across tables | | ✓ |
+| Custom calculation or formula | | ✓ |
+| Data not modeled in semantic layer | | ✓ |
+| Standard breakdown (e.g., revenue by region) | ✓ | |
+
+**Key test:** Does the semantic model already expose this metric and dimension? Yes → **Semantic**. No → **SQL**. When unsure, check the semantic model first.
+
+**Disambiguation — Funnel vs Retention:**
+
+Both involve user events over time. Apply this test:
+
+| Pattern | Type | Why |
+|---------|------|-----|
+| "users who **go from** A **to** B" | Funnel | Sequential step progression |
+| "users who **come back** after A" | Retention | Return behavior over time |
+| "**drop-off** between steps" | Funnel | Measuring where users stop in a sequence |
+| "**churn** after event X" | Retention | Measuring who doesn't return |
+
+**Key test:** Is the finding about *moving through a sequence of steps* (→ funnel) or *coming back after a starting event* (→ retention)?
 
 ### When to Use Each Type
 
 #### Use FUNNEL INSIGHT When
 
 - User asks about conversion rates
-- Question involves sequential steps
+- Question involves sequential steps or progression
 - Analyzing user journey/flow
-- Finding where users drop off
-- Measuring completion rates
+- Finding where users drop off or get stuck
+- Measuring completion rates between stages
+- Comparing progression across levels, tiers, or milestones
 
-**Keywords**: conversion, funnel, steps, journey, drop-off, flow, complete, abandon
+**Keywords**: conversion, funnel, steps, journey, drop-off, flow, complete, abandon, stuck, progression, level, stage, bottleneck
+
+#### Use RETENTION INSIGHT When
+
+- Analyzing whether users return after a starting event
+- Measuring churn or repeat behavior over time
+- Comparing retention across cohorts or time periods
+- Tracking if users who did event A come back to do event B
+
+**Keywords**: retention, churn, come back, return, repeat, re-engage, day 1/7/30
 
 #### Use SEMANTIC INSIGHT When
 
@@ -102,12 +170,12 @@ User Question
 
 #### Use SEGMENTATION INSIGHT When
 
-- Defining user groups
-- Building cohorts
-- Targeting specific users
-- Behavioral segmentation
+- The output is a **user group**, not a metric value
+- Users are grouped by attributes or properties, not by sequential behavior
+- Building cohorts for targeting, comparison, or further analysis
+- Filtering users by dimensions like device, plan, region, etc.
 
-**Keywords**: users who, segment, cohort, group of, target
+**Keywords**: segment, cohort, group of, target, users with, users in
 
 #### Use FYI DISCOVERY When
 
@@ -206,6 +274,7 @@ Need data?
 | "How is X performing?" | Semantic trend | Dashboard |
 | "Who are the users that..." | Segmentation | SQL filter |
 | "What's the conversion..." | Funnel | SQL with steps |
+| "Do users come back after..." | Retention | Funnel fallback |
 | "Compare A vs B" | Semantic comparison | SQL union |
 | "Predict/forecast" | Not supported | Explain limitation |
 
@@ -247,6 +316,21 @@ Before creating any discovery:
 3. **Accuracy**: Is the data correct?
 4. **Actionable**: Can user do something with this?
 5. **Timing**: Is now the right time?
+
+## Common Misclassifications
+
+Findings that are frequently assigned the wrong insight type:
+
+| Finding | Wrong Choice | Right Choice | Why |
+|---------|-------------|-------------|-----|
+| "Users stuck at step/level X" | Segmentation | Funnel | Step progression = sequential analysis |
+| "Drop-off between A and B" | SQL | Funnel | Sequential steps with conversion |
+| "Users who did X but not Y" | Segmentation | Funnel | Sequential dependency between events |
+| "Metric broken down by property" | SQL | Semantic | Standard breakdown = use semantic model |
+| "Metric X by dimension Y" | SQL | Semantic | Dimension likely exists in model |
+| "Users with property X" | Funnel | Segmentation | Attribute-based group, not a flow |
+| "Do users come back after X?" | Funnel | Retention | Return behavior, not step progression |
+| "Churn after event X" | Segmentation | Retention | Measuring who doesn't return over time |
 
 ## Reference Files
 
