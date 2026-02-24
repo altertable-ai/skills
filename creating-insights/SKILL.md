@@ -10,7 +10,7 @@ description: Creates discoveries with insights that flow through the approval wo
 
 To create an insight:
 1. Analyze data to identify a finding
-2. Choose the appropriate insight type (SQL, Semantic, Segmentation, Funnel, FYI)
+2. Choose the appropriate insight type (SQL, Semantic, Segmentation, Funnel, Retention, FYI)
 3. Preview the insight to validate
 4. Create the discovery with visualization
 
@@ -28,8 +28,9 @@ To create an insight:
 |------|----------|---------------|
 | SQL | Custom query results | Yes |
 | Semantic | Metrics from semantic layer | Yes |
-| Segmentation | User cohort analysis | Yes |
+| Segmentation | User groups by attributes/properties | Yes |
 | Funnel | Conversion analysis | Yes |
+| Retention | Do users come back after an event? | Yes |
 | FYI | Informational findings | No |
 
 ## Core Workflow
@@ -43,12 +44,24 @@ Before creating an insight:
 
 ### Step 2: Choose Insight Type
 
+Before choosing, triage through these questions:
+
+1. **Does this need a visualization?** No → **FYI**. Yes → continue.
+2. **Is the metric available in the semantic layer?** Yes → **Semantic**. Not sure → check the model first.
+3. **Is the finding about sequential user behavior** (steps, conversion, drop-off)? Yes → **Funnel**.
+4. **Is the finding about whether users come back** after a starting event? Yes → **Retention**.
+5. **Is the finding about grouping users by attributes/properties** (not sequence)? Yes → **Segmentation**.
+6. **Does it require custom joins, calculations, or raw data not covered above?** Yes → **SQL**.
+
 Select based on the analysis:
-- **SQL Insight**: Custom query with specific logic
-- **Semantic Insight**: Standard metrics from semantic models
-- **Segmentation Insight**: User segments and cohorts
-- **Funnel Insight**: Step-by-step conversion analysis
-- **FYI Discovery**: Text-only observations
+- **Funnel Insight**: Sequential steps, progression, conversion, drop-off between stages
+- **Retention Insight**: Whether users return after a starting event (start event → returning event over time)
+- **Semantic Insight**: Standard metrics from semantic models, trends, breakdowns
+- **SQL Insight**: Custom query with specific logic, joins, calculations not in the semantic layer
+- **Segmentation Insight**: User groups defined by attributes or properties (not sequential behavior)
+- **FYI Discovery**: Text-only observations, no visualization needed
+
+See the [`deciding-actions`](../deciding-actions/SKILL.md) skill for the full decision matrix and disambiguation rules.
 
 ### Step 3: Preview and Validate
 
@@ -171,6 +184,24 @@ For conversion analysis:
 - `conversion_window`: Time allowed between steps
 - `ordering`: Strict sequence or any order
 
+## Creating Retention Insights
+
+For analyzing whether users come back after a starting event:
+
+```
+1. Define the start event
+2. Define the returning event
+3. Set time range
+4. Preview retention results
+5. Create discovery
+```
+
+### Retention Parameters
+
+- `start_event`: The initial event that begins the retention window
+- `returning_event`: The event that counts as a return
+- `timeframe`: Analysis period
+
 ## Creating FYI Discoveries
 
 For informational findings without visualization:
@@ -228,6 +259,7 @@ Include:
 | Single metric | Metric |
 | Detailed data | Table |
 | Funnel | Funnel (built-in) |
+| Retention | Retention (built-in) |
 
 ## Common Pitfalls
 
@@ -268,4 +300,5 @@ Include:
 - [Semantic insights](references/semantic-insights.md)
 - [Segmentation insights](references/segmentation-insights.md)
 - [Funnel insights](references/funnel-insights.md)
+- [Retention insights](references/retention-insights.md)
 - [FYI discoveries](references/fyi-discoveries.md)

@@ -88,7 +88,7 @@ description: {Third-person description with trigger keywords}
   </skill>
   <skill>
     <name>deciding-actions</name>
-    <description>Decision matrices for choosing insight types, discovery actions, and avoiding duplicates. Use when deciding between funnel vs semantic vs SQL analysis, or when determining whether to create new vs update vs skip discoveries.</description>
+    <description>Decision matrices for choosing insight types, discovery actions, and avoiding duplicates. Use when deciding between funnel, retention, semantic, segmentation, or SQL insights, or when determining whether to create, update, or skip discoveries.</description>
   </skill>
   <skill>
     <name>evaluating-skills</name>

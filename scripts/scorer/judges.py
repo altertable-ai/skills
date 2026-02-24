@@ -14,7 +14,7 @@ from .models import (
     SkillContent,
 )
 
-DEFAULT_MODEL = "gemini/gemini-flash-latest"
+DEFAULT_MODEL = "gemini/gemini-3.1-pro-preview"
 
 PROMPT_TEMPLATE = """You are an expert evaluator of Agent Skills per agentskills.io specification.
 
