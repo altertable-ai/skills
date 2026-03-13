@@ -1,0 +1,18 @@
+thresholds:
+  proposal: 3
+  removal: -3
+
+reviewer: fvaleye
+
+labels:
+  positive:
+    - accurate
+    - well-structured
+    - helpful
+    - good-examples
+  negative:
+    - outdated
+    - inaccurate
+    - incomplete
+    - wrong-examples
+    - poorly-structured
