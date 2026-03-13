@@ -15,8 +15,9 @@ A collection of skills for AI agents following the [Agent Skills Specification](
     {topic}.md
 
 scripts/
-  score-skills.py
-  scorer/
+  skills_feedback/    # CLI tool for rating/proposing skill changes
+  scorer/             # LLM-based skill quality scoring
+  sync-agents-md.py   # Auto-syncs Available Skills section
   tests/
 ```
 
@@ -128,11 +129,33 @@ description: {Third-person description with trigger keywords}
   </skill>
 </available_skills>
 
-## Scoring development
+## Skills Feedback CLI
+
+Rate skills, propose changes, and create PRs when consensus is reached.
+
+```bash
+# Rate a skill
+uv run skills-feedback rate --name analyzing-charts --vote up --reason "clear guidance" --whole-file --agent claude-code
+
+# Propose changes
+uv run skills-feedback propose add --name my-skill --description "helps with X" --agent claude-code
+uv run skills-feedback propose modify --name analyzing-charts --reason "outdated section" --lines "45-52" --agent claude-code
+uv run skills-feedback propose remove --name analyzing-charts --reason "no longer relevant" --agent claude-code
+
+# Check dashboard
+uv run skills-feedback check-thresholds
+
+# Create PRs for qualifying proposals
+uv run skills-feedback apply --dry-run
+```
+
+Use `--no-commit` to skip git commits during testing.
+
+## Development
 
 ```bash
 uv sync
 uv run pre-commit install
-uv run pytest scripts/tests/
+uv run pytest scripts/tests/ -v
 uv run skills validate ./skill-name
 ```

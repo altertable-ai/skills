@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
+
+from pydantic import ValidationError
 
 from skills_feedback.constants import (
     FEEDBACK_DIR_NAME,
@@ -35,9 +38,13 @@ def proposals_path(feedback_dir: Path) -> Path:
 def load_ratings_file(path: Path) -> RatingsFile | None:
     if not path.exists():
         return None
-    with open(path) as f:
-        data = json.load(f)
-    return RatingsFile.model_validate(data)
+    try:
+        with open(path) as f:
+            data = json.load(f)
+        return RatingsFile.model_validate(data)
+    except (json.JSONDecodeError, ValidationError) as e:
+        print(f"warning: skipping malformed {path}: {e}", file=sys.stderr)
+        return None
 
 
 def save_ratings_file(path: Path, ratings_file: RatingsFile) -> None:
@@ -49,9 +56,13 @@ def save_ratings_file(path: Path, ratings_file: RatingsFile) -> None:
 def load_proposals_file(path: Path) -> ProposalsFile | None:
     if not path.exists():
         return None
-    with open(path) as f:
-        data = json.load(f)
-    return ProposalsFile.model_validate(data)
+    try:
+        with open(path) as f:
+            data = json.load(f)
+        return ProposalsFile.model_validate(data)
+    except (json.JSONDecodeError, ValidationError) as e:
+        print(f"warning: skipping malformed {path}: {e}", file=sys.stderr)
+        return None
 
 
 def save_proposals_file(path: Path, proposals_file: ProposalsFile) -> None:

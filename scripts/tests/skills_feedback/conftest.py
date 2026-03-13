@@ -12,6 +12,7 @@ def repo(tmp_path):
     subprocess.run(["git", "init", str(tmp_path)], capture_output=True, check=True)
     subprocess.run(["git", "config", "user.email", "t@t.com"], capture_output=True, cwd=tmp_path)
     subprocess.run(["git", "config", "user.name", "T"], capture_output=True, cwd=tmp_path)
+    subprocess.run(["git", "config", "commit.gpgsign", "false"], capture_output=True, cwd=tmp_path)
     config = tmp_path / ".skills-config.yaml"
     config.write_text(
         "thresholds:\n  proposal: 3\n  removal: -3\n"

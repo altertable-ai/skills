@@ -17,7 +17,7 @@ def is_git_repo(cwd: Path) -> bool:
 
 def git_stage(cwd: Path, files: list[Path]) -> None:
     subprocess.run(
-        ["git", "add", *[str(f) for f in files]],
+        ["git", "add", "-f", *[str(f) for f in files]],
         check=True,
         capture_output=True,
         cwd=cwd,
@@ -39,9 +39,10 @@ def stage_and_commit(
     if not is_git_repo(cwd):
         print("warning: not a git repository, skipping commit", file=sys.stderr)
         return
+    if no_commit:
+        return
     git_stage(cwd, files)
-    if not no_commit:
-        git_commit(cwd, message)
+    git_commit(cwd, message)
 
 
 def git_checkout_new_branch(cwd: Path, branch_name: str, base: str = "main") -> None:

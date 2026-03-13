@@ -16,11 +16,7 @@ from skills_feedback.storage import (
 from skills_feedback.validation import parse_line_ranges, validate_skill_name
 
 
-def _generate_id(
-    proposal_type: str,
-    agent: str,
-    existing_ids: set[str],
-) -> tuple[str, str]:
+def _generate_id(proposal_type: str, agent: str, existing_ids: set[str]) -> tuple[str, str]:
     now = datetime.now(UTC)
     timestamp = now.strftime("%Y%m%dT%H%M%SZ")
     base_id = f"{proposal_type}-{timestamp}-{agent}"
@@ -32,13 +28,65 @@ def _generate_id(
     return proposal_id, now.isoformat()
 
 
-def _copy_body(feedback_dir: Path, proposal_id: str, body: str) -> tuple[str, Path]:
+def _copy_body(feedback_dir: Path, proposal_id: str, body: str) -> tuple[str, Path] | None:
     body_path = Path(body)
+    if not body_path.exists():
+        print_error("body", f"file not found: {body}")
+        return None
     bodies_dir = feedback_dir / "bodies"
     bodies_dir.mkdir(exist_ok=True)
     dest = bodies_dir / f"{proposal_id}.md"
     dest.write_text(body_path.read_text())
     return f"bodies/{proposal_id}.md", dest
+
+
+def _save_proposal(
+    repo_root: Path,
+    name: str,
+    proposal_type: ProposalType,
+    reason: str,
+    agent: str,
+    no_commit: bool,
+    *,
+    lines: list[str] | None = None,
+    body: str | None = None,
+) -> int:
+    feedback_dir = ensure_feedback_dir(repo_root, name)
+    ppath = proposals_path(feedback_dir)
+    proposals_file = load_proposals_file(ppath) or ProposalsFile(skill=name, proposals=[])
+
+    existing_ids = {p.id for p in proposals_file.proposals}
+    proposal_id, timestamp = _generate_id(proposal_type, agent, existing_ids)
+
+    body_ref = None
+    changed_files: list[Path] = [ppath]
+    if body:
+        result = _copy_body(feedback_dir, proposal_id, body)
+        if result is None:
+            return 1
+        body_ref, dest = result
+        changed_files.append(dest)
+
+    proposal = Proposal(
+        id=proposal_id,
+        type=proposal_type,
+        reason=reason,
+        lines=lines,
+        body=body_ref,
+        proposed_by=agent,
+        proposed_at=timestamp,
+    )
+    proposals_file.proposals.append(proposal)
+    save_proposals_file(ppath, proposals_file)
+
+    stage_and_commit(
+        repo_root,
+        changed_files,
+        f"skills-feedback: propose {proposal_type} {name}",
+        no_commit=no_commit,
+    )
+    print_confirmation("proposed", name, proposal_id)
+    return 0
 
 
 def propose_add(
@@ -53,44 +101,18 @@ def propose_add(
     if name_errors:
         print_error(name, name_errors[0])
         return 1
-
     if skill_exists(repo_root, name):
         print_error(name, "skill already exists")
         return 1
-
-    feedback_dir = ensure_feedback_dir(repo_root, name)
-    ppath = proposals_path(feedback_dir)
-    proposals_file = load_proposals_file(ppath) or ProposalsFile(skill=name, proposals=[])
-
-    existing_ids = {p.id for p in proposals_file.proposals}
-    proposal_id, timestamp = _generate_id("add", agent, existing_ids)
-
-    body_ref = None
-    changed_files = [ppath]
-    if body:
-        body_ref, dest = _copy_body(feedback_dir, proposal_id, body)
-        changed_files.append(dest)
-
-    proposal = Proposal(
-        id=proposal_id,
-        type=ProposalType.ADD,
-        reason=description,
-        lines=None,
-        body=body_ref,
-        proposed_by=agent,
-        proposed_at=timestamp,
-    )
-    proposals_file.proposals.append(proposal)
-    save_proposals_file(ppath, proposals_file)
-
-    stage_and_commit(
+    return _save_proposal(
         repo_root,
-        changed_files,
-        f"skills-feedback: propose add {name}",
-        no_commit=no_commit,
+        name,
+        ProposalType.ADD,
+        description,
+        agent,
+        no_commit,
+        body=body,
     )
-    print_confirmation("proposed", name, proposal_id)
-    return 0
 
 
 def propose_modify(
@@ -105,46 +127,21 @@ def propose_modify(
     if not skill_exists(repo_root, name):
         print_error(name, "skill does not exist")
         return 1
-
     try:
         parsed_lines = parse_line_ranges(lines)
     except ValueError as e:
         print_error(name, str(e))
         return 1
-
-    feedback_dir = ensure_feedback_dir(repo_root, name)
-    ppath = proposals_path(feedback_dir)
-    proposals_file = load_proposals_file(ppath) or ProposalsFile(skill=name, proposals=[])
-
-    existing_ids = {p.id for p in proposals_file.proposals}
-    proposal_id, timestamp = _generate_id("modify", agent, existing_ids)
-
-    body_ref = None
-    changed_files = [ppath]
-    if body:
-        body_ref, dest = _copy_body(feedback_dir, proposal_id, body)
-        changed_files.append(dest)
-
-    proposal = Proposal(
-        id=proposal_id,
-        type=ProposalType.MODIFY,
-        reason=reason,
-        lines=parsed_lines,
-        body=body_ref,
-        proposed_by=agent,
-        proposed_at=timestamp,
-    )
-    proposals_file.proposals.append(proposal)
-    save_proposals_file(ppath, proposals_file)
-
-    stage_and_commit(
+    return _save_proposal(
         repo_root,
-        changed_files,
-        f"skills-feedback: propose modify {name}",
-        no_commit=no_commit,
+        name,
+        ProposalType.MODIFY,
+        reason,
+        agent,
+        no_commit,
+        lines=parsed_lines,
+        body=body,
     )
-    print_confirmation("proposed", name, proposal_id)
-    return 0
 
 
 def propose_remove(
@@ -157,31 +154,4 @@ def propose_remove(
     if not skill_exists(repo_root, name):
         print_error(name, "skill does not exist")
         return 1
-
-    feedback_dir = ensure_feedback_dir(repo_root, name)
-    ppath = proposals_path(feedback_dir)
-    proposals_file = load_proposals_file(ppath) or ProposalsFile(skill=name, proposals=[])
-
-    existing_ids = {p.id for p in proposals_file.proposals}
-    proposal_id, timestamp = _generate_id("remove", agent, existing_ids)
-
-    proposal = Proposal(
-        id=proposal_id,
-        type=ProposalType.REMOVE,
-        reason=reason,
-        lines=None,
-        body=None,
-        proposed_by=agent,
-        proposed_at=timestamp,
-    )
-    proposals_file.proposals.append(proposal)
-    save_proposals_file(ppath, proposals_file)
-
-    stage_and_commit(
-        repo_root,
-        [ppath],
-        f"skills-feedback: propose remove {name}",
-        no_commit=no_commit,
-    )
-    print_confirmation("proposed", name, proposal_id)
-    return 0
+    return _save_proposal(repo_root, name, ProposalType.REMOVE, reason, agent, no_commit)

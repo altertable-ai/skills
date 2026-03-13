@@ -1,23 +1,20 @@
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Literal
-
 from pydantic import BaseModel, Field
 
 from skills_feedback.commands.apply import apply_thresholds
 from skills_feedback.commands.check_thresholds import check_thresholds
 from skills_feedback.commands.propose import propose_add, propose_modify, propose_remove
 from skills_feedback.commands.rate import rate_skill
-from skills_feedback.config import load_config
-from skills_feedback.constants import SKILLS_CONFIG_FILENAME
+from skills_feedback.config import load_repo_config
+from skills_feedback.models import SkillsFeedbackError, Vote
 
 
 class RateRequest(BaseModel):
     """Rate a skill up or down to express quality feedback."""
 
     name: str = Field(description="Skill name to rate (e.g., 'analyzing-charts')")
-    vote: Literal["up", "down"] = Field(description="Vote direction")
+    vote: Vote = Field(description="Vote direction")
     reason: str = Field(description="Why you are rating this way")
     lines: str | None = Field(default=None, description="Line ranges (e.g., '45-52,78-81')")
     whole_file: bool = Field(
@@ -68,23 +65,8 @@ class ApplyRequest(BaseModel):
     dry_run: bool = Field(default=False, description="Show what would happen without creating PRs")
 
 
-def _find_repo_root() -> Path:
-    """Walk up from cwd to find the nearest .git directory."""
-    cwd = Path.cwd()
-    for parent in [cwd, *cwd.parents]:
-        if (parent / ".git").exists():
-            return parent
-    return cwd
-
-
 def _load():
-    repo_root = _find_repo_root()
-    config = load_config(repo_root / SKILLS_CONFIG_FILENAME)
-    return repo_root, config
-
-
-class SkillsFeedbackError(Exception):
-    pass
+    return load_repo_config()
 
 
 def rate(request: RateRequest) -> None:
@@ -103,7 +85,7 @@ def rate(request: RateRequest) -> None:
         no_commit=request.no_commit,
     )
     if result != 0:
-        raise SkillsFeedbackError(f"rate failed for skill '{request.name}'")
+        raise SkillsFeedbackError("rate failed", skill=request.name)
 
 
 def propose_add_skill(request: ProposeAddRequest) -> None:
@@ -118,7 +100,7 @@ def propose_add_skill(request: ProposeAddRequest) -> None:
         no_commit=request.no_commit,
     )
     if result != 0:
-        raise SkillsFeedbackError(f"propose add failed for skill '{request.name}'")
+        raise SkillsFeedbackError("propose add failed", skill=request.name)
 
 
 def propose_modify_skill(request: ProposeModifyRequest) -> None:
@@ -134,7 +116,7 @@ def propose_modify_skill(request: ProposeModifyRequest) -> None:
         no_commit=request.no_commit,
     )
     if result != 0:
-        raise SkillsFeedbackError(f"propose modify failed for skill '{request.name}'")
+        raise SkillsFeedbackError("propose modify failed", skill=request.name)
 
 
 def propose_remove_skill(request: ProposeRemoveRequest) -> None:
@@ -148,7 +130,7 @@ def propose_remove_skill(request: ProposeRemoveRequest) -> None:
         no_commit=request.no_commit,
     )
     if result != 0:
-        raise SkillsFeedbackError(f"propose remove failed for skill '{request.name}'")
+        raise SkillsFeedbackError("propose remove failed", skill=request.name)
 
 
 def apply(request: ApplyRequest | None = None) -> None:

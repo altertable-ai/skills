@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import sys
-from pathlib import Path
-from typing import Literal
 
 import fire
 
@@ -10,25 +8,8 @@ from skills_feedback.commands.apply import apply_thresholds
 from skills_feedback.commands.check_thresholds import check_thresholds as _check_thresholds
 from skills_feedback.commands.propose import propose_add, propose_modify, propose_remove
 from skills_feedback.commands.rate import rate_skill
-from skills_feedback.config import load_config
-from skills_feedback.constants import SKILLS_CONFIG_FILENAME
-from skills_feedback.models import Config
-
-
-def _find_repo_root() -> Path:
-    """Walk up from cwd to find the nearest .git directory."""
-    cwd = Path.cwd()
-    for parent in [cwd, *cwd.parents]:
-        if (parent / ".git").exists():
-            return parent
-    return cwd
-
-
-def _load() -> tuple[Path, Config]:
-    """Load repo root and config from .skills-config.yaml."""
-    repo_root = _find_repo_root()
-    config = load_config(repo_root / SKILLS_CONFIG_FILENAME)
-    return repo_root, config
+from skills_feedback.config import load_repo_config
+from skills_feedback.models import Vote
 
 
 class Propose:
@@ -51,7 +32,7 @@ class Propose:
             agent: Identity of the agent making the proposal.
             no_commit: Stage changes but do not commit.
         """
-        repo_root, _ = _load()
+        repo_root, _ = load_repo_config()
         sys.exit(
             propose_add(
                 repo_root=repo_root,
@@ -82,7 +63,7 @@ class Propose:
             agent: Identity of the agent making the proposal.
             no_commit: Stage changes but do not commit.
         """
-        repo_root, _ = _load()
+        repo_root, _ = load_repo_config()
         sys.exit(
             propose_modify(
                 repo_root=repo_root,
@@ -110,7 +91,7 @@ class Propose:
             agent: Identity of the agent making the proposal.
             no_commit: Stage changes but do not commit.
         """
-        repo_root, _ = _load()
+        repo_root, _ = load_repo_config()
         sys.exit(
             propose_remove(
                 repo_root=repo_root,
@@ -131,7 +112,7 @@ class SkillsFeedback:
     def rate(
         self,
         name: str,
-        vote: Literal["up", "down"],
+        vote: Vote,
         reason: str,
         lines: str | None = None,
         whole_file: bool = False,
@@ -151,7 +132,7 @@ class SkillsFeedback:
             agent: Identity of the agent rating.
             no_commit: Stage changes but do not commit.
         """
-        repo_root, config = _load()
+        repo_root, config = load_repo_config()
         parsed_labels = [label.strip() for label in labels.split(",")] if labels else []
         sys.exit(
             rate_skill(
@@ -170,7 +151,7 @@ class SkillsFeedback:
 
     def check_thresholds(self) -> None:
         """Show skill ratings, status, and proposals dashboard."""
-        repo_root, config = _load()
+        repo_root, config = load_repo_config()
         sys.exit(_check_thresholds(repo_root, config))
 
     def apply(self, dry_run: bool = False) -> None:
@@ -179,8 +160,14 @@ class SkillsFeedback:
         Args:
             dry_run: Show what would happen without creating PRs.
         """
-        repo_root, config = _load()
+        repo_root, config = load_repo_config()
         sys.exit(apply_thresholds(repo_root, config, dry_run=dry_run))
+
+    def version(self) -> None:
+        """Print the skills-feedback version."""
+        from skills_feedback import __version__
+
+        print(__version__)
 
 
 def main() -> None:

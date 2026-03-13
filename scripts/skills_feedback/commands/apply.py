@@ -5,8 +5,6 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
-from py_markdown_table.markdown_table import markdown_table
-
 from skills_feedback.constants import SKILL_FILENAME
 from skills_feedback.git import (
     git_checkout,
@@ -15,8 +13,17 @@ from skills_feedback.git import (
     git_current_branch,
     git_push,
     git_stage,
+    is_git_repo,
 )
-from skills_feedback.models import Config, Proposal, ProposalType, Rating, RatingsFile
+from skills_feedback.models import (
+    Config,
+    Proposal,
+    ProposalsFile,
+    ProposalType,
+    Rating,
+    RatingsFile,
+    Vote,
+)
 from skills_feedback.output import print_error, print_warning
 from skills_feedback.storage import (
     feedback_base,
@@ -29,22 +36,180 @@ from skills_feedback.storage import (
 )
 
 
-def _build_pr_body(proposal: Proposal, ratings: list[Rating], score: int) -> str:
-    up_count = sum(1 for r in ratings if r.vote == "up")
-    down_count = sum(1 for r in ratings if r.vote == "down")
+@dataclass
+class QualifiedSkill:
+    name: str
+    feedback_dir: Path
+    proposals_file: ProposalsFile
+    proposal: Proposal
+    ppath: Path
+    rpath: Path
+    score: int
+    ratings: list[Rating]
 
-    table_data = [
-        {
-            "Vote": r.vote,
-            "Agent": r.agent,
-            "Lines": ", ".join(r.lines) if r.lines else "whole file",
-            "Reason": r.reason,
-            "Labels": ", ".join(r.labels) if r.labels else "-",
-        }
-        for r in ratings
+    @property
+    def branch_name(self) -> str:
+        return f"feedback/{self.proposal.type}-{self.name}-{self.proposal.id}"
+
+
+def _qualifies(proposal: Proposal, score: int, config: Config) -> bool:
+    if proposal.type == ProposalType.REMOVE:
+        return score <= config.thresholds.removal
+    return score >= config.thresholds.proposal
+
+
+def _evaluate_feedback_dir(feedback_dir: Path, config: Config) -> QualifiedSkill | None:
+    ppath = proposals_path(feedback_dir)
+    proposals_file = load_proposals_file(ppath)
+    if not proposals_file or not proposals_file.proposals:
+        return None
+
+    rpath = ratings_path(feedback_dir)
+    ratings_file = load_ratings_file(rpath)
+    score = ratings_file.compute_score() if ratings_file else 0
+    ratings = ratings_file.ratings if ratings_file else []
+
+    proposal = next((p for p in proposals_file.proposals if _qualifies(p, score, config)), None)
+    if not proposal:
+        return None
+
+    return QualifiedSkill(
+        name=feedback_dir.name,
+        feedback_dir=feedback_dir,
+        proposals_file=proposals_file,
+        proposal=proposal,
+        ppath=ppath,
+        rpath=rpath,
+        score=score,
+        ratings=ratings,
+    )
+
+
+def _collect_qualifying(repo_root: Path, config: Config) -> list[QualifiedSkill]:
+    fb = feedback_base(repo_root)
+    if not fb.exists():
+        return []
+    results = []
+    for fd in sorted(fb.iterdir()):
+        if not fd.is_dir():
+            continue
+        skill = _evaluate_feedback_dir(fd, config)
+        if skill:
+            results.append(skill)
+    return results
+
+
+def _apply_proposal(proposal: Proposal, feedback_dir: Path, skill_dir: Path) -> str | None:
+    """Apply proposal to skill directory. Returns error message on skip, None on success."""
+    if proposal.type == ProposalType.REMOVE:
+        if skill_dir.exists():
+            shutil.rmtree(skill_dir)
+        return None
+    if not proposal.body:
+        return f"no body provided for {proposal.type} proposal"
+    body_path = feedback_dir / proposal.body
+    if proposal.type == ProposalType.ADD:
+        skill_dir.mkdir(exist_ok=True)
+        (skill_dir / "references").mkdir(exist_ok=True)
+    shutil.copy2(body_path, skill_dir / SKILL_FILENAME)
+    return None
+
+
+def _cleanup(skill: QualifiedSkill) -> None:
+    proposal = skill.proposal
+    skill.proposals_file.proposals = [
+        p for p in skill.proposals_file.proposals if p.id != proposal.id
     ]
-    table_md = markdown_table(table_data).get_markdown() if table_data else ""
+    save_proposals_file(skill.ppath, skill.proposals_file)
+    if proposal.body:
+        body_file = skill.feedback_dir / proposal.body
+        if body_file.exists():
+            body_file.unlink()
+    save_ratings_file(skill.rpath, RatingsFile(skill=skill.name, ratings=[]))
 
+
+def _process(repo_root: Path, config: Config, skill: QualifiedSkill) -> bool:
+    proposal = skill.proposal
+
+    if _check_existing_pr(repo_root, skill.branch_name):
+        print(f"skipped: {skill.name}:PR already open")
+        return False
+
+    original_branch = git_current_branch(repo_root)
+    try:
+        git_checkout_new_branch(repo_root, skill.branch_name)
+
+        error = _apply_proposal(proposal, skill.feedback_dir, repo_root / skill.name)
+        if error:
+            print(f"skipped: {skill.name}:{error}")
+            git_checkout(repo_root, original_branch)
+            return False
+
+        _cleanup(skill)
+        git_stage(repo_root, [skill.ppath, skill.rpath, repo_root / skill.name])
+        git_commit(repo_root, f"skills-feedback: {proposal.type} {skill.name}")
+        git_push(repo_root, skill.branch_name)
+
+        pr_body = _build_pr_body(proposal, skill.ratings, skill.score)
+        pr_url = _create_pr(
+            repo_root,
+            skill.branch_name,
+            f"{proposal.type} skill: {skill.name}",
+            pr_body,
+            config.reviewer,
+        )
+        if pr_url:
+            print(f"created: {pr_url}")
+            return True
+        return False
+    finally:
+        current = git_current_branch(repo_root)
+        if current != original_branch:
+            git_checkout(repo_root, original_branch)
+
+
+def apply_thresholds(repo_root: Path, config: Config, *, dry_run: bool = False) -> int:
+    if not dry_run and not is_git_repo(repo_root):
+        print_error("apply", "not a git repository")
+        return 1
+
+    qualifying = _collect_qualifying(repo_root, config)
+    if not qualifying:
+        print("No feedback data found.")
+        return 0
+
+    created = 0
+    skipped = 0
+    for skill in qualifying:
+        if dry_run:
+            print(f"would create PR: {skill.branch_name} (score: {skill.score})")
+            created += 1
+        elif _process(repo_root, config, skill):
+            created += 1
+        else:
+            skipped += 1
+
+    print(f"\nSummary: {created} PR(s) created, {skipped} skipped")
+    return 0
+
+
+def _ratings_table(ratings: list[Rating]) -> str:
+    if not ratings:
+        return ""
+    lines = [
+        "| Vote | Agent | Lines | Reason | Labels |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for r in ratings:
+        rating_lines = ", ".join(r.lines) if r.lines else "-"
+        labels = ", ".join(r.labels) if r.labels else "-"
+        lines.append(f"| {r.vote} | {r.agent} | {rating_lines} | {r.reason} | {labels} |")
+    return "\n".join(lines)
+
+
+def _build_pr_body(proposal: Proposal, ratings: list[Rating], score: int) -> str:
+    up_count = sum(1 for r in ratings if r.vote == Vote.UP)
+    down_count = sum(1 for r in ratings if r.vote == Vote.DOWN)
     sections = [
         "## Summary",
         f"{proposal.type} skill: {proposal.reason}",
@@ -55,7 +220,7 @@ def _build_pr_body(proposal: Proposal, ratings: list[Rating], score: int) -> str
         "## Feedback",
         f"Score: {score} ({up_count} up, {down_count} down)",
         "",
-        table_md,
+        _ratings_table(ratings),
     ]
     return "\n".join(sections)
 
@@ -83,207 +248,20 @@ def _check_existing_pr(cwd: Path, branch_name: str) -> str | None:
         url = result.stdout.strip()
         return url if url else None
     except FileNotFoundError:
-        print_warning("gh CLI not found — cannot check for existing PRs")
+        print_warning("gh CLI not found:cannot check for existing PRs")
         return None
 
 
 def _create_pr(cwd: Path, branch_name: str, title: str, body: str, reviewer: str) -> str | None:
     try:
-        cmd = [
-            "gh",
-            "pr",
-            "create",
-            "--head",
-            branch_name,
-            "--title",
-            title,
-            "--body",
-            body,
-        ]
+        cmd = ["gh", "pr", "create", "--head", branch_name, "--title", title, "--body", body]
         if reviewer:
             cmd += ["--reviewer", reviewer]
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            cwd=cwd,
-        )
+        result = subprocess.run(cmd, capture_output=True, text=True, cwd=cwd)
         if result.returncode == 0:
             return result.stdout.strip()
         print_error("pr", result.stderr.strip())
         return None
     except FileNotFoundError:
-        print_error("apply", "gh CLI not found — install gh and authenticate")
+        print_error("apply", "gh CLI not found:install gh and authenticate")
         return None
-
-
-class _SkipProposal(Exception):
-    pass
-
-
-def _apply_add(proposal: Proposal, feedback_dir: Path, skill_dir: Path) -> None:
-    if not proposal.body:
-        raise _SkipProposal("no body provided for add proposal")
-    body_path = feedback_dir / proposal.body
-    skill_dir.mkdir(exist_ok=True)
-    (skill_dir / "references").mkdir(exist_ok=True)
-    shutil.copy2(body_path, skill_dir / SKILL_FILENAME)
-
-
-def _apply_modify(proposal: Proposal, feedback_dir: Path, skill_dir: Path) -> None:
-    if not proposal.body:
-        raise _SkipProposal("no body provided for modify proposal")
-    body_path = feedback_dir / proposal.body
-    shutil.copy2(body_path, skill_dir / SKILL_FILENAME)
-
-
-def _apply_remove(skill_dir: Path) -> None:
-    if skill_dir.exists():
-        shutil.rmtree(skill_dir)
-
-
-_PROPOSAL_HANDLERS = {
-    ProposalType.ADD: _apply_add,
-    ProposalType.MODIFY: _apply_modify,
-}
-
-
-def _apply_proposal(proposal: Proposal, feedback_dir: Path, skill_dir: Path) -> None:
-    if proposal.type == ProposalType.REMOVE:
-        _apply_remove(skill_dir)
-    else:
-        handler = _PROPOSAL_HANDLERS[proposal.type]
-        handler(proposal, feedback_dir, skill_dir)
-
-
-def _cleanup_proposal(
-    proposals_file,
-    proposal: Proposal,
-    ppath: Path,
-    rpath: Path,
-    feedback_dir: Path,
-    skill_name: str,
-) -> None:
-    proposals_file.proposals = [p for p in proposals_file.proposals if p.id != proposal.id]
-    save_proposals_file(ppath, proposals_file)
-    if proposal.body:
-        body_file = feedback_dir / proposal.body
-        if body_file.exists():
-            body_file.unlink()
-    save_ratings_file(rpath, RatingsFile(skill=skill_name, ratings=[]))
-
-
-@dataclass
-class _ApplyResult:
-    created: int = 0
-    skipped: int = 0
-
-
-def _collect_qualifying_skills(repo_root: Path, config: Config) -> list[dict]:
-    fb = feedback_base(repo_root)
-    if not fb.exists():
-        return []
-
-    qualifying = []
-    for feedback_dir in sorted(fb.iterdir()):
-        if not feedback_dir.is_dir():
-            continue
-
-        ppath = proposals_path(feedback_dir)
-        proposals_file = load_proposals_file(ppath)
-        if not proposals_file or not proposals_file.proposals:
-            continue
-
-        rpath = ratings_path(feedback_dir)
-        ratings_file = load_ratings_file(rpath)
-        score = ratings_file.compute_score() if ratings_file else 0
-        ratings = ratings_file.ratings if ratings_file else []
-
-        if score < config.thresholds.proposal:
-            continue
-
-        qualifying.append(
-            {
-                "feedback_dir": feedback_dir,
-                "skill_name": feedback_dir.name,
-                "proposals_file": proposals_file,
-                "ppath": ppath,
-                "rpath": rpath,
-                "score": score,
-                "ratings": ratings,
-            }
-        )
-    return qualifying
-
-
-def _process_proposal(
-    repo_root: Path, config: Config, skill: dict, proposal: Proposal, result: _ApplyResult
-) -> None:
-    skill_name = skill["skill_name"]
-    feedback_dir = skill["feedback_dir"]
-    branch_name = f"feedback/{proposal.type}-{skill_name}-{proposal.id}"
-
-    existing_pr = _check_existing_pr(repo_root, branch_name)
-    if existing_pr:
-        print(f"skipped: {skill_name} — PR already open: {existing_pr}")
-        result.skipped += 1
-        return
-
-    original_branch = git_current_branch(repo_root)
-    try:
-        git_checkout_new_branch(repo_root, branch_name)
-        skill_dir = repo_root / skill_name
-
-        try:
-            _apply_proposal(proposal, feedback_dir, skill_dir)
-        except _SkipProposal as e:
-            print(f"skipped: {skill_name} — {e}")
-            git_checkout(repo_root, original_branch)
-            result.skipped += 1
-            return
-
-        _cleanup_proposal(
-            skill["proposals_file"],
-            proposal,
-            skill["ppath"],
-            skill["rpath"],
-            feedback_dir,
-            skill_name,
-        )
-
-        git_stage(repo_root, [skill["ppath"], skill["rpath"], skill_dir])
-        git_commit(repo_root, f"skills-feedback: {proposal.type} {skill_name}")
-        git_push(repo_root, branch_name)
-
-        pr_body = _build_pr_body(proposal, skill["ratings"], skill["score"])
-        pr_url = _create_pr(
-            repo_root, branch_name, f"{proposal.type} skill: {skill_name}", pr_body, config.reviewer
-        )
-        if pr_url:
-            print(f"created: {pr_url}")
-            result.created += 1
-    finally:
-        current = git_current_branch(repo_root)
-        if current != original_branch:
-            git_checkout(repo_root, original_branch)
-
-
-def apply_thresholds(repo_root: Path, config: Config, *, dry_run: bool = False) -> int:
-    qualifying = _collect_qualifying_skills(repo_root, config)
-    if not qualifying:
-        print("No feedback data found.")
-        return 0
-
-    result = _ApplyResult()
-
-    for skill in qualifying:
-        for proposal in skill["proposals_file"].proposals:
-            branch_name = f"feedback/{proposal.type}-{skill['skill_name']}-{proposal.id}"
-            if dry_run:
-                print(f"would create PR: {branch_name} (score: {skill['score']})")
-                result.created += 1
-            else:
-                _process_proposal(repo_root, config, skill, proposal, result)
-
-    print(f"\nSummary: {result.created} PR(s) created, {result.skipped} skipped")
-    return 0

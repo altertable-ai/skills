@@ -1,5 +1,6 @@
+import pytest
 from skills_feedback.constants import FEEDBACK_DIR_NAME, PROPOSALS_FILENAME, RATINGS_FILENAME
-from skills_feedback.models import Proposal, ProposalsFile, ProposalType, Rating, RatingsFile
+from skills_feedback.models import Proposal, ProposalsFile, ProposalType, Rating, RatingsFile, Vote
 from skills_feedback.storage import (
     ensure_feedback_dir,
     feedback_base,
@@ -21,7 +22,7 @@ def test_save_and_load_ratings(tmp_path):
     ratings_file = RatingsFile(
         skill="test-skill",
         ratings=[
-            Rating(vote="up", lines=["1-5"], reason="good", labels=[], agent="a", timestamp="t"),
+            Rating(vote=Vote.UP, lines=["1-5"], reason="good", labels=[], agent="a", timestamp="t"),
         ],
     )
     save_ratings_file(ratings_path(feedback_dir), ratings_file)
@@ -31,11 +32,6 @@ def test_save_and_load_ratings(tmp_path):
     assert loaded.skill == "test-skill"
     assert len(loaded.ratings) == 1
     assert loaded.ratings[0].vote == "up"
-
-
-def test_load_ratings_missing_returns_empty(tmp_path):
-    result = load_ratings_file(tmp_path / "nonexistent.json")
-    assert result is None
 
 
 def test_save_and_load_proposals(tmp_path):
@@ -77,32 +73,35 @@ def test_ensure_feedback_dir_idempotent(tmp_path):
     assert path1 == path2
 
 
-def test_feedback_dir_for_returns_correct_path(tmp_path):
-    result = feedback_dir_for(tmp_path, "my-skill")
-    assert result == tmp_path / FEEDBACK_DIR_NAME / "my-skill"
+@pytest.mark.parametrize(
+    "func, expected_suffix",
+    [
+        (feedback_base, FEEDBACK_DIR_NAME),
+        (lambda p: feedback_dir_for(p, "my-skill"), f"{FEEDBACK_DIR_NAME}/my-skill"),
+        (ratings_path, RATINGS_FILENAME),
+        (proposals_path, PROPOSALS_FILENAME),
+    ],
+)
+def test_path_helpers(tmp_path, func, expected_suffix):
+    assert func(tmp_path) == tmp_path / expected_suffix
 
 
-def test_feedback_base_returns_correct_path(tmp_path):
-    result = feedback_base(tmp_path)
-    assert result == tmp_path / FEEDBACK_DIR_NAME
+@pytest.mark.parametrize("exists", [True, False])
+def test_skill_exists(tmp_path, exists):
+    if exists:
+        skill_dir = tmp_path / "my-skill"
+        skill_dir.mkdir()
+        (skill_dir / "SKILL.md").write_text("# Test")
+    assert skill_exists(tmp_path, "my-skill") == exists
 
 
-def test_ratings_path_returns_correct_filename(tmp_path):
-    result = ratings_path(tmp_path)
-    assert result == tmp_path / RATINGS_FILENAME
+@pytest.mark.parametrize("filename", ["ratings.json", "proposals.json"])
+def test_load_skips_malformed_json(tmp_path, filename):
+    bad = tmp_path / filename
+    bad.write_text("{invalid json")
+    loader = load_ratings_file if "ratings" in filename else load_proposals_file
+    assert loader(bad) is None
 
 
-def test_proposals_path_returns_correct_filename(tmp_path):
-    result = proposals_path(tmp_path)
-    assert result == tmp_path / PROPOSALS_FILENAME
-
-
-def test_skill_exists_true(tmp_path):
-    skill_dir = tmp_path / "my-skill"
-    skill_dir.mkdir()
-    (skill_dir / "SKILL.md").write_text("# Test")
-    assert skill_exists(tmp_path, "my-skill")
-
-
-def test_skill_exists_false(tmp_path):
-    assert not skill_exists(tmp_path, "nonexistent")
+def test_load_ratings_missing_returns_none(tmp_path):
+    assert load_ratings_file(tmp_path / "nonexistent.json") is None
