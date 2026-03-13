@@ -1,17 +1,22 @@
 from __future__ import annotations
 
-import argparse
 import sys
 from pathlib import Path
+from typing import Literal
+
+import fire
 
 from skills_feedback.commands.apply import apply_thresholds
-from skills_feedback.commands.check_thresholds import check_thresholds
+from skills_feedback.commands.check_thresholds import check_thresholds as _check_thresholds
 from skills_feedback.commands.propose import propose_add, propose_modify, propose_remove
 from skills_feedback.commands.rate import rate_skill
 from skills_feedback.config import load_config
+from skills_feedback.constants import SKILLS_CONFIG_FILENAME
+from skills_feedback.models import Config
 
 
 def _find_repo_root() -> Path:
+    """Walk up from cwd to find the nearest .git directory."""
     cwd = Path.cwd()
     for parent in [cwd, *cwd.parents]:
         if (parent / ".git").exists():
@@ -19,135 +24,168 @@ def _find_repo_root() -> Path:
     return cwd
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(
-        prog="skills-feedback",
-        description="Rate skills, propose changes, and check thresholds.",
-    )
-    subparsers = parser.add_subparsers(dest="command")
-
-    # propose
-    propose_parser = subparsers.add_parser("propose", help="Propose a skill change")
-    propose_sub = propose_parser.add_subparsers(dest="propose_command")
-
-    # propose add
-    add_parser = propose_sub.add_parser("add", help="Propose a new skill")
-    add_parser.add_argument("name", help="Skill name")
-    add_parser.add_argument("--description", required=True, help="Why this skill should exist")
-    add_parser.add_argument("--body", help="Path to SKILL.md file")
-    add_parser.add_argument("--agent", default="unknown", help="Agent identity")
-    add_parser.add_argument("--no-commit", action="store_true", help="Stage but do not commit")
-
-    # propose modify
-    modify_parser = propose_sub.add_parser("modify", help="Propose a skill modification")
-    modify_parser.add_argument("name", help="Skill name")
-    modify_parser.add_argument("--reason", required=True, help="Why this change is needed")
-    modify_parser.add_argument("--lines", required=True, help="Line ranges (e.g., 45-52,78-81)")
-    modify_parser.add_argument("--body", help="Path to modified SKILL.md file")
-    modify_parser.add_argument("--agent", default="unknown", help="Agent identity")
-    modify_parser.add_argument("--no-commit", action="store_true", help="Stage but do not commit")
-
-    # propose remove
-    remove_parser = propose_sub.add_parser("remove", help="Propose a skill removal")
-    remove_parser.add_argument("name", help="Skill name")
-    remove_parser.add_argument("--reason", required=True, help="Why this skill should be removed")
-    remove_parser.add_argument("--agent", default="unknown", help="Agent identity")
-    remove_parser.add_argument("--no-commit", action="store_true", help="Stage but do not commit")
-
-    # rate
-    rate_parser = subparsers.add_parser("rate", help="Rate a skill")
-    rate_parser.add_argument("name", help="Skill name")
-    rate_parser.add_argument("vote", choices=["up", "down"], help="Vote direction")
-    rate_parser.add_argument("--reason", required=True, help="Why you are rating this way")
-    lines_group = rate_parser.add_mutually_exclusive_group(required=True)
-    lines_group.add_argument("--lines", help="Line ranges (e.g., 45-52,78-81)")
-    lines_group.add_argument("--whole-file", action="store_true", help="Rate the whole file")
-    rate_parser.add_argument("--labels", help="Comma-separated labels")
-    rate_parser.add_argument("--agent", default="unknown", help="Agent identity")
-    rate_parser.add_argument("--no-commit", action="store_true", help="Stage but do not commit")
-
-    # check-thresholds
-    subparsers.add_parser("check-thresholds", help="Show skill ratings and proposals")
-
-    # apply
-    apply_parser = subparsers.add_parser("apply", help="Create PRs for qualifying proposals")
-    apply_parser.add_argument("--dry-run", action="store_true", help="Show what would happen")
-
-    args = parser.parse_args()
-
-    if args.command is None:
-        parser.print_help()
-        sys.exit(0)
-
+def _load() -> tuple[Path, Config]:
+    """Load repo root and config from .skills-config.yaml."""
     repo_root = _find_repo_root()
-    config_path = repo_root / ".skills-config.yaml"
+    config = load_config(repo_root / SKILLS_CONFIG_FILENAME)
+    return repo_root, config
 
-    if args.command == "propose":
-        if args.propose_command is None:
-            propose_parser.print_help()
-            sys.exit(0)
 
-        config = load_config(config_path)
+class Propose:
+    """Propose a skill change (add, modify, or remove)."""
 
-        if args.propose_command == "add":
-            sys.exit(
-                propose_add(
-                    repo_root=repo_root,
-                    name=args.name,
-                    description=args.description,
-                    body=args.body,
-                    agent=args.agent,
-                    no_commit=args.no_commit,
-                )
+    def add(
+        self,
+        name: str,
+        description: str,
+        body: str | None = None,
+        agent: str = "unknown",
+        no_commit: bool = False,
+    ) -> None:
+        """Propose adding a new skill.
+
+        Args:
+            name: Skill name (lowercase, hyphen-separated).
+            description: Why this skill should exist.
+            body: Path to a SKILL.md file for the proposed skill.
+            agent: Identity of the agent making the proposal.
+            no_commit: Stage changes but do not commit.
+        """
+        repo_root, _ = _load()
+        sys.exit(
+            propose_add(
+                repo_root=repo_root,
+                name=name,
+                description=description,
+                body=body,
+                agent=agent,
+                no_commit=no_commit,
             )
-        elif args.propose_command == "modify":
-            sys.exit(
-                propose_modify(
-                    repo_root=repo_root,
-                    name=args.name,
-                    reason=args.reason,
-                    lines=args.lines,
-                    body=args.body,
-                    agent=args.agent,
-                    no_commit=args.no_commit,
-                )
-            )
-        elif args.propose_command == "remove":
-            sys.exit(
-                propose_remove(
-                    repo_root=repo_root,
-                    name=args.name,
-                    reason=args.reason,
-                    agent=args.agent,
-                    no_commit=args.no_commit,
-                )
-            )
+        )
 
-    elif args.command == "rate":
-        config = load_config(config_path)
-        labels = [label.strip() for label in args.labels.split(",")] if args.labels else []
+    def modify(
+        self,
+        name: str,
+        reason: str,
+        lines: str,
+        body: str | None = None,
+        agent: str = "unknown",
+        no_commit: bool = False,
+    ) -> None:
+        """Propose modifying an existing skill.
+
+        Args:
+            name: Skill name to modify.
+            reason: Why this change is needed.
+            lines: Line ranges to modify (e.g., '45-52,78-81').
+            body: Path to a modified SKILL.md file.
+            agent: Identity of the agent making the proposal.
+            no_commit: Stage changes but do not commit.
+        """
+        repo_root, _ = _load()
+        sys.exit(
+            propose_modify(
+                repo_root=repo_root,
+                name=name,
+                reason=reason,
+                lines=lines,
+                body=body,
+                agent=agent,
+                no_commit=no_commit,
+            )
+        )
+
+    def remove(
+        self,
+        name: str,
+        reason: str,
+        agent: str = "unknown",
+        no_commit: bool = False,
+    ) -> None:
+        """Propose removing an existing skill.
+
+        Args:
+            name: Skill name to remove.
+            reason: Why this skill should be removed.
+            agent: Identity of the agent making the proposal.
+            no_commit: Stage changes but do not commit.
+        """
+        repo_root, _ = _load()
+        sys.exit(
+            propose_remove(
+                repo_root=repo_root,
+                name=name,
+                reason=reason,
+                agent=agent,
+                no_commit=no_commit,
+            )
+        )
+
+
+class SkillsFeedback:
+    """Rate skills, propose changes, and check thresholds."""
+
+    def __init__(self) -> None:
+        self.propose = Propose()
+
+    def rate(
+        self,
+        name: str,
+        vote: Literal["up", "down"],
+        reason: str,
+        lines: str | None = None,
+        whole_file: bool = False,
+        labels: str | None = None,
+        agent: str = "unknown",
+        no_commit: bool = False,
+    ) -> None:
+        """Rate a skill up or down.
+
+        Args:
+            name: Skill name to rate.
+            vote: Vote direction ('up' or 'down').
+            reason: Why you are rating this way.
+            lines: Line ranges (e.g., '45-52,78-81'). Required unless whole_file is set.
+            whole_file: Rate the entire file instead of specific lines.
+            labels: Comma-separated labels (e.g., 'accurate,helpful').
+            agent: Identity of the agent rating.
+            no_commit: Stage changes but do not commit.
+        """
+        repo_root, config = _load()
+        parsed_labels = [label.strip() for label in labels.split(",")] if labels else []
         sys.exit(
             rate_skill(
                 repo_root=repo_root,
                 config=config,
-                name=args.name,
-                vote=args.vote,
-                reason=args.reason,
-                lines=args.lines,
-                whole_file=args.whole_file,
-                labels=labels,
-                agent=args.agent,
-                no_commit=args.no_commit,
+                name=name,
+                vote=vote,
+                reason=reason,
+                lines=lines,
+                whole_file=whole_file,
+                labels=parsed_labels,
+                agent=agent,
+                no_commit=no_commit,
             )
         )
 
-    elif args.command == "check-thresholds":
-        config = load_config(config_path)
-        sys.exit(check_thresholds(repo_root, config))
+    def check_thresholds(self) -> None:
+        """Show skill ratings, status, and proposals dashboard."""
+        repo_root, config = _load()
+        sys.exit(_check_thresholds(repo_root, config))
 
-    elif args.command == "apply":
-        config = load_config(config_path)
-        sys.exit(apply_thresholds(repo_root, config, dry_run=args.dry_run))
+    def apply(self, dry_run: bool = False) -> None:
+        """Create PRs for proposals that have reached the score threshold.
+
+        Args:
+            dry_run: Show what would happen without creating PRs.
+        """
+        repo_root, config = _load()
+        sys.exit(apply_thresholds(repo_root, config, dry_run=dry_run))
+
+
+def main() -> None:
+    """Entry point for the skills-feedback CLI."""
+    fire.Fire(SkillsFeedback)
 
 
 if __name__ == "__main__":

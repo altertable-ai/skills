@@ -1,4 +1,5 @@
 import pytest
+from skills_feedback.models import Labels
 from skills_feedback.validation import parse_line_ranges, validate_labels, validate_skill_name
 
 
@@ -29,7 +30,7 @@ def test_parse_invalid_range_non_numeric():
         parse_line_ranges("abc-def")
 
 
-LABEL_CONFIG = {"positive": ["accurate"], "negative": ["outdated"]}
+LABEL_CONFIG = Labels(positive=["accurate"], negative=["outdated"])
 
 
 def test_validate_labels_up_with_positive():

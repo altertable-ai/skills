@@ -1,4 +1,12 @@
-from skills_feedback.models import Config, Proposal, ProposalsFile, Rating, RatingsFile
+from skills_feedback.models import (
+    Config,
+    Labels,
+    Proposal,
+    ProposalsFile,
+    Rating,
+    RatingsFile,
+    Thresholds,
+)
 
 
 def test_rating_up_vote():
@@ -86,9 +94,9 @@ def test_proposals_file_append():
 
 def test_config_defaults():
     config = Config(
-        thresholds={"proposal": 3, "removal": -3},
+        thresholds=Thresholds(proposal=3, removal=-3),
         reviewer="fvaleye",
-        labels={"positive": ["accurate"], "negative": ["outdated"]},
+        labels=Labels(positive=["accurate"], negative=["outdated"]),
     )
-    assert config.thresholds["proposal"] == 3
+    assert config.thresholds.proposal == 3
     assert config.reviewer == "fvaleye"

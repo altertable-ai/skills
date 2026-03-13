@@ -69,6 +69,9 @@ htmlcov/
 .dmypy.json
 dmypy.json
 
+# Skills feedback data
+.skills-feedback/
+
 # Ruff
 .ruff_cache/
 

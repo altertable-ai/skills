@@ -119,6 +119,7 @@ name = "alterable-skills"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "fire" },
     { name = "pydantic" },
     { name = "pyyaml" },
 ]
@@ -141,6 +142,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "fire" },
     { name = "pydantic" },
     { name = "pyyaml" },
 ]

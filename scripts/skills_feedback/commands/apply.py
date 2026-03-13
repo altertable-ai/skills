@@ -4,18 +4,23 @@ import shutil
 import subprocess
 from pathlib import Path
 
+from skills_feedback.constants import SKILL_FILENAME
 from skills_feedback.git import (
     git_checkout,
     git_checkout_new_branch,
     git_commit,
     git_current_branch,
     git_push,
+    git_stage,
 )
 from skills_feedback.models import Config, Proposal, Rating, RatingsFile
 from skills_feedback.output import print_error, print_warning
 from skills_feedback.storage import (
+    feedback_base,
     load_proposals_file,
     load_ratings_file,
+    proposals_path,
+    ratings_path,
     save_proposals_file,
     save_ratings_file,
 )
@@ -73,20 +78,21 @@ def _check_existing_pr(cwd: Path, branch_name: str) -> str | None:
 
 def _create_pr(cwd: Path, branch_name: str, title: str, body: str, reviewer: str) -> str | None:
     try:
+        cmd = [
+            "gh",
+            "pr",
+            "create",
+            "--head",
+            branch_name,
+            "--title",
+            title,
+            "--body",
+            body,
+        ]
+        if reviewer:
+            cmd += ["--reviewer", reviewer]
         result = subprocess.run(
-            [
-                "gh",
-                "pr",
-                "create",
-                "--head",
-                branch_name,
-                "--title",
-                title,
-                "--body",
-                body,
-                "--reviewer",
-                reviewer,
-            ],
+            cmd,
             capture_output=True,
             text=True,
             cwd=cwd,
@@ -101,25 +107,27 @@ def _create_pr(cwd: Path, branch_name: str, title: str, body: str, reviewer: str
 
 
 def apply_thresholds(repo_root: Path, config: Config, *, dry_run: bool = False) -> int:
-    feedback_base = repo_root / ".skills-feedback"
-    if not feedback_base.exists():
+    fb = feedback_base(repo_root)
+    if not fb.exists():
         print("No feedback data found.")
         return 0
 
-    proposal_threshold = config.thresholds.get("proposal", 3)
+    proposal_threshold = config.thresholds.proposal
     created = 0
     skipped = 0
 
-    for feedback_dir in sorted(feedback_base.iterdir()):
+    for feedback_dir in sorted(fb.iterdir()):
         if not feedback_dir.is_dir():
             continue
 
         skill_name = feedback_dir.name
-        proposals_file = load_proposals_file(feedback_dir / "proposals.json")
+        ppath = proposals_path(feedback_dir)
+        proposals_file = load_proposals_file(ppath)
         if not proposals_file or not proposals_file.proposals:
             continue
 
-        ratings_file = load_ratings_file(feedback_dir / "ratings.json")
+        rpath = ratings_path(feedback_dir)
+        ratings_file = load_ratings_file(rpath)
         score = ratings_file.compute_score() if ratings_file else 0
         ratings = ratings_file.ratings if ratings_file else []
 
@@ -128,7 +136,7 @@ def apply_thresholds(repo_root: Path, config: Config, *, dry_run: bool = False) 
             continue
 
         for proposal in proposals_file.proposals:
-            branch_name = f"feedback/{proposal.type}-{skill_name}"
+            branch_name = f"feedback/{proposal.type}-{skill_name}-{proposal.id}"
 
             if dry_run:
                 print(f"would create PR: {branch_name} (score: {score})")
@@ -156,7 +164,7 @@ def apply_thresholds(repo_root: Path, config: Config, *, dry_run: bool = False) 
                     body_path = feedback_dir / proposal.body
                     skill_dir.mkdir(exist_ok=True)
                     (skill_dir / "references").mkdir(exist_ok=True)
-                    shutil.copy2(body_path, skill_dir / "SKILL.md")
+                    shutil.copy2(body_path, skill_dir / SKILL_FILENAME)
 
                 elif proposal.type == "modify":
                     if not proposal.body:
@@ -165,7 +173,7 @@ def apply_thresholds(repo_root: Path, config: Config, *, dry_run: bool = False) 
                         skipped += 1
                         continue
                     body_path = feedback_dir / proposal.body
-                    shutil.copy2(body_path, skill_dir / "SKILL.md")
+                    shutil.copy2(body_path, skill_dir / SKILL_FILENAME)
 
                 elif proposal.type == "remove":
                     if skill_dir.exists():
@@ -174,17 +182,14 @@ def apply_thresholds(repo_root: Path, config: Config, *, dry_run: bool = False) 
                 proposals_file.proposals = [
                     p for p in proposals_file.proposals if p.id != proposal.id
                 ]
-                save_proposals_file(feedback_dir / "proposals.json", proposals_file)
+                save_proposals_file(ppath, proposals_file)
                 if proposal.body:
                     body_file = feedback_dir / proposal.body
                     if body_file.exists():
                         body_file.unlink()
-                save_ratings_file(
-                    feedback_dir / "ratings.json",
-                    RatingsFile(skill=skill_name, ratings=[]),
-                )
+                save_ratings_file(rpath, RatingsFile(skill=skill_name, ratings=[]))
 
-                subprocess.run(["git", "add", "-A"], capture_output=True, cwd=repo_root)
+                git_stage(repo_root, [ppath, rpath, skill_dir])
                 git_commit(repo_root, f"skills-feedback: {proposal.type} {skill_name}")
                 git_push(repo_root, branch_name)
 

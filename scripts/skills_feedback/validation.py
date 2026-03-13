@@ -1,7 +1,14 @@
 from __future__ import annotations
 
+import re
+
+from skills_feedback.models import Labels
+
+SKILL_NAME_PATTERN = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
+
 
 def parse_line_ranges(lines_str: str) -> list[str]:
+    """Parse comma-separated line ranges like '45-52,78-81'."""
     ranges = []
     for part in lines_str.split(","):
         part = part.strip()
@@ -21,28 +28,20 @@ def parse_line_ranges(lines_str: str) -> list[str]:
     return ranges
 
 
-def validate_labels(vote: str, labels: list[str], label_config: dict[str, list[str]]) -> list[str]:
+def validate_labels(vote: str, labels: list[str], label_config: Labels) -> list[str]:
+    """Validate that labels are allowed for the given vote direction."""
     if not labels:
         return []
-    errors = []
-    allowed_key = "positive" if vote == "up" else "negative"
-    allowed = set(label_config.get(allowed_key, []))
-    for label in labels:
-        if label not in allowed:
-            errors.append(
-                f"Label '{label}' is not allowed for '{vote}' votes. Allowed: {sorted(allowed)}"
-            )
-    return errors
+    allowed = set(label_config.positive if vote == "up" else label_config.negative)
+    return [
+        f"Label '{label}' is not allowed for '{vote}' votes. Allowed: {sorted(allowed)}"
+        for label in labels
+        if label not in allowed
+    ]
 
 
 def validate_skill_name(name: str) -> list[str]:
-    errors = []
-    if name != name.lower():
-        errors.append(f"Skill name '{name}' must be lowercase")
-    if name.startswith("-") or name.endswith("-"):
-        errors.append("Skill name cannot start or end with a hyphen")
-    if "--" in name:
-        errors.append("Skill name cannot contain consecutive hyphens")
-    if not all(c.isalnum() or c == "-" for c in name):
-        errors.append(f"Skill name '{name}' contains invalid characters")
-    return errors
+    """Validate a skill name matches the required pattern."""
+    if not SKILL_NAME_PATTERN.match(name):
+        return [f"Skill name '{name}' must be lowercase alphanumeric with single hyphens"]
+    return []

@@ -1,3 +1,5 @@
+"""Load and validate .skills-config.yaml."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -8,6 +10,7 @@ from skills_feedback.models import Config
 
 
 def load_config(config_path: Path) -> Config:
+    """Load config from a YAML file, validated by Pydantic."""
     if not config_path.exists():
         raise FileNotFoundError(
             f"{config_path} not found — create it to configure thresholds and labels"
@@ -18,13 +21,5 @@ def load_config(config_path: Path) -> Config:
 
     if not isinstance(data, dict):
         raise ValueError(f"Invalid config: expected a YAML mapping in {config_path}")
-    if "thresholds" not in data:
-        raise ValueError(f"Missing required field 'thresholds' in {config_path}")
-    if "labels" not in data:
-        raise ValueError(f"Missing required field 'labels' in {config_path}")
 
-    return Config(
-        thresholds=data["thresholds"],
-        reviewer=data.get("reviewer", ""),
-        labels=data["labels"],
-    )
+    return Config.model_validate(data)
