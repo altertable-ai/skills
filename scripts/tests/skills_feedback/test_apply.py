@@ -3,13 +3,13 @@ import subprocess
 
 from skills_feedback.commands.apply import _build_pr_body, _create_pr, apply_thresholds
 from skills_feedback.config import load_config
-from skills_feedback.models import Proposal, Rating
+from skills_feedback.models import Proposal, ProposalType, Rating
 
 
 def test_build_pr_body():
     proposal = Proposal(
         id="remove-20260313T100000Z-claude-code",
-        type="remove",
+        type=ProposalType.REMOVE,
         reason="Superseded by querying-lakehouse",
         lines=None,
         body=None,

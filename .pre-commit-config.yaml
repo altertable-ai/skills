@@ -23,6 +23,18 @@ repos:
         exclude: 'SKILL_TEMPLATE/'
         pass_filenames: true
 
+  - repo: https://github.com/rohaquinlop/complexipy-pre-commit
+    rev: v4.2.0
+    hooks:
+      - id: complexipy
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.8.3
+    hooks:
+      - id: bandit
+        args: ["-c", "pyproject.toml"]
+        additional_dependencies: ["bandit[toml]"]
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:

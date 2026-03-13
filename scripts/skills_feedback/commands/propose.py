@@ -4,7 +4,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from skills_feedback.git import stage_and_commit
-from skills_feedback.models import Proposal, ProposalsFile
+from skills_feedback.models import Proposal, ProposalsFile, ProposalType
 from skills_feedback.output import print_confirmation, print_error
 from skills_feedback.storage import (
     ensure_feedback_dir,
@@ -73,7 +73,7 @@ def propose_add(
 
     proposal = Proposal(
         id=proposal_id,
-        type="add",
+        type=ProposalType.ADD,
         reason=description,
         lines=None,
         body=body_ref,
@@ -127,7 +127,7 @@ def propose_modify(
 
     proposal = Proposal(
         id=proposal_id,
-        type="modify",
+        type=ProposalType.MODIFY,
         reason=reason,
         lines=parsed_lines,
         body=body_ref,
@@ -167,7 +167,7 @@ def propose_remove(
 
     proposal = Proposal(
         id=proposal_id,
-        type="remove",
+        type=ProposalType.REMOVE,
         reason=reason,
         lines=None,
         body=None,

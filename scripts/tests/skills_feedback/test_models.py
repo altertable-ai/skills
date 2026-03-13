@@ -3,6 +3,7 @@ from skills_feedback.models import (
     Labels,
     Proposal,
     ProposalsFile,
+    ProposalType,
     Rating,
     RatingsFile,
     Thresholds,
@@ -66,7 +67,7 @@ def test_ratings_file_empty_score():
 def test_proposal_id_format():
     proposal = Proposal(
         id="add-20260313T100000Z-claude-code",
-        type="add",
+        type=ProposalType.ADD,
         reason="New skill needed",
         lines=None,
         body=None,
@@ -74,14 +75,14 @@ def test_proposal_id_format():
         proposed_at="2026-03-13T10:00:00Z",
     )
     assert proposal.id == "add-20260313T100000Z-claude-code"
-    assert proposal.type == "add"
+    assert proposal.type == ProposalType.ADD
 
 
 def test_proposals_file_append():
     pf = ProposalsFile(skill="test", proposals=[])
     proposal = Proposal(
         id="add-20260313T100000Z-claude-code",
-        type="add",
+        type=ProposalType.ADD,
         reason="test",
         lines=None,
         body=None,

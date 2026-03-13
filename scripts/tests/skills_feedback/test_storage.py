@@ -1,5 +1,5 @@
 from skills_feedback.constants import FEEDBACK_DIR_NAME, PROPOSALS_FILENAME, RATINGS_FILENAME
-from skills_feedback.models import Proposal, ProposalsFile, Rating, RatingsFile
+from skills_feedback.models import Proposal, ProposalsFile, ProposalType, Rating, RatingsFile
 from skills_feedback.storage import (
     ensure_feedback_dir,
     feedback_base,
@@ -47,7 +47,7 @@ def test_save_and_load_proposals(tmp_path):
         proposals=[
             Proposal(
                 id="add-20260313T100000Z-test",
-                type="add",
+                type=ProposalType.ADD,
                 reason="test",
                 lines=None,
                 body=None,
