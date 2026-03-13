@@ -1,10 +1,15 @@
-"""Pydantic models for skills-feedback data structures."""
-
 from __future__ import annotations
 
+from enum import StrEnum
 from typing import Literal
 
 from pydantic import BaseModel, Field
+
+
+class ProposalType(StrEnum):
+    ADD = "add"
+    MODIFY = "modify"
+    REMOVE = "remove"
 
 
 class Rating(BaseModel):
@@ -38,7 +43,7 @@ class Proposal(BaseModel):
     """A proposed skill change (add, modify, or remove)."""
 
     id: str
-    type: Literal["add", "modify", "remove"]
+    type: ProposalType
     reason: str
     lines: list[str] | None = None
     body: str | None = None
