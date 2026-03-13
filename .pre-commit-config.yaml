@@ -35,6 +35,17 @@ repos:
         args: ["-c", "pyproject.toml"]
         additional_dependencies: ["bandit[toml]"]
 
+  - repo: https://github.com/jendrikseipp/vulture
+    rev: v2.15
+    hooks:
+      - id: vulture
+        args: ["scripts/skills_feedback/", "scripts/tests/vulture_allowlist.py"]
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.2
+    hooks:
+      - id: codespell
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:

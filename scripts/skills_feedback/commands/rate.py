@@ -2,10 +2,9 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Literal
 
 from skills_feedback.git import stage_and_commit
-from skills_feedback.models import Config, Rating, RatingsFile
+from skills_feedback.models import Config, Rating, RatingsFile, Vote
 from skills_feedback.output import print_confirmation, print_error, print_warning
 from skills_feedback.storage import (
     ensure_feedback_dir,
@@ -21,7 +20,7 @@ def rate_skill(
     repo_root: Path,
     config: Config,
     name: str,
-    vote: Literal["up", "down"],
+    vote: Vote,
     reason: str,
     lines: str | None,
     whole_file: bool,
@@ -70,7 +69,7 @@ def rate_skill(
     if score <= config.thresholds.removal:
         print_warning(
             f"skill {name} has reached removal threshold "
-            f"(score: {score}) — consider running "
+            f"(score: {score}):consider running "
             f"`skills-feedback propose remove {name}`"
         )
 

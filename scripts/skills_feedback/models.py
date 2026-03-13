@@ -1,9 +1,13 @@
 from __future__ import annotations
 
 from enum import StrEnum
-from typing import Literal
 
 from pydantic import BaseModel, Field
+
+
+class Vote(StrEnum):
+    UP = "up"
+    DOWN = "down"
 
 
 class ProposalType(StrEnum):
@@ -15,7 +19,7 @@ class ProposalType(StrEnum):
 class Rating(BaseModel):
     """A single up/down vote on a skill."""
 
-    vote: Literal["up", "down"]
+    vote: Vote
     lines: list[str] | None
     reason: str
     labels: list[str] = Field(default_factory=list)
@@ -25,7 +29,7 @@ class Rating(BaseModel):
     @property
     def score_value(self) -> int:
         """Return +1 for up votes, -1 for down votes."""
-        return 1 if self.vote == "up" else -1
+        return 1 if self.vote == Vote.UP else -1
 
 
 class RatingsFile(BaseModel):
@@ -78,3 +82,9 @@ class Config(BaseModel):
     thresholds: Thresholds = Field(default_factory=Thresholds)
     reviewer: str = ""
     labels: Labels = Field(default_factory=Labels)
+
+
+class SkillsFeedbackError(Exception):
+    def __init__(self, message: str, *, skill: str | None = None) -> None:
+        self.skill = skill
+        super().__init__(f"{skill}: {message}" if skill else message)

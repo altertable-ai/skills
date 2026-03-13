@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 
-from skills_feedback.models import Labels
+from skills_feedback.models import Labels, Vote
 
 SKILL_NAME_PATTERN = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 
@@ -28,11 +28,11 @@ def parse_line_ranges(lines_str: str) -> list[str]:
     return ranges
 
 
-def validate_labels(vote: str, labels: list[str], label_config: Labels) -> list[str]:
+def validate_labels(vote: Vote, labels: list[str], label_config: Labels) -> list[str]:
     """Validate that labels are allowed for the given vote direction."""
     if not labels:
         return []
-    allowed = set(label_config.positive if vote == "up" else label_config.negative)
+    allowed = set(label_config.positive if vote == Vote.UP else label_config.negative)
     return [
         f"Label '{label}' is not allowed for '{vote}' votes. Allowed: {sorted(allowed)}"
         for label in labels

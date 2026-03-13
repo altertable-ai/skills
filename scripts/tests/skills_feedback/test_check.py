@@ -45,6 +45,61 @@ def test_check_thresholds_shows_rated_skill(repo_with_skill, capsys):
     assert "+2" in captured.out
 
 
+def test_check_thresholds_shows_proposal_summary(repo_with_skill, capsys):
+    feedback_dir = repo_with_skill / ".skills-feedback" / "analyzing-charts"
+    feedback_dir.mkdir(parents=True)
+    (feedback_dir / "proposals.json").write_text(
+        json.dumps(
+            {
+                "skill": "analyzing-charts",
+                "proposals": [
+                    {
+                        "id": "modify-001",
+                        "type": "modify",
+                        "reason": "test",
+                        "lines": ["1-5"],
+                        "body": None,
+                        "proposed_by": "test",
+                        "proposed_at": "2026-01-01T00:00:00Z",
+                    }
+                ],
+            }
+        )
+    )
+    config = load_config(repo_with_skill / ".skills-config.yaml")
+    check_thresholds(repo_with_skill, config)
+    captured = capsys.readouterr()
+    assert "1 modify" in captured.out
+
+
+def test_check_thresholds_shows_proposed_new(repo_with_skill, capsys):
+    feedback_dir = repo_with_skill / ".skills-feedback" / "brand-new-skill"
+    feedback_dir.mkdir(parents=True)
+    (feedback_dir / "proposals.json").write_text(
+        json.dumps(
+            {
+                "skill": "brand-new-skill",
+                "proposals": [
+                    {
+                        "id": "add-001",
+                        "type": "add",
+                        "reason": "needed",
+                        "lines": None,
+                        "body": None,
+                        "proposed_by": "test",
+                        "proposed_at": "2026-01-01T00:00:00Z",
+                    }
+                ],
+            }
+        )
+    )
+    config = load_config(repo_with_skill / ".skills-config.yaml")
+    check_thresholds(repo_with_skill, config)
+    captured = capsys.readouterr()
+    assert "PROPOSED NEW SKILLS" in captured.out
+    assert "brand-new-skill" in captured.out
+
+
 def test_check_thresholds_shows_removal_suggested(repo_with_skill, capsys):
     feedback_dir = repo_with_skill / ".skills-feedback" / "analyzing-charts"
     feedback_dir.mkdir(parents=True)

@@ -7,25 +7,26 @@ from skills_feedback.models import (
     Rating,
     RatingsFile,
     Thresholds,
+    Vote,
 )
 
 
 def test_rating_up_vote():
     rating = Rating(
-        vote="up",
+        vote=Vote.UP,
         lines=["45-52"],
         reason="Good content",
         labels=["accurate"],
         agent="claude-code",
         timestamp="2026-03-13T10:30:00Z",
     )
-    assert rating.vote == "up"
+    assert rating.vote == Vote.UP
     assert rating.score_value == 1
 
 
 def test_rating_down_vote():
     rating = Rating(
-        vote="down",
+        vote=Vote.DOWN,
         lines=["78-78"],
         reason="Incomplete",
         labels=["incomplete"],
@@ -37,7 +38,7 @@ def test_rating_down_vote():
 
 def test_rating_whole_file_lines_null():
     rating = Rating(
-        vote="up",
+        vote=Vote.UP,
         lines=None,
         reason="Overall good",
         labels=[],
@@ -51,9 +52,9 @@ def test_ratings_file_compute_score():
     ratings_file = RatingsFile(
         skill="test-skill",
         ratings=[
-            Rating(vote="up", lines=None, reason="good", labels=[], agent="a", timestamp="t1"),
-            Rating(vote="up", lines=None, reason="good", labels=[], agent="b", timestamp="t2"),
-            Rating(vote="down", lines=None, reason="bad", labels=[], agent="c", timestamp="t3"),
+            Rating(vote=Vote.UP, lines=None, reason="good", labels=[], agent="a", timestamp="t1"),
+            Rating(vote=Vote.UP, lines=None, reason="good", labels=[], agent="b", timestamp="t2"),
+            Rating(vote=Vote.DOWN, lines=None, reason="bad", labels=[], agent="c", timestamp="t3"),
         ],
     )
     assert ratings_file.compute_score() == 1

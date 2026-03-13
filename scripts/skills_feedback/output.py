@@ -11,7 +11,7 @@ def print_confirmation(action: str, skill: str, proposal_id: str | None = None) 
 
 
 def print_error(skill: str, message: str) -> None:
-    print(f"error: {skill} — {message}", file=sys.stderr)
+    print(f"error: {skill}:{message}", file=sys.stderr)
 
 
 def print_warning(message: str) -> None:
