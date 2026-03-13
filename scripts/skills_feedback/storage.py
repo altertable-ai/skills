@@ -3,7 +3,33 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from skills_feedback.constants import (
+    FEEDBACK_DIR_NAME,
+    PROPOSALS_FILENAME,
+    RATINGS_FILENAME,
+    SKILL_FILENAME,
+)
 from skills_feedback.models import ProposalsFile, RatingsFile
+
+
+def skill_exists(repo_root: Path, name: str) -> bool:
+    return (repo_root / name / SKILL_FILENAME).exists()
+
+
+def feedback_dir_for(repo_root: Path, skill_name: str) -> Path:
+    return repo_root / FEEDBACK_DIR_NAME / skill_name
+
+
+def feedback_base(repo_root: Path) -> Path:
+    return repo_root / FEEDBACK_DIR_NAME
+
+
+def ratings_path(feedback_dir: Path) -> Path:
+    return feedback_dir / RATINGS_FILENAME
+
+
+def proposals_path(feedback_dir: Path) -> Path:
+    return feedback_dir / PROPOSALS_FILENAME
 
 
 def load_ratings_file(path: Path) -> RatingsFile | None:
@@ -35,6 +61,6 @@ def save_proposals_file(path: Path, proposals_file: ProposalsFile) -> None:
 
 
 def ensure_feedback_dir(repo_root: Path, skill_name: str) -> Path:
-    feedback_dir = repo_root / ".skills-feedback" / skill_name
-    feedback_dir.mkdir(parents=True, exist_ok=True)
-    return feedback_dir
+    fd = feedback_dir_for(repo_root, skill_name)
+    fd.mkdir(parents=True, exist_ok=True)
+    return fd

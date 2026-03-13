@@ -3,7 +3,7 @@ name = "altertable-skills"
 version = "0.1.0"
 description = "Skills for AI agents"
 requires-python = ">=3.12"
-dependencies = ["pydantic", "pyyaml"]
+dependencies = ["fire", "pydantic", "pyyaml"]
 
 [project.scripts]
 skills-feedback = "skills_feedback.cli:main"

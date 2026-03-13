@@ -2,33 +2,39 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from skills_feedback.constants import SKILL_FILENAME
 from skills_feedback.models import Config
-from skills_feedback.storage import load_proposals_file, load_ratings_file
+from skills_feedback.storage import (
+    feedback_base,
+    feedback_dir_for,
+    load_proposals_file,
+    load_ratings_file,
+    proposals_path,
+    ratings_path,
+)
 
 
 def _discover_skills(repo_root: Path) -> list[str]:
     skills = []
     for d in sorted(repo_root.iterdir()):
-        if d.is_dir() and (d / "SKILL.md").exists():
+        if d.is_dir() and (d / SKILL_FILENAME).exists():
             skills.append(d.name)
     return skills
 
 
 def _status_label(score: int, config: Config) -> str:
-    proposal_threshold = config.thresholds.get("proposal", 3)
-    removal_threshold = config.thresholds.get("removal", -3)
-    if score <= removal_threshold:
+    if score <= config.thresholds.removal:
         return "REMOVAL SUGGESTED"
     if score < 0:
         return "below average"
-    if score < proposal_threshold:
+    if score < config.thresholds.proposal:
         return "moderate"
     return "healthy"
 
 
 def _proposal_summary(repo_root: Path, skill_name: str) -> str:
-    feedback_dir = repo_root / ".skills-feedback" / skill_name
-    proposals_file = load_proposals_file(feedback_dir / "proposals.json")
+    fd = feedback_dir_for(repo_root, skill_name)
+    proposals_file = load_proposals_file(proposals_path(fd))
     if not proposals_file or not proposals_file.proposals:
         return "-"
     counts: dict[str, int] = {}
@@ -39,15 +45,15 @@ def _proposal_summary(repo_root: Path, skill_name: str) -> str:
 
 def check_thresholds(repo_root: Path, config: Config) -> int:
     all_skills = _discover_skills(repo_root)
-    feedback_base = repo_root / ".skills-feedback"
+    fb = feedback_base(repo_root)
 
     rated_skills: list[tuple[str, int, str, str]] = []
     unrated_skills: list[str] = []
     proposed_new: list[tuple[str, str]] = []
 
     for skill_name in all_skills:
-        feedback_dir = feedback_base / skill_name
-        ratings_file = load_ratings_file(feedback_dir / "ratings.json")
+        fd = feedback_dir_for(repo_root, skill_name)
+        ratings_file = load_ratings_file(ratings_path(fd))
         proposals = _proposal_summary(repo_root, skill_name)
         if ratings_file and ratings_file.ratings:
             score = ratings_file.compute_score()
@@ -59,12 +65,12 @@ def check_thresholds(repo_root: Path, config: Config) -> int:
             else:
                 unrated_skills.append(skill_name)
 
-    if feedback_base.exists():
-        for feedback_dir in sorted(feedback_base.iterdir()):
-            if feedback_dir.is_dir() and feedback_dir.name not in all_skills:
-                proposals = _proposal_summary(repo_root, feedback_dir.name)
+    if fb.exists():
+        for fd in sorted(fb.iterdir()):
+            if fd.is_dir() and fd.name not in all_skills:
+                proposals = _proposal_summary(repo_root, fd.name)
                 if proposals != "-":
-                    proposed_new.append((feedback_dir.name, proposals))
+                    proposed_new.append((fd.name, proposals))
 
     if rated_skills:
         print("SKILL RATINGS")

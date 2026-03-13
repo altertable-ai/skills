@@ -7,7 +7,13 @@ from typing import Literal
 from skills_feedback.git import stage_and_commit
 from skills_feedback.models import Config, Rating, RatingsFile
 from skills_feedback.output import print_confirmation, print_error, print_warning
-from skills_feedback.storage import ensure_feedback_dir, load_ratings_file, save_ratings_file
+from skills_feedback.storage import (
+    ensure_feedback_dir,
+    load_ratings_file,
+    ratings_path,
+    save_ratings_file,
+    skill_exists,
+)
 from skills_feedback.validation import parse_line_ranges, validate_labels
 
 
@@ -23,7 +29,7 @@ def rate_skill(
     agent: str,
     no_commit: bool,
 ) -> int:
-    if not (repo_root / name / "SKILL.md").exists():
+    if not skill_exists(repo_root, name):
         print_error(name, "skill does not exist")
         return 1
 
@@ -45,8 +51,8 @@ def rate_skill(
             return 1
 
     feedback_dir = ensure_feedback_dir(repo_root, name)
-    ratings_path = feedback_dir / "ratings.json"
-    ratings_file = load_ratings_file(ratings_path) or RatingsFile(skill=name, ratings=[])
+    rpath = ratings_path(feedback_dir)
+    ratings_file = load_ratings_file(rpath) or RatingsFile(skill=name, ratings=[])
 
     now = datetime.now(UTC)
     rating = Rating(
@@ -58,11 +64,10 @@ def rate_skill(
         timestamp=now.isoformat(),
     )
     ratings_file.ratings.append(rating)
-    save_ratings_file(ratings_path, ratings_file)
+    save_ratings_file(rpath, ratings_file)
 
     score = ratings_file.compute_score()
-    removal_threshold = config.thresholds.get("removal", -3)
-    if score <= removal_threshold:
+    if score <= config.thresholds.removal:
         print_warning(
             f"skill {name} has reached removal threshold "
             f"(score: {score}) — consider running "
@@ -71,7 +76,7 @@ def rate_skill(
 
     stage_and_commit(
         repo_root,
-        [ratings_path],
+        [rpath],
         f"skills-feedback: rate {name}",
         no_commit=no_commit,
     )
