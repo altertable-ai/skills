@@ -112,6 +112,10 @@ description: {Third-person description with trigger keywords}
     <description>Creates and maintains semantic models with dimensions, measures, and relations. Use when defining business metrics, creating reusable data models, setting up the semantic layer, or when users ask about dimensions and measures.</description>
   </skill>
   <skill>
+    <name>providing-feedback</name>
+    <description>Rates skills and proposes changes using the skills-feedback CLI. Use when evaluating skill quality, suggesting improvements, proposing new skills, or when a skill feels outdated, inaccurate, or missing.</description>
+  </skill>
+  <skill>
     <name>querying-lakehouse</name>
     <description>Writes and executes SQL queries against the DuckDB Lakehouse. Use when analyzing data, building reports, aggregating metrics, exploring tables, or when the user asks about data in connections.</description>
   </skill>

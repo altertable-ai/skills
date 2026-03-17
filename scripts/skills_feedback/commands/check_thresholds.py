@@ -4,14 +4,7 @@ from pathlib import Path
 
 from skills_feedback.constants import SKILL_FILENAME
 from skills_feedback.models import Config
-from skills_feedback.storage import (
-    feedback_base,
-    feedback_dir_for,
-    load_proposals_file,
-    load_ratings_file,
-    proposals_path,
-    ratings_path,
-)
+from skills_feedback.storage import FeedbackStore
 
 
 def _discover_skills(repo_root: Path) -> list[str]:
@@ -32,9 +25,8 @@ def _status_label(score: int, config: Config) -> str:
     return "healthy"
 
 
-def _proposal_summary(repo_root: Path, skill_name: str) -> str:
-    fd = feedback_dir_for(repo_root, skill_name)
-    proposals_file = load_proposals_file(proposals_path(fd))
+def _proposal_summary(store: FeedbackStore, skill_name: str) -> str:
+    proposals_file = store.load_proposals(skill_name)
     if not proposals_file or not proposals_file.proposals:
         return "-"
     counts: dict[str, int] = {}
@@ -44,15 +36,14 @@ def _proposal_summary(repo_root: Path, skill_name: str) -> str:
 
 
 def _classify_skill(
-    repo_root: Path,
+    store: FeedbackStore,
     skill_name: str,
     config: Config,
     rated: list[tuple[str, int, str, str]],
     unrated: list[str],
 ) -> None:
-    fd = feedback_dir_for(repo_root, skill_name)
-    ratings_file = load_ratings_file(ratings_path(fd))
-    proposals = _proposal_summary(repo_root, skill_name)
+    ratings_file = store.load_ratings(skill_name)
+    proposals = _proposal_summary(store, skill_name)
     if ratings_file and ratings_file.ratings:
         score = ratings_file.compute_score()
         status = _status_label(score, config)
@@ -63,14 +54,11 @@ def _classify_skill(
         unrated.append(skill_name)
 
 
-def _find_proposed_new(repo_root: Path, all_skills: list[str]) -> list[tuple[str, str]]:
-    fb = feedback_base(repo_root)
+def _find_proposed_new(store: FeedbackStore, all_skills: list[str]) -> list[tuple[str, str]]:
     proposed_new: list[tuple[str, str]] = []
-    if not fb.exists():
-        return proposed_new
-    for fd in sorted(fb.iterdir()):
-        if fd.is_dir() and fd.name not in all_skills:
-            proposals = _proposal_summary(repo_root, fd.name)
+    for fd in store.skill_feedback_dirs():
+        if fd.name not in all_skills:
+            proposals = _proposal_summary(store, fd.name)
             if proposals != "-":
                 proposed_new.append((fd.name, proposals))
     return proposed_new
@@ -101,14 +89,15 @@ def _format_proposed_new(proposed_new: list[tuple[str, str]]) -> list[str]:
 
 
 def check_thresholds(repo_root: Path, config: Config) -> str:
+    store = FeedbackStore(repo_root)
     all_skills = _discover_skills(repo_root)
     rated_skills: list[tuple[str, int, str, str]] = []
     unrated_skills: list[str] = []
 
     for skill_name in all_skills:
-        _classify_skill(repo_root, skill_name, config, rated_skills, unrated_skills)
+        _classify_skill(store, skill_name, config, rated_skills, unrated_skills)
 
-    proposed_new = _find_proposed_new(repo_root, all_skills)
+    proposed_new = _find_proposed_new(store, all_skills)
 
     output = _format_rated(rated_skills)
     if unrated_skills:

@@ -26,15 +26,7 @@ from skills_feedback.models import (
     Vote,
 )
 from skills_feedback.output import print_warning
-from skills_feedback.storage import (
-    feedback_base,
-    load_proposals_file,
-    load_ratings_file,
-    proposals_path,
-    ratings_path,
-    save_proposals_file,
-    save_ratings_file,
-)
+from skills_feedback.storage import FeedbackStore
 
 
 @dataclass
@@ -43,14 +35,12 @@ class QualifiedSkill:
     feedback_dir: Path
     proposals_file: ProposalsFile
     proposal: Proposal
-    ppath: Path
-    rpath: Path
     score: int
     ratings: list[Rating]
 
     @property
     def branch_name(self) -> str:
-        return f"feedback/{self.proposal.type}-{self.name}-{self.proposal.id}"
+        return f"skills-feedback/{self.proposal.type}/{self.name}/{self.proposal.id}"
 
 
 def _qualifies(proposal: Proposal, score: int, config: Config) -> bool:
@@ -59,14 +49,12 @@ def _qualifies(proposal: Proposal, score: int, config: Config) -> bool:
     return score >= config.thresholds.proposal
 
 
-def _evaluate_feedback_dir(feedback_dir: Path, config: Config) -> QualifiedSkill | None:
-    ppath = proposals_path(feedback_dir)
-    proposals_file = load_proposals_file(ppath)
+def _evaluate_skill(store: FeedbackStore, skill_name: str, config: Config) -> QualifiedSkill | None:
+    proposals_file = store.load_proposals(skill_name)
     if not proposals_file or not proposals_file.proposals:
         return None
 
-    rpath = ratings_path(feedback_dir)
-    ratings_file = load_ratings_file(rpath)
+    ratings_file = store.load_ratings(skill_name)
     score = ratings_file.compute_score() if ratings_file else 0
     ratings = ratings_file.ratings if ratings_file else []
 
@@ -75,26 +63,19 @@ def _evaluate_feedback_dir(feedback_dir: Path, config: Config) -> QualifiedSkill
         return None
 
     return QualifiedSkill(
-        name=feedback_dir.name,
-        feedback_dir=feedback_dir,
+        name=skill_name,
+        feedback_dir=store.feedback_dir(skill_name),
         proposals_file=proposals_file,
         proposal=proposal,
-        ppath=ppath,
-        rpath=rpath,
         score=score,
         ratings=ratings,
     )
 
 
-def _collect_qualifying(repo_root: Path, config: Config) -> list[QualifiedSkill]:
-    fb = feedback_base(repo_root)
-    if not fb.exists():
-        return []
+def _collect_qualifying(store: FeedbackStore, config: Config) -> list[QualifiedSkill]:
     results = []
-    for fd in sorted(fb.iterdir()):
-        if not fd.is_dir():
-            continue
-        skill = _evaluate_feedback_dir(fd, config)
+    for fd in store.skill_feedback_dirs():
+        skill = _evaluate_skill(store, fd.name, config)
         if skill:
             results.append(skill)
     return results
@@ -116,20 +97,20 @@ def _apply_proposal(proposal: Proposal, feedback_dir: Path, skill_dir: Path) -> 
     return None
 
 
-def _cleanup(skill: QualifiedSkill) -> None:
+def _cleanup(store: FeedbackStore, skill: QualifiedSkill) -> None:
     proposal = skill.proposal
     skill.proposals_file.proposals = [
         p for p in skill.proposals_file.proposals if p.id != proposal.id
     ]
-    save_proposals_file(skill.ppath, skill.proposals_file)
+    store.save_proposals(skill.name, skill.proposals_file)
     if proposal.body:
         body_file = skill.feedback_dir / proposal.body
         if body_file.exists():
             body_file.unlink()
-    save_ratings_file(skill.rpath, RatingsFile(skill=skill.name, ratings=[]))
+    store.save_ratings(skill.name, RatingsFile(skill=skill.name, ratings=[]))
 
 
-def _process(repo_root: Path, config: Config, skill: QualifiedSkill) -> bool:
+def _process(repo_root: Path, store: FeedbackStore, config: Config, skill: QualifiedSkill) -> bool:
     proposal = skill.proposal
 
     if _check_existing_pr(repo_root, skill.branch_name):
@@ -146,8 +127,15 @@ def _process(repo_root: Path, config: Config, skill: QualifiedSkill) -> bool:
             git_checkout(repo_root, original_branch)
             return False
 
-        _cleanup(skill)
-        git_stage(repo_root, [skill.ppath, skill.rpath, repo_root / skill.name])
+        _cleanup(store, skill)
+        git_stage(
+            repo_root,
+            [
+                store.proposals_path(skill.name),
+                store.ratings_path(skill.name),
+                repo_root / skill.name,
+            ],
+        )
         git_commit(repo_root, f"skills-feedback: {proposal.type} {skill.name}")
         git_push(repo_root, skill.branch_name)
 
@@ -173,7 +161,8 @@ def apply_thresholds(repo_root: Path, config: Config, *, dry_run: bool = False) 
     if not dry_run and not is_git_repo(repo_root):
         raise SkillsFeedbackError("not a git repository")
 
-    qualifying = _collect_qualifying(repo_root, config)
+    store = FeedbackStore(repo_root)
+    qualifying = _collect_qualifying(store, config)
     if not qualifying:
         print("No feedback data found.")
         return
@@ -184,7 +173,7 @@ def apply_thresholds(repo_root: Path, config: Config, *, dry_run: bool = False) 
         if dry_run:
             print(f"would create PR: {skill.branch_name} (score: {skill.score})")
             created += 1
-        elif _process(repo_root, config, skill):
+        elif _process(repo_root, store, config, skill):
             created += 1
         else:
             skipped += 1

@@ -30,6 +30,8 @@ def _resolve_skill_paths(paths: tuple[str, ...], scan_all: bool) -> list[Path]:
 def _print_results(
     results: list, json_output: bool, pr_comment: bool, verbose: bool, min_score: int
 ) -> None:
+    from scorer import format_cli, format_pr_comment
+
     if json_output:
         print(json.dumps([result.model_dump() for result in results], indent=2))
     elif pr_comment:
@@ -86,7 +88,7 @@ def score(
         print("Skipping LLM scoring due to validation errors", file=sys.stderr)
         sys.exit(1)
 
-    from scorer import fetch_spec_context, format_cli, format_pr_comment, score_batch
+    from scorer import fetch_spec_context, score_batch
 
     try:
         spec_context = fetch_spec_context()

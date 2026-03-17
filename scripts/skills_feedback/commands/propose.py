@@ -2,30 +2,19 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 from pathlib import Path
+from uuid import uuid4
 
 from skills_feedback.git import stage_and_commit
 from skills_feedback.models import Proposal, ProposalsFile, ProposalType, SkillsFeedbackError
 from skills_feedback.output import print_confirmation
-from skills_feedback.storage import (
-    ensure_feedback_dir,
-    load_proposals_file,
-    proposals_path,
-    save_proposals_file,
-    skill_exists,
-)
+from skills_feedback.storage import FeedbackStore
 from skills_feedback.validation import parse_line_ranges, validate_skill_name
 
 
-def _generate_id(proposal_type: str, agent: str, existing_ids: set[str]) -> tuple[str, str]:
+def _generate_id(proposal_type: str, agent: str) -> tuple[str, str]:
     now = datetime.now(UTC)
-    timestamp = now.strftime("%Y%m%dT%H%M%SZ")
-    base_id = f"{proposal_type}-{timestamp}-{agent}"
-    proposal_id = base_id
-    counter = 2
-    while proposal_id in existing_ids:
-        proposal_id = f"{base_id}-{counter}"
-        counter += 1
-    return proposal_id, now.isoformat()
+    short_id = str(uuid4())
+    return f"{proposal_type}-{short_id}-{agent}", now.isoformat()
 
 
 def _copy_body(feedback_dir: Path, proposal_id: str, body: str) -> tuple[str, Path]:
@@ -50,15 +39,14 @@ def _save_proposal(
     lines: list[str] | None = None,
     body: str | None = None,
 ) -> None:
-    feedback_dir = ensure_feedback_dir(repo_root, name)
-    ppath = proposals_path(feedback_dir)
-    proposals_file = load_proposals_file(ppath) or ProposalsFile(skill=name, proposals=[])
+    store = FeedbackStore(repo_root)
+    feedback_dir = store.ensure_dir(name)
+    proposals_file = store.load_proposals(name) or ProposalsFile(skill=name, proposals=[])
 
-    existing_ids = {p.id for p in proposals_file.proposals}
-    proposal_id, timestamp = _generate_id(proposal_type, agent, existing_ids)
+    proposal_id, timestamp = _generate_id(proposal_type, agent)
 
     body_ref = None
-    changed_files: list[Path] = [ppath]
+    changed_files: list[Path] = [store.proposals_path(name)]
     if body:
         body_ref, dest = _copy_body(feedback_dir, proposal_id, body)
         changed_files.append(dest)
@@ -73,7 +61,7 @@ def _save_proposal(
         proposed_at=timestamp,
     )
     proposals_file.proposals.append(proposal)
-    save_proposals_file(ppath, proposals_file)
+    store.save_proposals(name, proposals_file)
 
     stage_and_commit(
         repo_root,
@@ -95,7 +83,8 @@ def propose_add(
     name_errors = validate_skill_name(name)
     if name_errors:
         raise SkillsFeedbackError(name_errors[0], skill=name)
-    if skill_exists(repo_root, name):
+    store = FeedbackStore(repo_root)
+    if store.skill_exists(name):
         raise SkillsFeedbackError("skill already exists", skill=name)
     _save_proposal(repo_root, name, ProposalType.ADD, description, agent, no_commit, body=body)
 
@@ -109,7 +98,8 @@ def propose_modify(
     agent: str,
     no_commit: bool,
 ) -> None:
-    if not skill_exists(repo_root, name):
+    store = FeedbackStore(repo_root)
+    if not store.skill_exists(name):
         raise SkillsFeedbackError("skill does not exist", skill=name)
     try:
         parsed_lines = parse_line_ranges(lines)
@@ -134,6 +124,7 @@ def propose_remove(
     agent: str,
     no_commit: bool,
 ) -> None:
-    if not skill_exists(repo_root, name):
+    store = FeedbackStore(repo_root)
+    if not store.skill_exists(name):
         raise SkillsFeedbackError("skill does not exist", skill=name)
     _save_proposal(repo_root, name, ProposalType.REMOVE, reason, agent, no_commit)
