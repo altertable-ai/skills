@@ -66,8 +66,7 @@ def test_apply_skips_below_threshold(tmp_path):
         "labels:\n  positive: [accurate]\n  negative: [outdated]\n"
     )
     config = load_config(config_file)
-    result = apply_thresholds(tmp_path, config, dry_run=True)
-    assert result == 0
+    apply_thresholds(tmp_path, config, dry_run=True)
 
 
 def _setup_qualifying_repo(tmp_path, *, reviewer="test", threshold=2):
@@ -150,8 +149,7 @@ def _setup_qualifying_repo(tmp_path, *, reviewer="test", threshold=2):
 def test_apply_dry_run_shows_qualifying(tmp_path, capsys):
     config_file = _setup_qualifying_repo(tmp_path)
     config = load_config(config_file)
-    result = apply_thresholds(tmp_path, config, dry_run=True)
-    assert result == 0
+    apply_thresholds(tmp_path, config, dry_run=True)
     output = capsys.readouterr().out
     assert "would create PR" in output
     assert "remove-20260313T100000Z-claude-code" in output
@@ -174,8 +172,7 @@ def test_apply_no_feedback_dir(tmp_path):
         "labels:\n  positive: [accurate]\n  negative: [outdated]\n"
     )
     config = load_config(config_file)
-    result = apply_thresholds(tmp_path, config, dry_run=True)
-    assert result == 0
+    apply_thresholds(tmp_path, config, dry_run=True)
 
 
 def test_create_pr_skips_reviewer_when_empty(tmp_path):

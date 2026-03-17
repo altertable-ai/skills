@@ -4,8 +4,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from skills_feedback.git import stage_and_commit
-from skills_feedback.models import Proposal, ProposalsFile, ProposalType
-from skills_feedback.output import print_confirmation, print_error
+from skills_feedback.models import Proposal, ProposalsFile, ProposalType, SkillsFeedbackError
+from skills_feedback.output import print_confirmation
 from skills_feedback.storage import (
     ensure_feedback_dir,
     load_proposals_file,
@@ -28,11 +28,10 @@ def _generate_id(proposal_type: str, agent: str, existing_ids: set[str]) -> tupl
     return proposal_id, now.isoformat()
 
 
-def _copy_body(feedback_dir: Path, proposal_id: str, body: str) -> tuple[str, Path] | None:
+def _copy_body(feedback_dir: Path, proposal_id: str, body: str) -> tuple[str, Path]:
     body_path = Path(body)
     if not body_path.exists():
-        print_error("body", f"file not found: {body}")
-        return None
+        raise SkillsFeedbackError(f"body file not found: {body}")
     bodies_dir = feedback_dir / "bodies"
     bodies_dir.mkdir(exist_ok=True)
     dest = bodies_dir / f"{proposal_id}.md"
@@ -50,7 +49,7 @@ def _save_proposal(
     *,
     lines: list[str] | None = None,
     body: str | None = None,
-) -> int:
+) -> None:
     feedback_dir = ensure_feedback_dir(repo_root, name)
     ppath = proposals_path(feedback_dir)
     proposals_file = load_proposals_file(ppath) or ProposalsFile(skill=name, proposals=[])
@@ -61,10 +60,7 @@ def _save_proposal(
     body_ref = None
     changed_files: list[Path] = [ppath]
     if body:
-        result = _copy_body(feedback_dir, proposal_id, body)
-        if result is None:
-            return 1
-        body_ref, dest = result
+        body_ref, dest = _copy_body(feedback_dir, proposal_id, body)
         changed_files.append(dest)
 
     proposal = Proposal(
@@ -86,7 +82,6 @@ def _save_proposal(
         no_commit=no_commit,
     )
     print_confirmation("proposed", name, proposal_id)
-    return 0
 
 
 def propose_add(
@@ -96,23 +91,13 @@ def propose_add(
     body: str | None,
     agent: str,
     no_commit: bool,
-) -> int:
+) -> None:
     name_errors = validate_skill_name(name)
     if name_errors:
-        print_error(name, name_errors[0])
-        return 1
+        raise SkillsFeedbackError(name_errors[0], skill=name)
     if skill_exists(repo_root, name):
-        print_error(name, "skill already exists")
-        return 1
-    return _save_proposal(
-        repo_root,
-        name,
-        ProposalType.ADD,
-        description,
-        agent,
-        no_commit,
-        body=body,
-    )
+        raise SkillsFeedbackError("skill already exists", skill=name)
+    _save_proposal(repo_root, name, ProposalType.ADD, description, agent, no_commit, body=body)
 
 
 def propose_modify(
@@ -123,16 +108,14 @@ def propose_modify(
     body: str | None,
     agent: str,
     no_commit: bool,
-) -> int:
+) -> None:
     if not skill_exists(repo_root, name):
-        print_error(name, "skill does not exist")
-        return 1
+        raise SkillsFeedbackError("skill does not exist", skill=name)
     try:
         parsed_lines = parse_line_ranges(lines)
     except ValueError as e:
-        print_error(name, str(e))
-        return 1
-    return _save_proposal(
+        raise SkillsFeedbackError(str(e), skill=name) from e
+    _save_proposal(
         repo_root,
         name,
         ProposalType.MODIFY,
@@ -150,8 +133,7 @@ def propose_remove(
     reason: str,
     agent: str,
     no_commit: bool,
-) -> int:
+) -> None:
     if not skill_exists(repo_root, name):
-        print_error(name, "skill does not exist")
-        return 1
-    return _save_proposal(repo_root, name, ProposalType.REMOVE, reason, agent, no_commit)
+        raise SkillsFeedbackError("skill does not exist", skill=name)
+    _save_proposal(repo_root, name, ProposalType.REMOVE, reason, agent, no_commit)

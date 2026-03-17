@@ -9,7 +9,8 @@ from skills_feedback.commands.check_thresholds import check_thresholds as _check
 from skills_feedback.commands.propose import propose_add, propose_modify, propose_remove
 from skills_feedback.commands.rate import rate_skill
 from skills_feedback.config import load_repo_config
-from skills_feedback.models import Vote
+from skills_feedback.constants import ExitCode
+from skills_feedback.models import SkillsFeedbackError, Vote
 
 
 class Propose:
@@ -33,15 +34,13 @@ class Propose:
             no_commit: Stage changes but do not commit.
         """
         repo_root, _ = load_repo_config()
-        sys.exit(
-            propose_add(
-                repo_root=repo_root,
-                name=name,
-                description=description,
-                body=body,
-                agent=agent,
-                no_commit=no_commit,
-            )
+        propose_add(
+            repo_root=repo_root,
+            name=name,
+            description=description,
+            body=body,
+            agent=agent,
+            no_commit=no_commit,
         )
 
     def modify(
@@ -64,16 +63,14 @@ class Propose:
             no_commit: Stage changes but do not commit.
         """
         repo_root, _ = load_repo_config()
-        sys.exit(
-            propose_modify(
-                repo_root=repo_root,
-                name=name,
-                reason=reason,
-                lines=lines,
-                body=body,
-                agent=agent,
-                no_commit=no_commit,
-            )
+        propose_modify(
+            repo_root=repo_root,
+            name=name,
+            reason=reason,
+            lines=lines,
+            body=body,
+            agent=agent,
+            no_commit=no_commit,
         )
 
     def remove(
@@ -92,14 +89,12 @@ class Propose:
             no_commit: Stage changes but do not commit.
         """
         repo_root, _ = load_repo_config()
-        sys.exit(
-            propose_remove(
-                repo_root=repo_root,
-                name=name,
-                reason=reason,
-                agent=agent,
-                no_commit=no_commit,
-            )
+        propose_remove(
+            repo_root=repo_root,
+            name=name,
+            reason=reason,
+            agent=agent,
+            no_commit=no_commit,
         )
 
 
@@ -134,25 +129,23 @@ class SkillsFeedback:
         """
         repo_root, config = load_repo_config()
         parsed_labels = [label.strip() for label in labels.split(",")] if labels else []
-        sys.exit(
-            rate_skill(
-                repo_root=repo_root,
-                config=config,
-                name=name,
-                vote=vote,
-                reason=reason,
-                lines=lines,
-                whole_file=whole_file,
-                labels=parsed_labels,
-                agent=agent,
-                no_commit=no_commit,
-            )
+        rate_skill(
+            repo_root=repo_root,
+            config=config,
+            name=name,
+            vote=vote,
+            reason=reason,
+            lines=lines,
+            whole_file=whole_file,
+            labels=parsed_labels,
+            agent=agent,
+            no_commit=no_commit,
         )
 
     def check_thresholds(self) -> None:
         """Show skill ratings, status, and proposals dashboard."""
         repo_root, config = load_repo_config()
-        sys.exit(_check_thresholds(repo_root, config))
+        print(_check_thresholds(repo_root, config))
 
     def apply(self, dry_run: bool = False) -> None:
         """Create PRs for proposals that have reached the score threshold.
@@ -161,7 +154,7 @@ class SkillsFeedback:
             dry_run: Show what would happen without creating PRs.
         """
         repo_root, config = load_repo_config()
-        sys.exit(apply_thresholds(repo_root, config, dry_run=dry_run))
+        apply_thresholds(repo_root, config, dry_run=dry_run)
 
     def version(self) -> None:
         """Print the skills-feedback version."""
@@ -171,8 +164,11 @@ class SkillsFeedback:
 
 
 def main() -> None:
-    """Entry point for the skills-feedback CLI."""
-    fire.Fire(SkillsFeedback)
+    try:
+        fire.Fire(SkillsFeedback)
+    except SkillsFeedbackError as e:
+        print(f"error: {e}", file=sys.stderr)
+        sys.exit(ExitCode.ERROR)
 
 
 if __name__ == "__main__":

@@ -15,15 +15,14 @@ def test_discover_skills_ignores_non_skill_dirs(repo_with_skill):
     assert "scripts" not in skills
 
 
-def test_check_thresholds_shows_unrated(repo_with_skill, capsys):
+def test_check_thresholds_shows_unrated(repo_with_skill):
     config = load_config(repo_with_skill / ".skills-config.yaml")
-    check_thresholds(repo_with_skill, config)
-    captured = capsys.readouterr()
-    assert "UNRATED SKILLS" in captured.out
-    assert "analyzing-charts" in captured.out
+    output = check_thresholds(repo_with_skill, config)
+    assert "UNRATED SKILLS" in output
+    assert "analyzing-charts" in output
 
 
-def test_check_thresholds_shows_rated_skill(repo_with_skill, capsys):
+def test_check_thresholds_shows_rated_skill(repo_with_skill):
     feedback_dir = repo_with_skill / ".skills-feedback" / "analyzing-charts"
     feedback_dir.mkdir(parents=True)
     rating = {"lines": None, "reason": "good", "labels": [], "timestamp": "t"}
@@ -39,13 +38,12 @@ def test_check_thresholds_shows_rated_skill(repo_with_skill, capsys):
         )
     )
     config = load_config(repo_with_skill / ".skills-config.yaml")
-    check_thresholds(repo_with_skill, config)
-    captured = capsys.readouterr()
-    assert "analyzing-charts" in captured.out
-    assert "+2" in captured.out
+    output = check_thresholds(repo_with_skill, config)
+    assert "analyzing-charts" in output
+    assert "+2" in output
 
 
-def test_check_thresholds_shows_proposal_summary(repo_with_skill, capsys):
+def test_check_thresholds_shows_proposal_summary(repo_with_skill):
     feedback_dir = repo_with_skill / ".skills-feedback" / "analyzing-charts"
     feedback_dir.mkdir(parents=True)
     (feedback_dir / "proposals.json").write_text(
@@ -67,12 +65,11 @@ def test_check_thresholds_shows_proposal_summary(repo_with_skill, capsys):
         )
     )
     config = load_config(repo_with_skill / ".skills-config.yaml")
-    check_thresholds(repo_with_skill, config)
-    captured = capsys.readouterr()
-    assert "1 modify" in captured.out
+    output = check_thresholds(repo_with_skill, config)
+    assert "1 modify" in output
 
 
-def test_check_thresholds_shows_proposed_new(repo_with_skill, capsys):
+def test_check_thresholds_shows_proposed_new(repo_with_skill):
     feedback_dir = repo_with_skill / ".skills-feedback" / "brand-new-skill"
     feedback_dir.mkdir(parents=True)
     (feedback_dir / "proposals.json").write_text(
@@ -94,13 +91,12 @@ def test_check_thresholds_shows_proposed_new(repo_with_skill, capsys):
         )
     )
     config = load_config(repo_with_skill / ".skills-config.yaml")
-    check_thresholds(repo_with_skill, config)
-    captured = capsys.readouterr()
-    assert "PROPOSED NEW SKILLS" in captured.out
-    assert "brand-new-skill" in captured.out
+    output = check_thresholds(repo_with_skill, config)
+    assert "PROPOSED NEW SKILLS" in output
+    assert "brand-new-skill" in output
 
 
-def test_check_thresholds_shows_removal_suggested(repo_with_skill, capsys):
+def test_check_thresholds_shows_removal_suggested(repo_with_skill):
     feedback_dir = repo_with_skill / ".skills-feedback" / "analyzing-charts"
     feedback_dir.mkdir(parents=True)
     ratings = [
@@ -111,18 +107,12 @@ def test_check_thresholds_shows_removal_suggested(repo_with_skill, capsys):
             "labels": [],
             "agent": f"a{i}",
             "timestamp": "t",
-        }  # noqa: E501
+        }
         for i in range(3)
     ]
     (feedback_dir / "ratings.json").write_text(
-        json.dumps(
-            {
-                "skill": "analyzing-charts",
-                "ratings": ratings,
-            }
-        )
+        json.dumps({"skill": "analyzing-charts", "ratings": ratings})
     )
     config = load_config(repo_with_skill / ".skills-config.yaml")
-    check_thresholds(repo_with_skill, config)
-    captured = capsys.readouterr()
-    assert "REMOVAL SUGGESTED" in captured.out
+    output = check_thresholds(repo_with_skill, config)
+    assert "REMOVAL SUGGESTED" in output

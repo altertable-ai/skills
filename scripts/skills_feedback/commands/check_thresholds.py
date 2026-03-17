@@ -76,27 +76,31 @@ def _find_proposed_new(repo_root: Path, all_skills: list[str]) -> list[tuple[str
     return proposed_new
 
 
-def _print_rated(rated_skills: list[tuple[str, int, str, str]]) -> None:
+def _format_rated(rated_skills: list[tuple[str, int, str, str]]) -> list[str]:
     if not rated_skills:
-        return
-    print("SKILL RATINGS")
-    print(f"{'Skill':<25}{'Score':<7}{'Status':<20}{'Proposals'}")
+        return []
+    lines = [
+        "SKILL RATINGS",
+        f"{'Skill':<25}{'Score':<7}{'Status':<20}{'Proposals'}",
+    ]
     for name, score, status, proposals in rated_skills:
         score_str = f"+{score}" if score > 0 else str(score)
-        print(f"{name:<25}{score_str:<7}{status:<20}{proposals}")
-    print()
+        lines.append(f"{name:<25}{score_str:<7}{status:<20}{proposals}")
+    lines.append("")
+    return lines
 
 
-def _print_proposed_new(proposed_new: list[tuple[str, str]]) -> None:
+def _format_proposed_new(proposed_new: list[tuple[str, str]]) -> list[str]:
     if not proposed_new:
-        return
-    print("PROPOSED NEW SKILLS")
+        return []
+    lines = ["PROPOSED NEW SKILLS"]
     for name, proposals in proposed_new:
-        print(f"{name:<25}{'-':<7}{'-':<20}{proposals}")
-    print()
+        lines.append(f"{name:<25}{'-':<7}{'-':<20}{proposals}")
+    lines.append("")
+    return lines
 
 
-def check_thresholds(repo_root: Path, config: Config) -> int:
+def check_thresholds(repo_root: Path, config: Config) -> str:
     all_skills = _discover_skills(repo_root)
     rated_skills: list[tuple[str, int, str, str]] = []
     unrated_skills: list[str] = []
@@ -106,11 +110,9 @@ def check_thresholds(repo_root: Path, config: Config) -> int:
 
     proposed_new = _find_proposed_new(repo_root, all_skills)
 
-    _print_rated(rated_skills)
+    output = _format_rated(rated_skills)
     if unrated_skills:
-        print("UNRATED SKILLS")
-        print(", ".join(unrated_skills))
-        print()
-    _print_proposed_new(proposed_new)
+        output.extend(["UNRATED SKILLS", ", ".join(unrated_skills), ""])
+    output.extend(_format_proposed_new(proposed_new))
 
-    return 0
+    return "\n".join(output)
