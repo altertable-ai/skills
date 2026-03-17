@@ -3,10 +3,8 @@ name = "altertable-skills"
 version = "0.1.0"
 description = "Skills for AI agents"
 requires-python = ">=3.12"
-dependencies = []
-
-[project.optional-dependencies]
-feedback = [
+license = "MIT"
+dependencies = [
     "fire",
     "pydantic",
     "pyyaml",
@@ -17,7 +15,6 @@ skills-feedback = "skills_feedback.cli:main"
 
 [dependency-groups]
 dev = [
-    "altertable-skills[feedback]",
     "ruff",
     "ty",
     "pre-commit",
