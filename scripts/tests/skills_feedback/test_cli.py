@@ -1,7 +1,7 @@
 import pytest
 from skills_feedback.cli import Propose, SkillsFeedback
 from skills_feedback.config import find_repo_root, load_config
-from skills_feedback.models import Vote
+from skills_feedback.models import SkillsFeedbackError, Vote
 
 
 @pytest.fixture
@@ -31,113 +31,71 @@ class TestFindRepoRoot:
 @pytest.mark.usefixtures("_patch_cli_load")
 class TestProposeAdd:
     def test_add_success(self):
-        propose = Propose()
-        with pytest.raises(SystemExit) as exc_info:
-            propose.add(
-                name="new-skill",
-                description="test skill",
-                agent="test",
-                no_commit=True,
-            )
-        assert exc_info.value.code == 0
+        Propose().add(name="new-skill", description="test skill", agent="test", no_commit=True)
 
     def test_add_rejects_invalid_name(self):
-        propose = Propose()
-        with pytest.raises(SystemExit) as exc_info:
-            propose.add(
-                name="Invalid",
-                description="test",
-                agent="test",
-                no_commit=True,
-            )
-        assert exc_info.value.code == 1
+        with pytest.raises(SkillsFeedbackError):
+            Propose().add(name="Invalid", description="test", agent="test", no_commit=True)
 
 
 @pytest.mark.usefixtures("_patch_cli_load")
 class TestProposeModify:
     def test_modify_success(self):
-        propose = Propose()
-        with pytest.raises(SystemExit) as exc_info:
-            propose.modify(
-                name="analyzing-charts",
-                reason="update needed",
-                lines="1-5",
-                agent="test",
-                no_commit=True,
-            )
-        assert exc_info.value.code == 0
+        Propose().modify(
+            name="analyzing-charts",
+            reason="update needed",
+            lines="1-5",
+            agent="test",
+            no_commit=True,
+        )
 
     def test_modify_rejects_nonexistent(self):
-        propose = Propose()
-        with pytest.raises(SystemExit) as exc_info:
-            propose.modify(
+        with pytest.raises(SkillsFeedbackError):
+            Propose().modify(
                 name="nonexistent",
                 reason="test",
                 lines="1-1",
                 agent="test",
                 no_commit=True,
             )
-        assert exc_info.value.code == 1
 
 
 @pytest.mark.usefixtures("_patch_cli_load")
 class TestProposeRemove:
     def test_remove_success(self):
-        propose = Propose()
-        with pytest.raises(SystemExit) as exc_info:
-            propose.remove(
-                name="analyzing-charts",
-                reason="superseded",
-                agent="test",
-                no_commit=True,
-            )
-        assert exc_info.value.code == 0
+        Propose().remove(name="analyzing-charts", reason="superseded", agent="test", no_commit=True)
 
     def test_remove_rejects_nonexistent(self):
-        propose = Propose()
-        with pytest.raises(SystemExit) as exc_info:
-            propose.remove(
-                name="nonexistent",
-                reason="test",
-                agent="test",
-                no_commit=True,
-            )
-        assert exc_info.value.code == 1
+        with pytest.raises(SkillsFeedbackError):
+            Propose().remove(name="nonexistent", reason="test", agent="test", no_commit=True)
 
 
 @pytest.mark.usefixtures("_patch_cli_load")
 class TestSkillsFeedbackRate:
     def test_rate_success(self):
-        sf = SkillsFeedback()
-        with pytest.raises(SystemExit) as exc_info:
-            sf.rate(
-                name="analyzing-charts",
-                vote=Vote.UP,
-                reason="good",
-                whole_file=True,
-                agent="test",
-                no_commit=True,
-            )
-        assert exc_info.value.code == 0
+        SkillsFeedback().rate(
+            name="analyzing-charts",
+            vote=Vote.UP,
+            reason="good",
+            whole_file=True,
+            agent="test",
+            no_commit=True,
+        )
 
     def test_rate_with_labels_csv(self):
-        sf = SkillsFeedback()
-        with pytest.raises(SystemExit) as exc_info:
-            sf.rate(
-                name="analyzing-charts",
-                vote=Vote.UP,
-                reason="good",
-                whole_file=True,
-                labels="accurate,helpful",
-                agent="test",
-                no_commit=True,
-            )
-        assert exc_info.value.code == 0
+        SkillsFeedback().rate(
+            name="analyzing-charts",
+            vote=Vote.UP,
+            reason="good",
+            whole_file=True,
+            labels="accurate,helpful",
+            agent="test",
+            no_commit=True,
+        )
 
     def test_rate_rejects_nonexistent(self):
-        sf = SkillsFeedback()
-        with pytest.raises(SystemExit) as exc_info:
-            sf.rate(
+        with pytest.raises(SkillsFeedbackError):
+            SkillsFeedback().rate(
                 name="nonexistent",
                 vote=Vote.UP,
                 reason="test",
@@ -145,22 +103,15 @@ class TestSkillsFeedbackRate:
                 agent="test",
                 no_commit=True,
             )
-        assert exc_info.value.code == 1
 
 
 @pytest.mark.usefixtures("_patch_cli_load_bare")
 class TestSkillsFeedbackCheckThresholds:
     def test_check_thresholds_success(self):
-        sf = SkillsFeedback()
-        with pytest.raises(SystemExit) as exc_info:
-            sf.check_thresholds()
-        assert exc_info.value.code == 0
+        SkillsFeedback().check_thresholds()
 
 
 @pytest.mark.usefixtures("_patch_cli_load_bare")
 class TestSkillsFeedbackApply:
     def test_apply_dry_run(self):
-        sf = SkillsFeedback()
-        with pytest.raises(SystemExit) as exc_info:
-            sf.apply(dry_run=True)
-        assert exc_info.value.code == 0
+        SkillsFeedback().apply(dry_run=True)

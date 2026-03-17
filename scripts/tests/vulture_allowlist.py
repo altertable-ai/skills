@@ -7,6 +7,7 @@ from skills_feedback.api import (  # noqa: F401
     rate,
 )
 from skills_feedback.cli import Propose, SkillsFeedback  # noqa: F401
+from skills_feedback.constants import ExitCode  # noqa: F401
 from skills_feedback.models import Proposal  # noqa: F401
 
 # API module public functions
@@ -27,6 +28,9 @@ _sf = SkillsFeedback()
 _sf.propose
 _sf.rate
 _sf.apply
+
+# ExitCode enum members
+ExitCode.OK
 
 # Pydantic model fields
 Proposal.proposed_by

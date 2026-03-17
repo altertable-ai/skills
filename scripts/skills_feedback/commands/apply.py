@@ -22,9 +22,10 @@ from skills_feedback.models import (
     ProposalType,
     Rating,
     RatingsFile,
+    SkillsFeedbackError,
     Vote,
 )
-from skills_feedback.output import print_error, print_warning
+from skills_feedback.output import print_warning
 from skills_feedback.storage import (
     feedback_base,
     load_proposals_file,
@@ -100,7 +101,7 @@ def _collect_qualifying(repo_root: Path, config: Config) -> list[QualifiedSkill]
 
 
 def _apply_proposal(proposal: Proposal, feedback_dir: Path, skill_dir: Path) -> str | None:
-    """Apply proposal to skill directory. Returns error message on skip, None on success."""
+    """Returns error message on skip, None on success."""
     if proposal.type == ProposalType.REMOVE:
         if skill_dir.exists():
             shutil.rmtree(skill_dir)
@@ -132,7 +133,7 @@ def _process(repo_root: Path, config: Config, skill: QualifiedSkill) -> bool:
     proposal = skill.proposal
 
     if _check_existing_pr(repo_root, skill.branch_name):
-        print(f"skipped: {skill.name}:PR already open")
+        print(f"skipped: {skill.name}: PR already open")
         return False
 
     original_branch = git_current_branch(repo_root)
@@ -141,7 +142,7 @@ def _process(repo_root: Path, config: Config, skill: QualifiedSkill) -> bool:
 
         error = _apply_proposal(proposal, skill.feedback_dir, repo_root / skill.name)
         if error:
-            print(f"skipped: {skill.name}:{error}")
+            print(f"skipped: {skill.name}: {error}")
             git_checkout(repo_root, original_branch)
             return False
 
@@ -168,15 +169,14 @@ def _process(repo_root: Path, config: Config, skill: QualifiedSkill) -> bool:
             git_checkout(repo_root, original_branch)
 
 
-def apply_thresholds(repo_root: Path, config: Config, *, dry_run: bool = False) -> int:
+def apply_thresholds(repo_root: Path, config: Config, *, dry_run: bool = False) -> None:
     if not dry_run and not is_git_repo(repo_root):
-        print_error("apply", "not a git repository")
-        return 1
+        raise SkillsFeedbackError("not a git repository")
 
     qualifying = _collect_qualifying(repo_root, config)
     if not qualifying:
         print("No feedback data found.")
-        return 0
+        return
 
     created = 0
     skipped = 0
@@ -190,7 +190,6 @@ def apply_thresholds(repo_root: Path, config: Config, *, dry_run: bool = False) 
             skipped += 1
 
     print(f"\nSummary: {created} PR(s) created, {skipped} skipped")
-    return 0
 
 
 def _ratings_table(ratings: list[Rating]) -> str:
@@ -248,7 +247,7 @@ def _check_existing_pr(cwd: Path, branch_name: str) -> str | None:
         url = result.stdout.strip()
         return url if url else None
     except FileNotFoundError:
-        print_warning("gh CLI not found:cannot check for existing PRs")
+        print_warning("gh CLI not found: cannot check for existing PRs")
         return None
 
 
@@ -260,8 +259,7 @@ def _create_pr(cwd: Path, branch_name: str, title: str, body: str, reviewer: str
         result = subprocess.run(cmd, capture_output=True, text=True, cwd=cwd)
         if result.returncode == 0:
             return result.stdout.strip()
-        print_error("pr", result.stderr.strip())
+        print_warning(f"pr creation failed: {result.stderr.strip()}")
         return None
     except FileNotFoundError:
-        print_error("apply", "gh CLI not found:install gh and authenticate")
-        return None
+        raise SkillsFeedbackError("gh CLI not found: install gh and authenticate")

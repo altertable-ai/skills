@@ -4,8 +4,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from skills_feedback.git import stage_and_commit
-from skills_feedback.models import Config, Rating, RatingsFile, Vote
-from skills_feedback.output import print_confirmation, print_error, print_warning
+from skills_feedback.models import Config, Rating, RatingsFile, SkillsFeedbackError, Vote
+from skills_feedback.output import print_confirmation, print_warning
 from skills_feedback.storage import (
     ensure_feedback_dir,
     load_ratings_file,
@@ -27,27 +27,23 @@ def rate_skill(
     labels: list[str],
     agent: str,
     no_commit: bool,
-) -> int:
+) -> None:
     if not skill_exists(repo_root, name):
-        print_error(name, "skill does not exist")
-        return 1
+        raise SkillsFeedbackError("skill does not exist", skill=name)
 
     parsed_lines = None
     if not whole_file:
         if not lines:
-            print_error(name, "either --lines or --whole-file is required")
-            return 1
+            raise SkillsFeedbackError("either --lines or --whole-file is required", skill=name)
         try:
             parsed_lines = parse_line_ranges(lines)
         except ValueError as e:
-            print_error(name, str(e))
-            return 1
+            raise SkillsFeedbackError(str(e), skill=name) from e
 
     if labels:
         label_errors = validate_labels(vote, labels, config.labels)
         if label_errors:
-            print_error(name, label_errors[0])
-            return 1
+            raise SkillsFeedbackError(label_errors[0], skill=name)
 
     feedback_dir = ensure_feedback_dir(repo_root, name)
     rpath = ratings_path(feedback_dir)
@@ -69,7 +65,7 @@ def rate_skill(
     if score <= config.thresholds.removal:
         print_warning(
             f"skill {name} has reached removal threshold "
-            f"(score: {score}):consider running "
+            f"(score: {score}): consider running "
             f"`skills-feedback propose remove {name}`"
         )
 
@@ -80,4 +76,3 @@ def rate_skill(
         no_commit=no_commit,
     )
     print_confirmation("rated", f"{name} {vote}")
-    return 0
