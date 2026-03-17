@@ -118,9 +118,7 @@ wheels = [
 name = "alterable-skills"
 version = "0.1.0"
 source = { editable = "." }
-
-[package.optional-dependencies]
-feedback = [
+dependencies = [
     { name = "fire" },
     { name = "pydantic" },
     { name = "pyyaml" },
@@ -128,7 +126,6 @@ feedback = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "alterable-skills", extra = ["feedback"] },
     { name = "litellm" },
     { name = "pre-commit" },
     { name = "pytest" },
@@ -142,15 +139,13 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "fire", marker = "extra == 'feedback'" },
-    { name = "pydantic", marker = "extra == 'feedback'" },
-    { name = "pyyaml", marker = "extra == 'feedback'" },
+    { name = "fire" },
+    { name = "pydantic" },
+    { name = "pyyaml" },
 ]
-provides-extras = ["feedback"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "alterable-skills", extras = ["feedback"] },
     { name = "litellm" },
     { name = "pre-commit" },
     { name = "pytest" },
