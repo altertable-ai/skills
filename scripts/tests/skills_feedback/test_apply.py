@@ -20,6 +20,7 @@ from skills_feedback.models import (
     Rating,
     Vote,
 )
+from skills_feedback.storage import FeedbackStore
 
 
 def test_build_pr_body():
@@ -152,7 +153,7 @@ def test_apply_dry_run_shows_qualifying(tmp_path, capsys):
     apply_thresholds(tmp_path, config, dry_run=True)
     output = capsys.readouterr().out
     assert "would create PR" in output
-    assert "remove-20260313T100000Z-claude-code" in output
+    assert "skills-feedback/remove/exploring-data/" in output
 
 
 def test_apply_dry_run_branch_includes_proposal_id(tmp_path, capsys):
@@ -160,7 +161,7 @@ def test_apply_dry_run_branch_includes_proposal_id(tmp_path, capsys):
     config = load_config(config_file)
     apply_thresholds(tmp_path, config, dry_run=True)
     output = capsys.readouterr().out
-    assert "feedback/remove-exploring-data-remove-20260313T100000Z-claude-code" in output
+    assert "skills-feedback/remove/exploring-data/" in output
 
 
 def test_apply_no_feedback_dir(tmp_path):
@@ -289,11 +290,9 @@ def test_apply_remove_noop_when_missing(tmp_path):
 
 
 def test_cleanup_removes_entry_and_resets_ratings(tmp_path):
-    feedback_dir = tmp_path / "feedback"
-    feedback_dir.mkdir()
-    ppath = feedback_dir / "proposals.json"
-    rpath = feedback_dir / "ratings.json"
-    rpath.write_text(json.dumps({"skill": "test", "ratings": []}))
+    feedback_dir = tmp_path / ".skills-feedback" / "test"
+    feedback_dir.mkdir(parents=True)
+    (feedback_dir / "ratings.json").write_text(json.dumps({"skill": "test", "ratings": []}))
 
     proposal = Proposal(
         id="remove-001",
@@ -310,27 +309,23 @@ def test_cleanup_removes_entry_and_resets_ratings(tmp_path):
         feedback_dir=feedback_dir,
         proposals_file=proposals_file,
         proposal=proposal,
-        ppath=ppath,
-        rpath=rpath,
         score=0,
         ratings=[],
     )
+    store = FeedbackStore(tmp_path)
+    _cleanup(store, skill)
 
-    _cleanup(skill)
-
-    loaded_proposals = json.loads(ppath.read_text())
+    loaded_proposals = json.loads(store.proposals_path("test").read_text())
     assert len(loaded_proposals["proposals"]) == 0
-    loaded_ratings = json.loads(rpath.read_text())
+    loaded_ratings = json.loads(store.ratings_path("test").read_text())
     assert len(loaded_ratings["ratings"]) == 0
 
 
 def test_cleanup_deletes_body_file(tmp_path):
-    feedback_dir = tmp_path / "feedback"
-    feedback_dir.mkdir()
+    feedback_dir = tmp_path / ".skills-feedback" / "test"
+    feedback_dir.mkdir(parents=True)
     body_file = feedback_dir / "body.md"
     body_file.write_text("content")
-    ppath = feedback_dir / "proposals.json"
-    rpath = feedback_dir / "ratings.json"
 
     proposal = Proposal(
         id="add-001",
@@ -347,13 +342,11 @@ def test_cleanup_deletes_body_file(tmp_path):
         feedback_dir=feedback_dir,
         proposals_file=proposals_file,
         proposal=proposal,
-        ppath=ppath,
-        rpath=rpath,
         score=0,
         ratings=[],
     )
-
-    _cleanup(skill)
+    store = FeedbackStore(tmp_path)
+    _cleanup(store, skill)
     assert not body_file.exists()
 
 
@@ -370,13 +363,15 @@ def test_collect_qualifying_empty_when_no_feedback(tmp_path):
         "labels:\n  positive: [accurate]\n  negative: [outdated]\n"
     )
     config = load_config(config_file)
-    assert _collect_qualifying(tmp_path, config) == []
+    store = FeedbackStore(tmp_path)
+    assert _collect_qualifying(store, config) == []
 
 
 def test_collect_qualifying_returns_matching(tmp_path):
     config_file = _setup_qualifying_repo(tmp_path)
     config = load_config(config_file)
-    result = _collect_qualifying(tmp_path, config)
+    store = FeedbackStore(tmp_path)
+    result = _collect_qualifying(store, config)
     assert len(result) == 1
     assert result[0].name == "exploring-data"
     assert result[0].score == -3
@@ -414,4 +409,5 @@ def test_collect_qualifying_skips_remove_with_positive_score(tmp_path):
     )
     subprocess.run(["git", "add", "."], capture_output=True, cwd=tmp_path)
     subprocess.run(["git", "commit", "-m", "update"], capture_output=True, cwd=tmp_path)
-    assert _collect_qualifying(tmp_path, config) == []
+    store = FeedbackStore(tmp_path)
+    assert _collect_qualifying(store, config) == []

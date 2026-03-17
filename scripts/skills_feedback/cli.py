@@ -24,15 +24,7 @@ class Propose:
         agent: str = "unknown",
         no_commit: bool = False,
     ) -> None:
-        """Propose adding a new skill.
-
-        Args:
-            name: Skill name (lowercase, hyphen-separated).
-            description: Why this skill should exist.
-            body: Path to a SKILL.md file for the proposed skill.
-            agent: Identity of the agent making the proposal.
-            no_commit: Stage changes but do not commit.
-        """
+        """Propose adding a new skill."""
         repo_root, _ = load_repo_config()
         propose_add(
             repo_root=repo_root,
@@ -52,16 +44,7 @@ class Propose:
         agent: str = "unknown",
         no_commit: bool = False,
     ) -> None:
-        """Propose modifying an existing skill.
-
-        Args:
-            name: Skill name to modify.
-            reason: Why this change is needed.
-            lines: Line ranges to modify (e.g., '45-52,78-81').
-            body: Path to a modified SKILL.md file.
-            agent: Identity of the agent making the proposal.
-            no_commit: Stage changes but do not commit.
-        """
+        """Propose modifying an existing skill."""
         repo_root, _ = load_repo_config()
         propose_modify(
             repo_root=repo_root,
@@ -74,27 +57,12 @@ class Propose:
         )
 
     def remove(
-        self,
-        name: str,
-        reason: str,
-        agent: str = "unknown",
-        no_commit: bool = False,
+        self, name: str, reason: str, agent: str = "unknown", no_commit: bool = False
     ) -> None:
-        """Propose removing an existing skill.
-
-        Args:
-            name: Skill name to remove.
-            reason: Why this skill should be removed.
-            agent: Identity of the agent making the proposal.
-            no_commit: Stage changes but do not commit.
-        """
+        """Propose removing an existing skill."""
         repo_root, _ = load_repo_config()
         propose_remove(
-            repo_root=repo_root,
-            name=name,
-            reason=reason,
-            agent=agent,
-            no_commit=no_commit,
+            repo_root=repo_root, name=name, reason=reason, agent=agent, no_commit=no_commit
         )
 
 
@@ -115,18 +83,7 @@ class SkillsFeedback:
         agent: str = "unknown",
         no_commit: bool = False,
     ) -> None:
-        """Rate a skill up or down.
-
-        Args:
-            name: Skill name to rate.
-            vote: Vote direction ('up' or 'down').
-            reason: Why you are rating this way.
-            lines: Line ranges (e.g., '45-52,78-81'). Required unless whole_file is set.
-            whole_file: Rate the entire file instead of specific lines.
-            labels: Comma-separated labels (e.g., 'accurate,helpful').
-            agent: Identity of the agent rating.
-            no_commit: Stage changes but do not commit.
-        """
+        """Rate a skill up or down."""
         repo_root, config = load_repo_config()
         parsed_labels = [label.strip() for label in labels.split(",")] if labels else []
         rate_skill(
@@ -148,11 +105,7 @@ class SkillsFeedback:
         print(_check_thresholds(repo_root, config))
 
     def apply(self, dry_run: bool = False) -> None:
-        """Create PRs for proposals that have reached the score threshold.
-
-        Args:
-            dry_run: Show what would happen without creating PRs.
-        """
+        """Create PRs for proposals that have reached the score threshold."""
         repo_root, config = load_repo_config()
         apply_thresholds(repo_root, config, dry_run=dry_run)
 

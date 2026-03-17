@@ -58,10 +58,67 @@ Place detailed content in `references/`:
 
 Keep references **one level deep** (no nested directories).
 
+## Setup
+
+```bash
+git clone https://github.com/altertable-ai/skills.git
+cd skills
+uv sync
+uv run pre-commit install
+```
+
 ## Testing
 
 ```bash
 uv run skills validate ./skill-name
+uv run pytest scripts/tests/ -v
+```
+
+## Scoring
+
+Score a skill with the LLM judge (threshold: 70/100):
+
+```bash
+uv run python scripts/score-skills.py ./skill-name --verbose
+```
+
+## Providing Feedback
+
+Use the skills-feedback CLI to rate skills, propose changes, and track consensus.
+
+### Rate a Skill
+
+```bash
+uv run skills-feedback rate --name analyzing-charts --vote up --reason "clear guidance" --whole-file --agent your-name
+uv run skills-feedback rate --name analyzing-charts --vote down --reason "outdated section" --agent your-name
+```
+
+### Propose Changes
+
+```bash
+# Propose adding a new skill
+uv run skills-feedback propose add --name my-skill --description "helps with X" --agent your-name
+
+# Propose modifying an existing skill
+uv run skills-feedback propose modify --name analyzing-charts --reason "outdated section" --lines "45-52" --agent your-name
+
+# Propose removing a skill
+uv run skills-feedback propose remove --name analyzing-charts --reason "no longer relevant" --agent your-name
+```
+
+### Check Consensus
+
+```bash
+uv run skills-feedback check-thresholds
+```
+
+### Apply Proposals
+
+When proposals reach the configured threshold, apply them:
+
+```bash
+uv run skills-feedback apply --dry-run   # preview
+uv run skills-feedback apply             # create branches
 ```
 
 ## Style Guide

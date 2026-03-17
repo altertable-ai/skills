@@ -4,7 +4,7 @@ import json
 import sys
 from pathlib import Path
 
-from pydantic import ValidationError
+from pydantic import BaseModel, ValidationError
 
 from skills_feedback.constants import (
     FEEDBACK_DIR_NAME,
@@ -15,63 +15,59 @@ from skills_feedback.constants import (
 from skills_feedback.models import ProposalsFile, RatingsFile
 
 
-def skill_exists(repo_root: Path, name: str) -> bool:
-    return (repo_root / name / SKILL_FILENAME).exists()
-
-
-def feedback_dir_for(repo_root: Path, skill_name: str) -> Path:
-    return repo_root / FEEDBACK_DIR_NAME / skill_name
-
-
-def feedback_base(repo_root: Path) -> Path:
-    return repo_root / FEEDBACK_DIR_NAME
-
-
-def ratings_path(feedback_dir: Path) -> Path:
-    return feedback_dir / RATINGS_FILENAME
-
-
-def proposals_path(feedback_dir: Path) -> Path:
-    return feedback_dir / PROPOSALS_FILENAME
-
-
-def load_ratings_file(path: Path) -> RatingsFile | None:
+def _load_json_model[T: BaseModel](path: Path, model: type[T]) -> T | None:
     if not path.exists():
         return None
     try:
         with open(path) as f:
             data = json.load(f)
-        return RatingsFile.model_validate(data)
+        return model.model_validate(data)
     except (json.JSONDecodeError, ValidationError) as e:
         print(f"warning: skipping malformed {path}: {e}", file=sys.stderr)
         return None
 
 
-def save_ratings_file(path: Path, ratings_file: RatingsFile) -> None:
+def _save_json_model(path: Path, obj: BaseModel) -> None:
     with open(path, "w") as f:
-        json.dump(ratings_file.model_dump(), f, indent=2)
+        json.dump(obj.model_dump(), f, indent=2)
         f.write("\n")
 
 
-def load_proposals_file(path: Path) -> ProposalsFile | None:
-    if not path.exists():
-        return None
-    try:
-        with open(path) as f:
-            data = json.load(f)
-        return ProposalsFile.model_validate(data)
-    except (json.JSONDecodeError, ValidationError) as e:
-        print(f"warning: skipping malformed {path}: {e}", file=sys.stderr)
-        return None
+class FeedbackStore:
+    def __init__(self, repo_root: Path) -> None:
+        self.repo_root = repo_root
+        self.base = repo_root / FEEDBACK_DIR_NAME
 
+    def skill_exists(self, name: str) -> bool:
+        return (self.repo_root / name / SKILL_FILENAME).exists()
 
-def save_proposals_file(path: Path, proposals_file: ProposalsFile) -> None:
-    with open(path, "w") as f:
-        json.dump(proposals_file.model_dump(), f, indent=2)
-        f.write("\n")
+    def feedback_dir(self, skill_name: str) -> Path:
+        return self.base / skill_name
 
+    def ensure_dir(self, skill_name: str) -> Path:
+        fd = self.feedback_dir(skill_name)
+        fd.mkdir(parents=True, exist_ok=True)
+        return fd
 
-def ensure_feedback_dir(repo_root: Path, skill_name: str) -> Path:
-    fd = feedback_dir_for(repo_root, skill_name)
-    fd.mkdir(parents=True, exist_ok=True)
-    return fd
+    def ratings_path(self, skill_name: str) -> Path:
+        return self.feedback_dir(skill_name) / RATINGS_FILENAME
+
+    def proposals_path(self, skill_name: str) -> Path:
+        return self.feedback_dir(skill_name) / PROPOSALS_FILENAME
+
+    def load_ratings(self, skill_name: str) -> RatingsFile | None:
+        return _load_json_model(self.ratings_path(skill_name), RatingsFile)
+
+    def save_ratings(self, skill_name: str, data: RatingsFile) -> None:
+        _save_json_model(self.ratings_path(skill_name), data)
+
+    def load_proposals(self, skill_name: str) -> ProposalsFile | None:
+        return _load_json_model(self.proposals_path(skill_name), ProposalsFile)
+
+    def save_proposals(self, skill_name: str, data: ProposalsFile) -> None:
+        _save_json_model(self.proposals_path(skill_name), data)
+
+    def skill_feedback_dirs(self) -> list[Path]:
+        if not self.base.exists():
+            return []
+        return [fd for fd in sorted(self.base.iterdir()) if fd.is_dir()]

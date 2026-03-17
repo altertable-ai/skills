@@ -6,13 +6,7 @@ from pathlib import Path
 from skills_feedback.git import stage_and_commit
 from skills_feedback.models import Config, Rating, RatingsFile, SkillsFeedbackError, Vote
 from skills_feedback.output import print_confirmation, print_warning
-from skills_feedback.storage import (
-    ensure_feedback_dir,
-    load_ratings_file,
-    ratings_path,
-    save_ratings_file,
-    skill_exists,
-)
+from skills_feedback.storage import FeedbackStore
 from skills_feedback.validation import parse_line_ranges, validate_labels
 
 
@@ -28,7 +22,9 @@ def rate_skill(
     agent: str,
     no_commit: bool,
 ) -> None:
-    if not skill_exists(repo_root, name):
+    store = FeedbackStore(repo_root)
+
+    if not store.skill_exists(name):
         raise SkillsFeedbackError("skill does not exist", skill=name)
 
     parsed_lines = None
@@ -45,9 +41,8 @@ def rate_skill(
         if label_errors:
             raise SkillsFeedbackError(label_errors[0], skill=name)
 
-    feedback_dir = ensure_feedback_dir(repo_root, name)
-    rpath = ratings_path(feedback_dir)
-    ratings_file = load_ratings_file(rpath) or RatingsFile(skill=name, ratings=[])
+    store.ensure_dir(name)
+    ratings_file = store.load_ratings(name) or RatingsFile(skill=name, ratings=[])
 
     now = datetime.now(UTC)
     rating = Rating(
@@ -59,7 +54,7 @@ def rate_skill(
         timestamp=now.isoformat(),
     )
     ratings_file.ratings.append(rating)
-    save_ratings_file(rpath, ratings_file)
+    store.save_ratings(name, ratings_file)
 
     score = ratings_file.compute_score()
     if score <= config.thresholds.removal:
@@ -71,7 +66,7 @@ def rate_skill(
 
     stage_and_commit(
         repo_root,
-        [rpath],
+        [store.ratings_path(name)],
         f"skills-feedback: rate {name}",
         no_commit=no_commit,
     )
