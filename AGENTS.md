@@ -120,7 +120,7 @@ description: {Third-person description with trigger keywords}
   </skill>
   <skill>
     <name>tracking-events</name>
-    <description>Works with product analytics events and user identities. Use when analyzing user behavior, event tracking, understanding event schemas, identity resolution, or user trait management.</description>
+    <description>Works with Altertable product analytics events, user identification, and aliasing. Use when tracking events, identifying users, managing traits, resolving identities, or querying analytics data.</description>
   </skill>
   <skill>
     <name>understanding-platform</name>

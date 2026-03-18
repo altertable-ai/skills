@@ -1,7 +1,7 @@
 ---
 name: tracking-events
 compatibility: Requires Altertable MCP server
-description: Works with product analytics events and user identities. Use when analyzing user behavior, event tracking, understanding event schemas, identity resolution, or user trait management.
+description: Works with Altertable product analytics events, user identification, and aliasing. Use when tracking events, identifying users, managing traits, resolving identities, or querying analytics data.
 metadata:
   author: altertable-ai
 ---
@@ -10,287 +10,202 @@ metadata:
 
 ## Quick Start
 
-Product analytics involves:
-1. Tracking user events (actions)
-2. Capturing user properties (traits)
-3. Resolving user identities
-4. Analyzing behavioral patterns
+1. **Track an event**: Call the track API or SDK method with event name and properties
+2. **Identify a user**: Link anonymous activity to a known user after authentication
+3. **Query events**: Use SQL to analyze tracked events and identity traits
 
 ## When to Use This Skill
 
-- Analyzing user behavior
-- Understanding event schemas
-- Working with user traits
-- Resolving user identities
-- Building behavioral segments
-- Creating event-based funnels
+- Tracking user actions (page views, purchases, feature usage)
+- Identifying users after login or signup
+- Updating user traits (plan, email, account state)
+- Aliasing identifiers across systems (Stripe, CRM, legacy IDs)
+- Querying event data or identity traits via SQL
+- Building funnels, cohorts, or retention analysis from events
 
-## Event Fundamentals
+## Event Model
 
-### What is an Event
+All SDKs and the API share the same payload shape:
 
-An event represents an action:
-- User action (clicked, viewed, purchased)
-- System event (loaded, errored, completed)
-- Business event (subscribed, churned, renewed)
+| Field | Required | Description |
+|-------|----------|-------------|
+| `event` | Yes | Event name, e.g. `Checkout Completed` |
+| `properties` | No | Event attributes for filtering and analysis |
+| `distinct_id` | No | User or device identifier (client SDKs set automatically) |
+| `timestamp` | No | Server uses current time when omitted |
 
-### Event Structure
+## Tracking Events
 
-```yaml
-event:
-  name: "button_clicked"
-  timestamp: "2024-01-15T10:30:00Z"
-  user_id: "user_123"
-  properties:
-    button_name: "signup"
-    page: "/home"
-    device: "mobile"
+### Via API
+
+```bash
+curl -X POST https://api.altertable.ai/track \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "event":"Purchase Completed",
+    "properties":{"amount":99.99,"currency":"USD"},
+    "distinct_id":"u_01jza857w4f23s1hf2s61befmw"
+  }'
 ```
 
-### Core Components
+### Via SDK (TypeScript)
 
-| Component | Description |
-|-----------|-------------|
-| `name` | Event identifier |
-| `timestamp` | When it occurred |
-| `user_id` | Who did it |
-| `properties` | Additional context |
-
-## Common Event Types
-
-### Engagement Events
-
-| Event | Purpose |
-|-------|---------|
-| page_viewed | Track navigation |
-| button_clicked | Track interactions |
-| form_submitted | Track conversions |
-| search_performed | Track intent |
-
-### Commerce Events
-
-| Event | Purpose |
-|-------|---------|
-| product_viewed | Track interest |
-| cart_updated | Track intent |
-| checkout_started | Track funnel |
-| purchase_completed | Track conversion |
-
-### Lifecycle Events
-
-| Event | Purpose |
-|-------|---------|
-| account_created | Track acquisition |
-| onboarding_completed | Track activation |
-| feature_used | Track engagement |
-| subscription_changed | Track monetization |
-
-## Event Properties
-
-### Standard Properties
-
-Always capture:
-- `timestamp` - When
-- `user_id` - Who
-- `session_id` - Context
-- `device_type` - How
-
-### Custom Properties
-
-Add context-specific:
-- Event-specific details
-- Business context
-- Technical metadata
-- Attribution data
-
-### Property Types
-
-| Type | Example |
-|------|---------|
-| String | `"homepage"` |
-| Number | `99.99` |
-| Boolean | `true` |
-| Date | `"2024-01-15"` |
-| Array | `["tag1", "tag2"]` |
-| Object | `{"nested": "value"}` |
-
-## User Identities
-
-### Identity Concept
-
-Users have multiple identifiers:
-- Anonymous IDs (before login)
-- User IDs (after login)
-- External IDs (third-party)
-- Device IDs (per device)
-
-### Identity Resolution
-
-Linking identities together:
-
-```
-anonymous_123 ─┐
-               ├─→ user_456 (resolved identity)
-device_789 ────┘
+```typescript
+altertable.track('Purchase Completed', {
+  amount: 99.99,
+  currency: 'USD'
+});
 ```
 
-### Identity Methods
+### Auto-Capture
 
-| Method | When to Use |
-|--------|-------------|
-| identify | Associate user ID |
-| alias | Link two identities |
-| merge | Combine profiles |
+Client-side SDKs automatically capture page/screen views. Disable with:
 
-## User Traits
-
-### What are Traits
-
-Persistent user attributes:
-- Demographics
-- Preferences
-- Computed properties
-- Business attributes
-
-### Trait Structure
-
-```yaml
-user:
-  id: "user_123"
-  traits:
-    email: "user@example.com"
-    plan: "premium"
-    signup_date: "2024-01-01"
-    lifetime_value: 599.99
+```typescript
+altertable.init('YOUR_API_KEY', { autoCapture: false });
+altertable.page('https://example.com/products');
 ```
 
-### Trait Categories
+Server-side SDKs (Python, Ruby) do not auto-capture pages.
 
-| Category | Examples |
-|----------|----------|
-| Demographic | name, email, location |
-| Behavioral | last_active, purchase_count |
-| Business | plan, mrr, account_type |
-| Computed | lifetime_value, engagement_score |
+## Identifying Users
 
-## Event Analysis
+Call `identify()` after authentication to link anonymous activity to a known user.
 
-### Volume Analysis
+### Via API
 
-Track event counts:
-- Events per day
-- Events per user
-- Event distribution
-
-### Sequence Analysis
-
-Track event orders:
-- Common paths
-- Drop-off points
-- Success patterns
-
-### Cohort Analysis
-
-Compare groups by:
-- Signup date
-- First action
-- User segment
-
-## Event Schema Management
-
-### Schema Design
-
-Good event schemas:
-- Consistent naming
-- Clear properties
-- Documented purpose
-- Appropriate granularity
-
-### Naming Conventions
-
-```
-{object}_{action}
+```bash
+curl -X POST https://api.altertable.ai/identify \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "distinct_id":"u_01jza857w4f23s1hf2s61befmw",
+    "traits":{"plan":"premium","email":"user@example.com"}
+  }'
 ```
 
-Examples:
-- `page_viewed`
-- `button_clicked`
-- `order_completed`
-- `subscription_started`
+### Via SDK (TypeScript)
 
-### Schema Evolution
-
-When changing events:
-- Document changes
-- Consider backwards compatibility
-- Migrate gradually
-- Update consumers
-
-## Best Practices
-
-### Event Design
-
-- Be consistent
-- Be specific enough
-- Don't over-track
-- Document everything
-
-### Identity Management
-
-- Identify early
-- Link all touchpoints
-- Handle anonymous users
-- Clean up duplicates
-
-### Property Management
-
-- Use consistent types
-- Validate on ingestion
-- Don't store PII unnecessarily
-- Use enums where appropriate
-
-## Common Patterns
-
-### Funnel Tracking
-
-Track conversion funnel:
-```
-page_viewed (landing)
-  → signup_started
-    → signup_completed
-      → onboarding_started
-        → onboarding_completed
+```typescript
+altertable.identify('u_01jza857w4f23s1hf2s61befmw', {
+  plan: 'premium',
+  email: 'user@example.com'
+});
 ```
 
-### Feature Adoption
+### Updating Traits
 
-Track feature usage:
-```
-feature_viewed
-  → feature_tried
-    → feature_used_regularly
+After identification, update traits as account state changes:
+
+```typescript
+altertable.updateTraits({ plan: 'enterprise', onboarding_completed: true });
 ```
 
-### Engagement Scoring
+Server-side SDKs update traits by calling `identify()` again with new trait values.
 
-Combine events for score:
+### Session Reset
+
+Call `reset()` on logout to clear identity context:
+
+```typescript
+altertable.reset();
+altertable.reset({ resetDeviceId: true }); // also clears device ID
 ```
-Daily active: page_viewed (today)
-Feature usage: feature_used (count)
-Social: invite_sent, share_clicked
+
+## Aliasing Users
+
+Use `alias()` to link multiple identifiers to the same user profile. This is for ID migrations and external system IDs, not for login flows (use `identify()` for those).
+
+### When to Use alias() vs identify()
+
+| Scenario | Method |
+|----------|--------|
+| Login or signup | `identify()` |
+| Known user on another device | `identify()` |
+| Migrate from old ID format | `alias()` |
+| Attach CRM or billing ID | `alias()` |
+| Merge profiles across platforms | `alias()` |
+
+### Via API
+
+```bash
+curl -X POST https://api.altertable.ai/alias \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "distinct_id":"user_123",
+    "alias_id":"stripe:cus_abc123"
+  }'
 ```
+
+### Via SDK (TypeScript)
+
+```typescript
+altertable.alias(`stripe:${stripeCustomerId}`);
+altertable.alias(`hubspot:${hubspotContactId}`);
+```
+
+## Querying Events
+
+### Event Counts by Type
+
+```sql
+SELECT
+  event,
+  properties->>'currency' AS currency,
+  COUNT(*) AS total
+FROM altertable.analytics.events
+GROUP BY ALL
+ORDER BY total DESC;
+```
+
+### Events with Identity Traits
+
+```sql
+SELECT
+  e.event,
+  e.properties,
+  e.timestamp,
+  e.identity_traits->>'email' AS email,
+  e.identity_traits->>'plan' AS plan
+FROM altertable.analytics.events e
+WHERE e.distinct_id = 'u_01jza857w4f23s1hf2s61befmw'
+ORDER BY e.timestamp DESC;
+```
+
+### Identity Traits
+
+```sql
+SELECT
+  distinct_id,
+  traits->>'email' AS email,
+  traits->>'plan' AS plan,
+  updated_at
+FROM altertable.analytics.identities
+ORDER BY updated_at DESC;
+```
+
+## Available SDKs
+
+| Language | Install |
+|----------|---------|
+| TypeScript/JS | `npm install @altertable/altertable-js` |
+| React | `npm install @altertable/altertable-js @altertable/altertable-react` |
+| Python | `pip install altertable` |
+| Ruby | `gem install altertable` |
+| Swift | Swift Package Manager |
+| Kotlin | `implementation("ai.altertable.sdk:altertable-kotlin:0.1.0")` |
 
 ## Common Pitfalls
 
-- Inconsistent event naming
-- Missing user identification
-- Over-tracking (too many events)
-- Under-tracking (missing context)
-- Not handling anonymous users
-- Storing sensitive data in events
+1. **Not identifying after page reload** - Call `identify()` after authentication, including after full page loads when user is already authenticated
+2. **Using alias() for login flows** - Use `identify()` for login/signup, `alias()` for ID migrations and external system links
+3. **Missing distinct_id in server-side calls** - Server-side SDKs require you to pass `distinct_id` explicitly
+4. **Forgetting reset() on logout** - Future events get attributed to the previous user
+5. **Sensitive data in traits** - Never send secrets or regulated sensitive data in traits or event properties
 
 ## Reference Files
 
-- [Event definitions](references/event-definitions.md)
-- [User traits](references/user-traits.md)
-- [Identity resolution](references/identity-resolution.md)
+- [Event tracking details](references/event-tracking.md) - Read when working with SSR setup, tracking consent, auto-capture configuration, or platform-specific behavior
+- [Identity and aliasing](references/identity-and-aliasing.md) - Read when implementing login/signup flows, session reset, alias migrations, or querying identity data
