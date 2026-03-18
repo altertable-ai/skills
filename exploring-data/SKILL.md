@@ -1,7 +1,9 @@
 ---
 name: exploring-data
-compatibility: Cursor, VS Code, Claude Code, Altertable
+compatibility: Requires Altertable MCP server
 description: Explores data connections and schemas to understand available tables, columns, and data types. Use when the user asks about data structure, available tables, what data exists, or wants to understand their data sources before querying.
+metadata:
+  author: altertable-ai
 ---
 
 # Exploring Data

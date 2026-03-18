@@ -1,7 +1,10 @@
 ---
 name: using-memory
-compatibility: Altertable
+compatibility: Requires Altertable MCP server
 description: Stores and retrieves agent memories for learning and context persistence. Use when saving findings, recalling past analysis, building knowledge, or searching for relevant context.
+metadata:
+  author: altertable-ai
+  requires: "altertable-mcp"
 ---
 
 # Using Memory

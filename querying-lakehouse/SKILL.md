@@ -1,7 +1,9 @@
 ---
 name: querying-lakehouse
-compatibility: Cursor, VS Code, Claude Code, Altertable
+compatibility: Requires Altertable MCP server
 description: Writes and executes SQL queries against the DuckDB Lakehouse. Use when analyzing data, building reports, aggregating metrics, exploring tables, or when the user asks about data in connections.
+metadata:
+  author: altertable-ai
 ---
 
 # Querying the Lakehouse

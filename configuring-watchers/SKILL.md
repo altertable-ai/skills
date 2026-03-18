@@ -1,7 +1,10 @@
 ---
 name: configuring-watchers
-compatibility: Altertable
+compatibility: Requires Altertable MCP server
 description: Configures monitoring agents (watchers) with intervals and targets. Use when setting up automated monitoring, scheduled analysis, alerts, or autonomous data observation.
+metadata:
+  author: altertable-ai
+  requires: "altertable-mcp"
 ---
 
 # Configuring Watchers

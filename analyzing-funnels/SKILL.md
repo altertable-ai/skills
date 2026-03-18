@@ -1,7 +1,9 @@
 ---
 name: analyzing-funnels
-compatibility: Cursor, VS Code, Claude Code, Altertable
+compatibility: Requires Altertable MCP server
 description: Creates and analyzes conversion funnels to understand user journeys and drop-off points. Use when analyzing conversion, onboarding, checkout flows, or multi-step processes.
+metadata:
+  author: altertable-ai
 ---
 
 # Analyzing Funnels

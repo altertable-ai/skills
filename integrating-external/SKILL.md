@@ -1,7 +1,10 @@
 ---
 name: integrating-external
-compatibility: Altertable
+compatibility: Requires Altertable MCP server
 description: Connects to external MCP servers and services for extended capabilities. Use when integrating with Amplitude, Omni, Slack, or other external tools, or when configuring notifications and external data sources.
+metadata:
+  author: altertable-ai
+  requires: "altertable-mcp"
 ---
 
 # Integrating External

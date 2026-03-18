@@ -1,7 +1,10 @@
 ---
 name: forecasting-timeseries
-compatibility: Altertable
+compatibility: Requires Python 3.12+, Altertable MCP server, chronos, statsforecast, and statsmodels
 description: Analyzes time series data for trends, anomalies, and forecasts. Use when detecting spikes or drops, predicting future values, identifying anomalies in metrics over time, or when the user asks about forecasting, projections, or unusual patterns in hourly/daily/weekly/monthly data.
+metadata:
+  author: altertable-ai
+  requires: "altertable-mcp, python, chronos, statsforecast, statsmodels"
 ---
 
 # Forecasting Time Series

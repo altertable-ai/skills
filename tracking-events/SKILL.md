@@ -1,7 +1,9 @@
 ---
 name: tracking-events
-compatibility: Cursor, VS Code, Claude Code, Altertable
+compatibility: Requires Altertable MCP server
 description: Works with product analytics events and user identities. Use when analyzing user behavior, event tracking, understanding event schemas, identity resolution, or user trait management.
+metadata:
+  author: altertable-ai
 ---
 
 # Tracking Events

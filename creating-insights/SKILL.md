@@ -1,7 +1,10 @@
 ---
 name: creating-insights
-compatibility: Altertable
+compatibility: Requires Altertable MCP server
 description: Creates discoveries with insights that flow through the approval workflow. Use when generating findings, creating visualizations, surfacing patterns, or when the user asks to save or share analysis results.
+metadata:
+  author: altertable-ai
+  requires: "altertable-mcp"
 ---
 
 # Creating Insights

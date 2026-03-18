@@ -3,23 +3,22 @@ import re
 from html import escape
 from pathlib import Path
 
+import yaml
+from scorer.models import VALID_REQUIRES
+
 ROOT = Path(__file__).resolve().parent.parent
 AGENTS_FILE = ROOT / "AGENTS.md"
 FRONTMATTER_RE = re.compile(r"^---\s*\n(.+?)\n---", re.DOTALL)
 AVAILABLE_SKILLS_SECTION_RE = re.compile(r"(## Available Skills\n)\n.*?(?=\n## |\Z)", re.DOTALL)
 
 
-def parse_frontmatter(skill_file: Path) -> dict[str, str]:
+def parse_frontmatter(skill_file: Path) -> dict:
     text = skill_file.read_text(encoding="utf-8")
     match = FRONTMATTER_RE.match(text)
     if not match:
         return {}
-    fields: dict[str, str] = {}
-    for line in match.group(1).splitlines():
-        key, _, value = line.partition(":")
-        if value:
-            fields[key.strip()] = value.strip().strip('"')
-    return fields
+    parsed = yaml.safe_load(match.group(1))
+    return parsed if isinstance(parsed, dict) else {}
 
 
 def build_skills_xml(root: Path) -> str:
@@ -35,6 +34,16 @@ def build_skills_xml(root: Path) -> str:
             if name in seen_names:
                 raise RuntimeError(f"Duplicate skill name in frontmatter: {name} ({skill_file})")
             seen_names.add(name)
+            requires_raw = fm.get("metadata", {}).get("requires", "")
+            requires = (
+                {r.strip() for r in requires_raw.split(",") if r.strip()} if requires_raw else set()
+            )
+            invalid = requires - VALID_REQUIRES
+            if invalid:
+                raise RuntimeError(
+                    f"Invalid metadata.requires in {skill_file}: {invalid}. "
+                    f"Valid values: {sorted(VALID_REQUIRES)}"
+                )
             skills.append((name, description))
 
     lines = ["<available_skills>"]

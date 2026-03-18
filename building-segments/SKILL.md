@@ -1,7 +1,10 @@
 ---
 name: building-segments
-compatibility: Altertable
+compatibility: Requires Altertable MCP server
 description: Creates user segments and cohorts using filters and dimensions. Use when segmenting users, building cohorts, filtering populations, defining audiences, or when asked about user groups.
+metadata:
+  author: altertable-ai
+  requires: "altertable-mcp"
 ---
 
 # Building Segments
