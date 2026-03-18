@@ -4,31 +4,8 @@ Use this detailed checklist when reviewing skills for quality and compliance.
 
 ## Frontmatter Validation
 
-### Name Field
-| Criterion | Valid | Invalid |
-|-----------|-------|---------|
-| Format | `analyzing-data` | `data-analysis`, `AnalyzingData` |
-| Case | lowercase only | `Analyzing-Data` |
-| Separator | hyphens | `analyzing_data`, `analyzingdata` |
-| Form | gerund (verb-ing) | noun or adjective |
-| Length | ≤ 64 characters | > 64 characters |
-| Directory match | name = folder name | name ≠ folder name |
-
-### Description Field
-| Criterion | Check |
-|-----------|-------|
-| Person | Third person ("Analyzes...") |
-| Trigger keywords | Contains words that activate the skill |
-| Purpose | Explains what the skill does |
-| When to use | Explains activation conditions |
-| Length | ≤ 1024 characters |
-
-### Compatibility Field
-Valid values:
-- `Cursor`
-- `VS Code`
-- `Claude Code`
-- `Altertable`
+Refer to the [Agent Skills Specification](https://agentskills.io/specification.md) for current field constraints.
+Run `skills validate <skill-dir>` to check compliance automatically.
 
 ## Structure Validation
 
@@ -174,3 +151,21 @@ skill-name/
 
 ### Overall: [PASS/NEEDS WORK/FAIL]
 ```
+
+## Interpreting Scorer Output
+
+The scorer reports 5 categories (max points):
+| Category | Max | What It Measures |
+|----------|-----|-----------------|
+| Frontmatter | 20 | Spec compliance, naming, description quality |
+| Structure | 25 | Instructions, examples, edge cases, line count |
+| Content Quality | 35 | Clarity, actionability, progressive disclosure |
+| Pitfalls | 10 | Common mistakes, troubleshooting |
+| References | 10 | Documentation quality, focused files |
+
+Issue severities:
+- **Critical**: Blocks skill from working (missing frontmatter, invalid name)
+- **Major**: Significant quality issue (no examples, missing sections)
+- **Minor**: Improvement opportunity (formatting, additional examples)
+
+Minimum passing score: 70/100.

@@ -8,8 +8,8 @@ description: "Evaluates and creates agent skills following best practices. Use w
 
 ## Quick Start
 
-1. **Creating**: Use gerund name → write frontmatter → structure SKILL.md → add references
-2. **Evaluating**: Check frontmatter → verify structure → assess content quality → validate constraints
+1. **Validating**: Run `skills validate <skill-dir>` for structural checks
+2. **Scoring**: Run `python scripts/score-skills.py <skill-dir>` for spec-grounded LLM evaluation
 
 ## When to Use This Skill
 
@@ -19,6 +19,13 @@ description: "Evaluates and creates agent skills following best practices. Use w
 - User asks about skill best practices
 - User wants to refactor or improve a skill
 - Keywords: "skill", "SKILL.md", "create skill", "evaluate skill", "skill quality"
+
+## Authoritative References
+
+The scorer grounds evaluation against these live documents (with vendored snapshot fallback):
+- [Specification](https://agentskills.io/specification.md) - Field constraints, structure rules
+- [Best Practices](https://agentskills.io/skill-creation/best-practices.md) - Quality criteria
+- [Evaluating Skills](https://agentskills.io/skill-creation/evaluating-skills.md) - Evaluation methodology
 
 ## Skill Anatomy
 
@@ -55,7 +62,7 @@ description: "Third person description with trigger keywords. Max 1024 chars."
 | Workflow/Procedures | Step-by-step | Progressive complexity |
 | Examples | Concrete patterns | Code blocks, scenarios |
 | Common Pitfalls | Mistakes to avoid | 5-10 items |
-| References | Deep dives | Link to references/ |
+| References | Deep dives | Link to references/ with trigger context |
 
 ## Skill Types & Patterns
 
@@ -144,17 +151,34 @@ dashboards, identifying trends, or explaining data patterns to stakeholders."
 2. Add When to Use (bullet list of triggers)
 3. Write core content (concepts, workflows, examples)
 4. Add Common Pitfalls
-5. Move detailed content to references/
+5. Move detailed content to references/ with loading triggers (e.g. "Read when implementing X")
 
 ### Step 4: Validate
 
 Run through the evaluation checklist above.
 
+## Using the Scorer
+
+### Validate Only (fast, no LLM)
+```bash
+uv run python scripts/score-skills.py <skill-dir> --validate_only
+```
+
+### Full Scoring (with spec grounding)
+```bash
+uv run python scripts/score-skills.py <skill-dir>
+```
+
+### Batch All Skills
+```bash
+uv run python scripts/score-skills.py . --scan_all
+```
+
 ## Common Pitfalls
 
 1. **First-person descriptions** - Use "Analyzes..." not "I analyze..."
 2. **Missing trigger keywords** - Agents can't find the skill
-3. **Too long SKILL.md** - Move details to references/
+3. **Too long SKILL.md** - Move details to references/ and add trigger context (e.g. "Read when working with X")
 4. **Nested reference folders** - Only one level allowed
 5. **Abstract examples** - Use concrete, real scenarios
 6. **Noun-form names** - Use "analyzing-data" not "data-analyzer"
@@ -165,5 +189,5 @@ Run through the evaluation checklist above.
 
 ## References
 
-- [skill-checklist.md](references/skill-checklist.md) - Detailed evaluation checklist
-- [examples.md](references/examples.md) - Patterns from well-designed skills
+- [skill-checklist.md](references/skill-checklist.md) - Read when scoring or reviewing a skill to get the full rubric breakdown, anti-patterns, and evaluation template
+- [examples.md](references/examples.md) - Read when creating a new skill or refactoring an existing one to see concrete patterns from well-designed skills
