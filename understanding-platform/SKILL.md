@@ -1,7 +1,10 @@
 ---
 name: understanding-platform
-compatibility: Altertable
+compatibility: Requires Altertable MCP server
 description: Explains Altertable platform concepts and architecture. Use when user asks about organizations, environments, connections, versioning, or how the platform works.
+metadata:
+  author: altertable-ai
+  requires: "altertable-mcp"
 ---
 
 # Understanding Platform

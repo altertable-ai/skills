@@ -1,7 +1,10 @@
 ---
 name: using-memory
-compatibility: Altertable
+compatibility: Requires Altertable MCP server
 description: Stores and retrieves agent memories for learning and context persistence. Use when saving findings, recalling past analysis, building knowledge, or searching for relevant context.
+metadata:
+  author: altertable-ai
+  requires: "altertable-mcp"
 ---
 
 # Using Memory
@@ -275,6 +278,6 @@ Good memories are **specific**, **actionable**, and **include context**.
 
 ## Reference Files
 
-- [Memory types](references/memory-types.md)
-- [Memory scopes](references/memory-scopes.md)
-- [Forgetting curve](references/forgetting-curve.md)
+- [Memory types](references/memory-types.md) - Read when choosing between episodic, semantic, and procedural memory types
+- [Memory scopes](references/memory-scopes.md) - Read when deciding the right scope (organization, workflow, agent, entity, user)
+- [Forgetting curve](references/forgetting-curve.md) - Read when tuning decay rates or understanding why memories disappeared
