@@ -1,7 +1,10 @@
 ---
 name: modeling-semantics
-compatibility: Altertable
+compatibility: Requires Altertable MCP server
 description: Creates and maintains semantic models with dimensions, measures, and relations. Use when defining business metrics, creating reusable data models, setting up the semantic layer, or when users ask about dimensions and measures.
+metadata:
+  author: altertable-ai
+  requires: "altertable-mcp"
 ---
 
 # Modeling Semantics

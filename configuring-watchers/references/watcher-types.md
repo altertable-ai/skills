@@ -1,265 +1,88 @@
 # Watcher Types Reference
 
-Detailed guide to each watcher type.
+Detailed capabilities and examples for each watcher type.
 
-## PlatformWatcher
+## chart
 
-Organization-wide monitoring agent.
+Monitors a specific chart for metric changes.
 
-### Purpose
-- Monitor overall platform health
-- Detect cross-system patterns
-- Generate organization-level insights
+**Target**: Chart slug
+**Default interval**: daily
 
-### Target
-- Organization (one per org)
+**Capabilities**: Access chart data, analyze trends, compare periods, detect threshold breaches.
 
-### Default Interval
-- REALTIME
-
-### Capabilities
-- Access to all data sources
-- Can monitor multiple metrics
-- Creates org-level discoveries
-
-### Use Cases
-- Overall health monitoring
-- Cross-functional insights
-- Executive dashboards
-
-## ChartWatcher
-
-Monitors a specific chart.
-
-### Purpose
-- Track chart metric changes
-- Alert on significant variations
-- Analyze visualization data
-
-### Target
-- Specific chart (by slug)
-
-### Default Interval
-- DAILY
-
-### Capabilities
-- Access chart data
-- Analyze trends
-- Compare periods
-- Detect anomalies
-
-### Use Cases
-- KPI monitoring
-- Revenue tracking
-- Conversion monitoring
-
-### Configuration Example
-
-```yaml
-type: ChartWatcher
-target: INS-42
-interval: DAILY
-instructions: |
-  Monitor this revenue chart for:
-  - Significant drops (>10%)
-  - Unusual patterns
-  - Compare to prior period
+**Example**:
+```
+create_watcher(
+  type: "chart",
+  target_slug: "revenue-daily",
+  interval: "daily",
+  instructions: "Monitor daily revenue. Flag drops > 10% day-over-day or week-over-week growth > 25%."
+)
 ```
 
-## DashboardWatcher
+## dashboard
 
-Monitors an entire dashboard.
+Monitors all charts on a dashboard for cross-metric patterns.
 
-### Purpose
-- Track multiple metrics together
-- Identify correlations
-- Dashboard-level insights
+**Target**: Dashboard slug
+**Default interval**: daily
 
-### Target
-- Dashboard (by slug)
+**Capabilities**: Access all charts on the dashboard, cross-chart correlation, multi-KPI analysis.
 
-### Default Interval
-- DAILY
-
-### Capabilities
-- Access all charts on dashboard
-- Cross-chart analysis
-- Correlation detection
-
-### Use Cases
-- Executive dashboards
-- Department metrics
-- Multi-KPI monitoring
-
-## ConnectionWatcher
-
-Monitors a data connection.
-
-### Purpose
-- Data quality monitoring
-- Pipeline health
-- Schema changes
-
-### Target
-- Connection (by slug)
-
-### Default Interval
-- DAILY
-
-### Capabilities
-- Query connection
-- Check data freshness
-- Monitor schema
-- Row count analysis
-
-### Use Cases
-- ETL monitoring
-- Data freshness alerts
-- Quality checks
-
-### Configuration Example
-
-```yaml
-type: ConnectionWatcher
-target: snowflake-prod
-interval: HOURLY
-instructions: |
-  Monitor data pipeline:
-  - Check last_updated timestamps
-  - Alert if data > 2 hours stale
-  - Monitor key table row counts
+**Example**:
+```
+create_watcher(
+  type: "dashboard",
+  target_slug: "exec-dashboard",
+  interval: "weekly",
+  instructions: "Analyze weekly trends across all metrics. Highlight correlations and anomalies."
+)
 ```
 
-## SemanticSourceWatcher
+## anomaly_detection
 
-Monitors a semantic source.
+Automatically detects anomalies in chart data.
 
-### Purpose
-- Semantic model metrics
-- Business metric tracking
-- Model health
+**Target**: Chart slug
+**Default interval**: daily
 
-### Target
-- Semantic source (by slug)
+**Capabilities**: Statistical anomaly detection on chart data, automatic discovery creation when anomalies are found.
 
-### Default Interval
-- DAILY
-
-### Capabilities
-- Query semantic metrics
-- Track dimension distributions
-- Monitor measure values
-
-### Use Cases
-- Business metric monitoring
-- Model validation
-- Automated reporting
-
-## SegmentWatcher
-
-Monitors a user segment.
-
-### Purpose
-- Segment size tracking
-- Population changes
-- Cohort monitoring
-
-### Target
-- Segment (by slug)
-
-### Default Interval
-- DAILY
-
-### Capabilities
-- Track segment size
-- Monitor composition
-- Detect changes
-
-### Use Cases
-- Audience monitoring
-- Churn tracking
-- Growth metrics
-
-### Configuration Example
-
-```yaml
-type: SegmentWatcher
-target: SGM-15
-interval: WEEKLY
-instructions: |
-  Monitor premium user segment:
-  - Track size changes
-  - Alert on significant drops
-  - Analyze composition shifts
+**Example**:
+```
+create_watcher(
+  type: "anomaly_detection",
+  target_slug: "signup-funnel",
+  interval: "hourly",
+  instructions: "Detect unusual spikes or drops in signup conversion rates."
+)
 ```
 
-## EventsActivityWatcher
+## forecast
 
-Monitors event activity.
+Generates recurring forecasts from chart data.
 
-### Purpose
-- Event volume tracking
-- Pattern detection
-- Activity monitoring
+**Target**: Chart slug
+**Default interval**: weekly
 
-### Target
-- Events (org-wide or filtered)
+**Capabilities**: Time series forecasting, trend projection, prediction interval generation.
 
-### Capabilities
-- Event volume analysis
-- Pattern detection
-- Anomaly identification
-
-### Use Cases
-- Activity monitoring
-- Engagement tracking
-- Feature usage
-
-## WebAnalyticsWatcher
-
-Monitors web analytics data.
-
-### Purpose
-- Traffic monitoring
-- User behavior analysis
-- Web performance
-
-### Target
-- Web analytics data
-
-### Capabilities
-- Traffic analysis
-- Source tracking
-- Page performance
-- Session metrics
-
-### Use Cases
-- Traffic monitoring
-- SEO tracking
-- Marketing attribution
-
-### Configuration Example
-
-```yaml
-type: WebAnalyticsWatcher
-interval: WEEKLY
-instructions: |
-  Analyze web traffic trends:
-  - Top page changes
-  - Traffic source shifts
-  - Engagement patterns
-  - Notable anomalies
+**Example**:
+```
+create_watcher(
+  type: "forecast",
+  target_slug: "monthly-revenue",
+  interval: "monthly",
+  instructions: "Forecast next month revenue. Flag if actual diverges > 15% from forecast."
+)
 ```
 
 ## Choosing the Right Type
 
-| Need | Watcher Type |
-|------|--------------|
-| Monitor a specific KPI | ChartWatcher |
-| Track multiple KPIs | DashboardWatcher |
-| Data quality/freshness | ConnectionWatcher |
-| Business metrics | SemanticSourceWatcher |
-| Audience changes | SegmentWatcher |
-| User activity | EventsActivityWatcher |
-| Website metrics | WebAnalyticsWatcher |
-| Organization overview | PlatformWatcher |
+| Goal | Type |
+|------|------|
+| Track a specific KPI | `chart` |
+| Monitor multiple KPIs together | `dashboard` |
+| Find unexpected patterns automatically | `anomaly_detection` |
+| Project future values | `forecast` |

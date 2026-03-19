@@ -10,6 +10,16 @@ DEFAULT_MIN_SCORE: Final[int] = 70
 MAX_RETRIES: Final[int] = 3
 RETRY_DELAY: Final[float] = 1.0
 
+VALID_REQUIRES: Final[frozenset[str]] = frozenset(
+    {
+        "altertable-mcp",
+        "chronos",
+        "python",
+        "statsforecast",
+        "statsmodels",
+    }
+)
+
 SeverityLevel = Literal["critical", "major", "minor"]
 
 

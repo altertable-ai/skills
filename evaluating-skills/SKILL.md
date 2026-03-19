@@ -1,7 +1,8 @@
 ---
 name: evaluating-skills
-compatibility: Cursor, VS Code, Claude Code, Altertable
 description: "Evaluates and creates agent skills following best practices. Use when reviewing skill quality, writing new skills, refactoring existing skills, or when the user asks about skill structure, format, or specification."
+metadata:
+  author: altertable-ai
 ---
 
 # Evaluating & Creating Skills
@@ -42,7 +43,6 @@ skill-name/                    # Gerund form (verb-ing)
 ```yaml
 ---
 name: skill-name                    # Gerund, lowercase, hyphens, max 64 chars
-compatibility: Cursor, VS Code, Claude Code, Altertable
 description: "Third person description with trigger keywords. Max 1024 chars."
 ---
 ```

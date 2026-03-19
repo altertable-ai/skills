@@ -1,7 +1,10 @@
 ---
 name: forecasting-timeseries
-compatibility: Altertable
 description: Analyzes time series data for trends, anomalies, and forecasts. Use when detecting spikes or drops, predicting future values, identifying anomalies in metrics over time, or when the user asks about forecasting, projections, or unusual patterns in hourly/daily/weekly/monthly data.
+compatibility: Requires Altertable MCP server and Python 3 environment
+metadata:
+  author: altertable-ai
+  requires: "altertable-mcp, python, chronos, statsforecast, statsmodels"
 ---
 
 # Forecasting Time Series
@@ -116,5 +119,5 @@ A value flagged by either method is reported. If the latest value is anomalous, 
 
 ## References
 
-- [Chronos forecasting details](references/chronos-forecasting.md)
-- [Anomaly detection methods](references/anomaly-detection.md)
+- [Chronos forecasting details](references/chronos-forecasting.md) - Read when generating forecasts or configuring prediction horizons and confidence intervals
+- [Anomaly detection methods](references/anomaly-detection.md) - Read when detecting anomalies or choosing between statistical methods
