@@ -18,35 +18,21 @@ DEFAULT_MODEL = "gemini/gemini-3.1-pro-preview"
 
 PROMPT_TEMPLATE = """You are an expert evaluator of Agent Skills per agentskills.io specification.
 
-Evaluate this skill and score 0-100.
+## Agent Skills Specification (from agentskills.io)
 
-## Rubric (100 points)
+{spec_context}
 
-### Frontmatter (20 points)
-- name: lowercase, hyphens only, 1-64 chars, matches directory name
-- description: 1-1024 chars, describes what skill does AND when to use it, includes trigger keywords
+## Evaluation Instructions
 
-### Structure (25 points)
-- Step-by-step instructions for agents
-- Examples of inputs and outputs
-- Common edge cases handled
-- Under 500 lines (detailed content in references/)
+Evaluate the skill below against the specification and best practices above. Score 0-100.
 
-### Content Quality (35 points)
-- Clear, actionable instructions agents can follow
-- Concrete examples with expected outcomes
-- Good markdown formatting
-- Progressive disclosure (main content concise, details in references)
+### Scoring Breakdown (100 points)
 
-### Edge Cases (10 points)
-- Documents common pitfalls and how to avoid them
-- Handles error scenarios gracefully
-- Includes troubleshooting guidance
-
-### References (10 points)
-- Detailed documentation in references/ directory
-- Files are focused and under 5000 tokens each
-- One level deep (no nested reference chains)
+- Frontmatter (20): Compliance with spec field constraints, naming, description quality
+- Structure (25): Step-by-step instructions, examples, edge cases, under 500 lines
+- Content Quality (35): Clarity, actionable instructions, progressive disclosure
+- Pitfalls (10): Common pitfalls, troubleshooting guidance, edge cases
+- References (10): Documentation quality, focused files, one level deep
 
 ## Skill: {skill_name} ({line_count} lines)
 ```markdown
@@ -67,10 +53,10 @@ class EvaluationResponse(BaseModel):
     suggestions: list[str]
 
 
-async def score_skill(skill_path: Path, model: str | None = None) -> ScoreResult:
+async def score_skill(skill_path: Path, spec_context: str, model: str | None = None) -> ScoreResult:
     skill = SkillContent.from_path(skill_path)
     model_name = model or DEFAULT_MODEL
-    response = await _evaluate(skill, model_name)
+    response = await _evaluate(skill, model_name, spec_context)
 
     return ScoreResult(
         skill_name=skill.name,
@@ -82,13 +68,15 @@ async def score_skill(skill_path: Path, model: str | None = None) -> ScoreResult
     )
 
 
-async def score_batch(skill_paths: Sequence[Path], model: str | None = None) -> list[ScoreResult]:
-    tasks = [score_skill(path, model) for path in skill_paths]
+async def score_batch(
+    skill_paths: Sequence[Path], spec_context: str, model: str | None = None
+) -> list[ScoreResult]:
+    tasks = [score_skill(path, spec_context, model) for path in skill_paths]
     return await asyncio.gather(*tasks)
 
 
-async def _evaluate(skill: SkillContent, model: str) -> EvaluationResponse:
-    prompt = _build_prompt(skill)
+async def _evaluate(skill: SkillContent, model: str, spec_context: str) -> EvaluationResponse:
+    prompt = _build_evaluation_prompt(skill, spec_context)
 
     last_error: Exception | None = None
     for attempt in range(MAX_RETRIES):
@@ -107,15 +95,14 @@ async def _evaluate(skill: SkillContent, model: str) -> EvaluationResponse:
     raise ValueError(f"Failed after {MAX_RETRIES} attempts: {last_error}")
 
 
-def _build_prompt(skill: SkillContent) -> str:
-    ref_text = "None"
-    if skill.references:
-        ref_parts = []
-        for name, content in skill.references.items():
-            ref_parts.append(f"### {name}\n{content}")
-        ref_text = "\n\n".join(ref_parts)
+def _build_evaluation_prompt(skill: SkillContent, spec_context: str) -> str:
+    ref_text = (
+        "\n\n".join(f"### {name}\n{content}" for name, content in skill.references.items())
+        or "None"
+    )
 
     return PROMPT_TEMPLATE.format(
+        spec_context=spec_context,
         skill_name=skill.name,
         skill_content=skill.content,
         line_count=skill.line_count,

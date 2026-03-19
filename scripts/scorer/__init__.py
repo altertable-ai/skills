@@ -1,6 +1,7 @@
 from .judges import DEFAULT_MODEL, score_batch, score_skill
 from .models import Issue, ScoreBreakdown, ScoreResult, SkillContent
 from .output import format_cli, format_pr_comment
+from .spec import fetch_spec_context
 
 __all__ = [
     "DEFAULT_MODEL",
@@ -8,6 +9,7 @@ __all__ = [
     "ScoreBreakdown",
     "ScoreResult",
     "SkillContent",
+    "fetch_spec_context",
     "format_cli",
     "format_pr_comment",
     "score_batch",
