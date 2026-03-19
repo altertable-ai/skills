@@ -9,6 +9,51 @@ from skills_cli.cli import validate as validate_skill
 SKILL_FILENAME = "SKILL.md"
 
 
+def _resolve_skill_paths(paths: tuple[str, ...], scan_all: bool) -> list[Path]:
+    skill_paths: list[Path] = []
+    for path_str in paths:
+        skill_path = Path(path_str)
+        if scan_all and skill_path.is_dir():
+            for subdir in sorted(skill_path.iterdir()):
+                is_valid = (
+                    subdir.is_dir()
+                    and (subdir / SKILL_FILENAME).exists()
+                    and subdir.name != "SKILL_TEMPLATE"
+                )
+                if is_valid:
+                    skill_paths.append(subdir)
+        elif skill_path.is_dir() and (skill_path / SKILL_FILENAME).exists():
+            skill_paths.append(skill_path)
+    return skill_paths
+
+
+def _validate_skills(skill_paths: list[Path]) -> bool:
+    failed = False
+    for skill_path in skill_paths:
+        errors = validate_skill(skill_path)
+        if errors:
+            failed = True
+            print(f"Validation failed: {skill_path.name}", file=sys.stderr)
+            for error in errors:
+                print(f"  - {error}", file=sys.stderr)
+    return failed
+
+
+def _print_results(
+    results: list, json_output: bool, pr_comment: bool, verbose: bool, min_score: int
+) -> None:
+    from scorer import format_cli, format_pr_comment
+
+    if json_output:
+        print(json.dumps([result.model_dump() for result in results], indent=2))
+    elif pr_comment:
+        print(format_pr_comment(results, min_score))
+    else:
+        for result in results:
+            print(format_cli(result, verbose))
+            print()
+
+
 def score(
     *paths: str,
     min_score: int = 70,
@@ -31,33 +76,12 @@ def score(
         validate_only: Run validation only, no LLM scoring
         model: LLM model (default: gemini/gemini-3.1-pro-preview)
     """
-    skill_paths: list[Path] = []
-    for path_str in paths:
-        skill_path = Path(path_str)
-        if scan_all and skill_path.is_dir():
-            for subdir in sorted(skill_path.iterdir()):
-                is_valid = (
-                    subdir.is_dir()
-                    and (subdir / SKILL_FILENAME).exists()
-                    and subdir.name != "SKILL_TEMPLATE"
-                )
-                if is_valid:
-                    skill_paths.append(subdir)
-        elif skill_path.is_dir() and (skill_path / SKILL_FILENAME).exists():
-            skill_paths.append(skill_path)
-
+    skill_paths = _resolve_skill_paths(paths, scan_all)
     if not skill_paths:
         print("No valid skill directories found", file=sys.stderr)
         sys.exit(1)
 
-    validation_failed = False
-    for skill_path in skill_paths:
-        errors = validate_skill(skill_path)
-        if errors:
-            validation_failed = True
-            print(f"Validation failed: {skill_path.name}", file=sys.stderr)
-            for error in errors:
-                print(f"  - {error}", file=sys.stderr)
+    validation_failed = _validate_skills(skill_paths)
 
     if validate_only:
         if not validation_failed:
@@ -68,7 +92,7 @@ def score(
         print("Skipping LLM scoring due to validation errors", file=sys.stderr)
         sys.exit(1)
 
-    from scorer import fetch_spec_context, format_cli, format_pr_comment, score_batch
+    from scorer import fetch_spec_context, score_batch
 
     try:
         spec_context = fetch_spec_context()
@@ -82,15 +106,7 @@ def score(
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
 
-    if json_output:
-        print(json.dumps([result.model_dump() for result in results], indent=2))
-    elif pr_comment:
-        print(format_pr_comment(results, min_score))
-    else:
-        for result in results:
-            print(format_cli(result, verbose))
-            print()
-
+    _print_results(results, json_output, pr_comment, verbose, min_score)
     passed = all(result.score >= min_score for result in results)
     sys.exit(0 if passed else 1)
 
