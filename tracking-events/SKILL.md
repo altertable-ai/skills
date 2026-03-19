@@ -4,6 +4,7 @@ compatibility: Requires Altertable MCP server
 description: Works with Altertable product analytics events, user identification, and aliasing. Use when tracking events, identifying users, managing traits, resolving identities, or querying analytics data.
 metadata:
   author: altertable-ai
+  requires: "altertable-mcp"
 ---
 
 # Tracking Events

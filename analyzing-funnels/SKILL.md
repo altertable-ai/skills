@@ -4,6 +4,7 @@ compatibility: Requires Altertable MCP server
 description: Creates and analyzes conversion funnels to understand user journeys and drop-off points. Use when analyzing conversion, onboarding, checkout flows, or multi-step processes.
 metadata:
   author: altertable-ai
+  requires: "altertable-mcp"
 ---
 
 # Analyzing Funnels

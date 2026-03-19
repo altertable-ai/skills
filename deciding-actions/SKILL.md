@@ -4,6 +4,7 @@ compatibility: Requires Altertable MCP server
 description: Decision matrices for choosing insight types, discovery actions, and avoiding duplicates. Use when deciding between funnel, retention, semantic, segmentation, or SQL insights, or when determining whether to create, update, or skip discoveries.
 metadata:
   author: altertable-ai
+  requires: "altertable-mcp"
 ---
 
 # Deciding Actions

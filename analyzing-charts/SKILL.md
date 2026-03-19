@@ -4,6 +4,7 @@ compatibility: Requires Altertable MCP server
 description: Interprets chart data to identify patterns, anomalies, and trends. Use when analyzing visualizations, extracting insights from charts, explaining what data shows, or when asked about patterns in graphs.
 metadata:
   author: altertable-ai
+  requires: "altertable-mcp"
 ---
 
 # Analyzing Charts
