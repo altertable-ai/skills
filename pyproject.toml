@@ -3,6 +3,7 @@ name = "altertable-skills"
 version = "0.1.0"
 description = "Skills for AI agents"
 requires-python = ">=3.12"
+license = "MIT"
 dependencies = []
 
 [dependency-groups]
@@ -12,6 +13,7 @@ dev = [
     "pre-commit",
     "pytest",
     "pytest-asyncio",
+    "pytest-cov",
     "skills-cli",
     "fire",
     "litellm",
@@ -32,3 +34,17 @@ python-version = "3.12"
 asyncio_mode = "auto"
 testpaths = ["scripts/tests"]
 pythonpath = ["scripts"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.",
+]
+
+[tool.codespell]
+ignore-words-list = "notin,iif"
+
+[tool.bandit]
+exclude_dirs = ["scripts/tests"]
+skips = ["B404", "B603", "B607"]
