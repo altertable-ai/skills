@@ -103,10 +103,6 @@ description: {Third-person description with trigger keywords}
     <description>Analyzes time series data for trends, anomalies, and forecasts. Use when detecting spikes or drops, predicting future values, identifying anomalies in metrics over time, or when the user asks about forecasting, projections, or unusual patterns in hourly/daily/weekly/monthly data.</description>
   </skill>
   <skill>
-    <name>integrating-external</name>
-    <description>Connects to external MCP servers and services for extended capabilities. Use when integrating with Amplitude, Omni, Slack, or other external tools, or when configuring notifications and external data sources.</description>
-  </skill>
-  <skill>
     <name>managing-discoveries</name>
     <description>Manages the discovery approval workflow and user feedback processing. Use when handling discovery reviews, understanding approval states, processing user feedback, or managing discovery lifecycle.</description>
   </skill>

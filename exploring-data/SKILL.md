@@ -13,8 +13,8 @@ metadata:
 
 To explore available data:
 1. List all connections to see available data sources
-2. Get connection details to see schemas and tables
-3. Explore semantic models for pre-defined metrics
+2. Get connection details to see schemas, tables, and columns
+3. List semantic models to discover pre-defined metrics and dimensions
 
 ## When to Use This Skill
 
@@ -28,21 +28,20 @@ To explore available data:
 
 ### Step 1: List Available Connections
 
-Start by listing all connections to see what data sources are available:
-- Each connection has a name, engine type, and slug
-- Connections can be data warehouses (Snowflake, BigQuery) or databases (PostgreSQL, MySQL)
-- Built-in connections include `altertable` (platform data) and `sample-data`
+List all connections via the Altertable MCP server. Each connection has a name, engine type, and slug.
+
+Built-in connections include `altertable` (platform data) and `sample-data`.
 
 ### Step 2: Get Connection Schema
 
-For each connection of interest:
-- Retrieve the full schema including catalogs, schemas, and tables
-- Each table includes column names, data types, and nullability
-- Note the catalog and schema names for query qualification
+Retrieve the full schema for a connection of interest:
+- Catalogs, schemas, and tables
+- Column names, data types, and nullability
+- Note the catalog and schema names for query qualification (e.g., `catalog.schema.table`)
 
 ### Step 3: Explore Semantic Models
 
-Semantic models provide pre-defined business logic:
+List semantic models to discover pre-defined business logic:
 - Dimensions (categorical attributes for grouping)
 - Measures (aggregations like count, sum, average)
 - Relations (join paths between sources)

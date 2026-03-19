@@ -2,6 +2,7 @@
 import re
 from html import escape
 from pathlib import Path
+from typing import Any
 
 import yaml
 from scorer.models import VALID_REQUIRES
@@ -12,12 +13,12 @@ FRONTMATTER_RE = re.compile(r"^---\s*\n(.+?)\n---", re.DOTALL)
 AVAILABLE_SKILLS_SECTION_RE = re.compile(r"(## Available Skills\n)\n.*?(?=\n## |\Z)", re.DOTALL)
 
 
-def parse_frontmatter(skill_file: Path) -> dict:
+def parse_frontmatter(skill_file: Path) -> dict[str, Any]:
     text = skill_file.read_text(encoding="utf-8")
-    match = FRONTMATTER_RE.match(text)
-    if not match:
+    frontmatter_match = FRONTMATTER_RE.match(text)
+    if not frontmatter_match:
         return {}
-    parsed = yaml.safe_load(match.group(1))
+    parsed = yaml.safe_load(frontmatter_match.group(1))
     return parsed if isinstance(parsed, dict) else {}
 
 

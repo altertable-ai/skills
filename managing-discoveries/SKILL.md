@@ -12,30 +12,19 @@ metadata:
 ## Quick Start
 
 To manage discoveries:
-1. List discoveries filtered by status using `list_discoveries`
-2. Inspect each discovery with `view_discovery` to get full details
-3. Accept, reject, or ignore using `update_discovery`
+1. List discoveries filtered by status via the Altertable MCP server
+2. Inspect each discovery to get full details (title, description, reasoning, status, data type, tags, plan)
+3. Accept, reject, or ignore based on your assessment
 4. When feedback arrives, extract the user's intent and act on it
 
 ## Listing Discoveries
 
-Use these tools to retrieve and act on discoveries:
+Use the Altertable MCP server to retrieve and act on discoveries:
 
-- `list_discoveries` -- Filter by status, date range, or search query
-- `view_discovery` -- Inspect a discovery's full details (title, description, reasoning, status, data type, tags, plan)
-- `update_discovery` -- Change a discovery's status (accept, reject, or ignore)
-- `suggest_discovery_replies` -- Generate reply suggestions for user feedback
-
-```
-# List pending discoveries awaiting action
-list_discoveries(status: "pending_review")
-
-# Inspect a specific discovery
-view_discovery(slug: "discovery-slug")
-
-# Accept or reject a discovery
-update_discovery(slug: "discovery-slug", status: "accepted")
-```
+- **List discoveries** -- filter by status, date range, or search query
+- **View a discovery** -- inspect full details including reasoning and plan
+- **Update a discovery** -- change status to accepted, rejected, or ignored
+- **Suggest replies** -- generate reply suggestions for user feedback
 
 Available statuses for filtering: `pending_review`, `accepted`, `rejected`, `ignored`.
 
@@ -112,6 +101,6 @@ When feedback includes free-text comments, parse them for:
 
 ## Reference Files
 
-- [Approval states](references/approval-states.md)
-- [Review patterns](references/review-patterns.md)
-- [Intent detection](references/intent-detection.md)
+- [Approval states](references/approval-states.md) - Read when a discovery is in an unexpected state or when you need to understand valid state transitions
+- [Review patterns](references/review-patterns.md) - Read when batch-reviewing multiple discoveries or designing a review strategy
+- [Intent detection](references/intent-detection.md) - Read when processing free-text feedback to extract actionable instructions

@@ -278,6 +278,6 @@ Good memories are **specific**, **actionable**, and **include context**.
 
 ## Reference Files
 
-- [Memory types](references/memory-types.md)
-- [Memory scopes](references/memory-scopes.md)
-- [Forgetting curve](references/forgetting-curve.md)
+- [Memory types](references/memory-types.md) - Read when choosing between episodic, semantic, and procedural memory types
+- [Memory scopes](references/memory-scopes.md) - Read when deciding the right scope (organization, workflow, agent, entity, user)
+- [Forgetting curve](references/forgetting-curve.md) - Read when tuning decay rates or understanding why memories disappeared
