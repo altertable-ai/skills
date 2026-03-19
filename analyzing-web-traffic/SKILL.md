@@ -11,213 +11,93 @@ metadata:
 
 ## Quick Start
 
-Web analytics focuses on:
-1. **Traffic volume**: Pageviews, sessions, visitors
-2. **Traffic sources**: Where users come from
-3. **User behavior**: What users do on site
-4. **Performance**: Bounce rate, time on site
+To analyze web traffic:
+1. Query pageview and session data via the Altertable MCP server
+2. Compare the current period against a previous period (WoW, MoM, or YoY)
+3. Segment by traffic source, device, geography, or page
+4. Surface anomalies, trends, and actionable findings
 
 ## When to Use This Skill
 
-- User asks about website traffic
-- Analyzing pageview patterns
-- Understanding traffic sources
-- Evaluating user engagement
-- Comparing time periods (WoW, MoM)
-
-## Key Metrics
-
-### Volume Metrics
-
-| Metric | Description |
-|--------|-------------|
-| Pageviews | Total page loads |
-| Sessions | User visit sequences |
-| Unique Visitors | Distinct users |
-| Pages/Session | Engagement depth |
-
-### Engagement Metrics
-
-| Metric | Description |
-|--------|-------------|
-| Bounce Rate | Single-page sessions % |
-| Avg Session Duration | Time spent per session |
-| Pages per Session | Pages viewed per visit |
-| Exit Rate | Sessions ending on page % |
-
-### Acquisition Metrics
-
-| Metric | Description |
-|--------|-------------|
-| Traffic by Source | Where users come from |
-| Referrer Analysis | Which sites send traffic |
-| Campaign Performance | Marketing channel results |
+- User asks about website traffic, pageviews, or sessions
+- Investigating traffic spikes, drops, or trends
+- Comparing traffic across time periods or segments
+- Evaluating traffic source mix or user engagement
 
 ## Analysis Workflow
 
-### Step 1: Set Time Frame
+### Step 1: Determine Scope and Time Frame
 
-- Define analysis period
-- Choose comparison period
-- Consider seasonality
+Ask the user (or infer from context):
+- **Period**: What date range to analyze (default to last 7 days if unspecified)
+- **Comparison**: What to compare against (previous period of equal length)
+- **Focus**: Overall traffic, a specific source, a specific page, or a segment
 
-### Step 2: Get Overview
+### Step 2: Query Traffic Data
 
-- Total traffic volume
-- Key metric trends
-- Any obvious anomalies
+Use the Altertable MCP server to fetch web analytics data. The primary tool returns the top 50 pages by pageviews, visitors, and sessions grouped by week, with breakdowns by URL, referrer, country, UTM source/campaign, device, and device type.
 
-### Step 3: Segment Analysis
+For deeper analysis, complement with SQL queries against the lakehouse to compute:
+- **Volume**: pageviews, sessions, unique visitors
+- **Engagement**: bounce rate, pages per session, avg session duration
+- **Acquisition**: traffic by source/medium, referrer breakdown
 
-- By traffic source
-- By device type
-- By geography
-- By page/section
+Always pull both the current period and the comparison period so you can compute deltas.
 
-### Step 4: Identify Patterns
+### Step 3: Segment the Data
 
-- Trends (up/down/flat)
-- Seasonality (weekly, monthly)
-- Anomalies (spikes, drops)
+Break down by at least one dimension to find where changes originate:
+- **Traffic source**: organic, paid, direct, social, referral, email
+- **Device type**: desktop, mobile, tablet
+- **Geography**: country, region
+- **Page or section**: top pages, landing pages, exit pages
 
-### Step 5: Interpret and Recommend
+When a top-level metric moves, drill into segments to isolate which segment drove the change.
 
-- Explain what's happening
-- Suggest actions
-- Flag concerns
+### Step 4: Identify Patterns and Anomalies
 
-## Traffic Source Analysis
+Look for:
+- **Trends**: sustained directional movement across multiple periods
+- **Anomalies**: single-period spikes or drops that break the pattern
+- **Shifts in mix**: a source growing as a share even if total traffic is flat
 
-### Source Categories
+Quantify every observation with absolute numbers and percentage change.
 
-| Source | Examples |
-|--------|----------|
-| Direct | Typed URL, bookmarks |
-| Organic Search | Google, Bing (non-paid) |
-| Paid Search | Google Ads, Bing Ads |
-| Social | Facebook, Twitter, LinkedIn |
-| Referral | Other websites |
-| Email | Email campaigns |
+### Step 5: Summarize and Recommend
 
-### Key Questions
+Present findings with:
+- The metric, its value, and the delta vs. the comparison period
+- Which segment is responsible for the change
+- A hypothesis for why (site changes, seasonality, campaigns)
+- A suggested next step or action when applicable
 
-- Which sources drive most traffic?
-- Which sources have best engagement?
-- Are source proportions changing?
-- Which sources convert best?
+## Time Period Comparison Guide
 
-## Time-Based Analysis
+| Comparison | When to Use |
+|------------|-------------|
+| WoW (week-over-week) | Short-term monitoring, recent changes |
+| MoM (month-over-month) | Growth tracking, campaign evaluation |
+| YoY (year-over-year) | Seasonal businesses, long-term trends |
 
-### Week-over-Week (WoW)
+Always compare equal-length periods. When comparing WoW, align on the same day of week. When comparing MoM, account for differing month lengths.
 
-Compare to same day last week:
-- Accounts for weekly patterns
-- Good for recent trends
-- Watch for holidays
+## Segmentation Priorities
 
-### Month-over-Month (MoM)
+When the user does not specify a segment, default to this order:
+1. **Traffic source** -- most common driver of traffic changes
+2. **Device type** -- surfaces mobile vs. desktop divergence
+3. **Top pages** -- pinpoints content driving volume shifts
 
-Compare to same period last month:
-- Accounts for monthly patterns
-- Good for growth tracking
-- Watch for calendar effects
-
-### Year-over-Year (YoY)
-
-Compare to same period last year:
-- Accounts for seasonality
-- Good for long-term trends
-- Watch for major changes
-
-## Page Analysis
-
-### Top Pages
-
-Identify most visited pages:
-- Landing pages
-- Popular content
-- Key conversion pages
-
-### Entry Pages
-
-Where sessions start:
-- First impression pages
-- SEO landing pages
-- Campaign destinations
-
-### Exit Pages
-
-Where sessions end:
-- Natural endpoints (thank you)
-- Problem areas (high unexpected exit)
-- Conversion endpoints
-
-## User Behavior Patterns
-
-### Engaged Users
-
-- Multiple pages per session
-- Longer session duration
-- Return visits
-- Conversion actions
-
-### Bouncing Users
-
-- Single page sessions
-- Very short duration
-- No subsequent visits
-- Consider: wrong traffic or poor experience
-
-### Journey Patterns
-
-Common paths through site:
-- Landing → Content → Conversion
-- Search → Product → Cart → Checkout
-- Blog → Product → Exit
-
-## Trend Interpretation
-
-### Growing Traffic
-
-Positive signals:
-- Content is resonating
-- SEO improvements working
-- Marketing effective
-
-Verify:
-- Quality of traffic (engagement)
-- Source sustainability
-- Conversion rates maintained
-
-### Declining Traffic
-
-Investigate:
-- Technical issues
-- Algorithm changes
-- Competitive pressure
-- Seasonal effects
-
-Check:
-- Specific sources affected
-- Specific pages affected
-- Timing of decline
-
-### Flat Traffic
-
-Consider:
-- Is this expected?
-- Market saturation?
-- Missed opportunities?
-- Need new initiatives?
+Only add geography or other dimensions if the first pass does not explain the change.
 
 ## Common Pitfalls
 
-- Ignoring seasonality in comparisons
-- Looking at pageviews without sessions
-- Not segmenting by source
-- Missing bot traffic
-- Confusing correlation with causation
-- Not considering site changes
+- **Reporting totals without comparison**: always include a delta to a prior period so the user can gauge significance
+- **Ignoring seasonality**: a WoW drop on a holiday week is expected, not alarming -- flag it rather than over-interpreting
+- **Mixing up pageviews and sessions**: these measure different things; present both when discussing volume
+- **Not drilling into segments**: a flat total can hide offsetting gains and losses across sources or pages
+- **Presenting numbers without context**: raw counts are meaningless without comparison, percentage change, or benchmarks
+- **Forgetting to check for tracking issues**: sudden drops to zero or impossible spikes often indicate instrumentation problems, not real traffic changes
 
 ## Reference Files
 

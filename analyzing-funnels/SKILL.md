@@ -11,227 +11,90 @@ metadata:
 
 ## Quick Start
 
-A funnel tracks users through sequential steps:
-1. Define the steps (events)
-2. Set conversion window
-3. Analyze drop-offs between steps
+To analyze a funnel:
+1. Clarify the user journey the user wants to measure
+2. Use the Altertable MCP server to create the funnel with the right steps, window, and ordering
+3. Query the funnel data and calculate drop-off rates per step
+4. Identify the biggest bottleneck and present actionable findings
 
 ## When to Use This Skill
 
-- Analyzing conversion flows
-- Measuring process completion
-- Identifying friction points
-- Optimizing user journeys
-- Comparing funnel performance
+- User asks about conversion rates, drop-offs, or completion rates
+- Analyzing a multi-step process (signup, checkout, onboarding, feature adoption)
+- Comparing funnel performance across segments or time periods
+- Identifying where users abandon a flow
 
-## Funnel Concepts
+## Core Workflow
 
-### Funnel Steps
+### Step 1: Define the Funnel
 
-Events that users must complete in sequence:
-- Step 1: Entry (e.g., page view)
-- Step 2-N: Intermediate actions
-- Final Step: Conversion goal
+Ask the user (or infer from context) what journey to measure. You need:
+- **Steps**: Ordered list of events from entry to conversion goal
+- **Conversion window**: Maximum time allowed to complete the funnel
+  - Use short windows (30 min) for session flows like checkout
+  - Use medium windows (24 hr) for day-bounded flows
+  - Use long windows (7+ days) for consideration flows like onboarding
+- **Ordering**: Strict (exact sequence required) or Any (steps in any order)
 
-### Conversion Window
+Default to **strict ordering** unless the user specifies otherwise.
 
-Maximum time allowed to complete funnel:
-- Short (30 min): Session-based
-- Medium (24 hr): Day-based
-- Long (7+ days): Consideration flows
+### Step 2: Preview and Create the Funnel
 
-### Ordering
+Use the Altertable MCP server to:
+1. Preview the funnel first to validate step definitions and check the data looks correct
+2. Once validated, create the funnel insight (or funnel insight discovery to save and share it)
+3. Query the funnel to retrieve per-step user counts
 
-- **Strict**: Steps must happen in exact order
-- **Any**: Steps can happen in any sequence
+### Step 3: Calculate Metrics
 
-## Analysis Framework
+For each step transition, compute:
 
-### Step 1: Understand the Flow
-
-Map the intended user journey:
-- What is the entry point?
-- What actions lead to conversion?
-- What is the end goal?
-
-### Step 2: Examine Overall Conversion
-
-Start with the big picture:
-- Total users entering funnel
-- Total conversions
-- Overall conversion rate
-
-### Step 3: Analyze Step-by-Step
-
-For each transition:
-- How many users proceed?
-- What's the drop-off rate?
-- Is this expected?
+| Metric | Formula |
+|--------|---------|
+| Step conversion rate | Users at step N+1 / Users at step N |
+| Step drop-off rate | 1 - Step conversion rate |
+| Overall conversion rate | Users at final step / Users at step 1 |
 
 ### Step 4: Identify Bottlenecks
 
-Find the biggest problems:
-- Largest absolute drop-off
-- Largest percentage drop
-- Unexpected patterns
+Find the step transition with:
+- The largest absolute user drop-off
+- The largest percentage drop-off
+- Any unexpected pattern (e.g., later steps dropping more than early steps)
 
-### Step 5: Recommend Actions
+### Step 5: Present Results
 
-Based on findings:
-- Which step needs attention?
-- What might improve it?
-- What to test?
+Present results as a step-by-step breakdown:
+- Show each step with user count, conversion rate, and drop-off rate
+- Highlight the primary bottleneck
+- Provide a concise recommendation tied to the bottleneck (what to investigate or improve)
 
-## Key Metrics
-
-### Per-Step Metrics
-
-| Metric | Formula |
-|--------|---------|
-| Step Entry | Users reaching step |
-| Step Completion | Users moving to next |
-| Step Conversion | Completion / Entry |
-| Step Drop-off | 1 - Conversion |
-
-### Overall Metrics
-
-| Metric | Formula |
-|--------|---------|
-| Total Entry | Users at Step 1 |
-| Total Conversion | Users at Final Step |
-| Overall CVR | Final / Entry |
-| Overall Drop-off | 1 - Overall CVR |
-
-## Common Funnel Patterns
-
-### E-commerce Checkout
-
+Format example:
 ```
-Product View → Add to Cart → Checkout → Payment → Confirmation
+Step 1: Page View         - 10,000 users
+Step 2: Add to Cart       -  1,200 users (12.0% conversion, 88.0% drop-off) <-- biggest drop
+Step 3: Checkout Started  -    800 users (66.7% conversion, 33.3% drop-off)
+Step 4: Purchase Complete -    720 users (90.0% conversion, 10.0% drop-off)
+
+Overall conversion: 7.2% (720 / 10,000)
+Bottleneck: Step 1 to Step 2 -- 88% of users drop off before adding to cart.
 ```
-
-Typical metrics:
-- View → Cart: 5-10%
-- Cart → Checkout: 40-60%
-- Checkout → Payment: 70-85%
-- Payment → Confirm: 95-99%
-
-### SaaS Signup
-
-```
-Landing Page → Start Signup → Complete Form → Verify Email → Activated
-```
-
-Typical metrics:
-- Landing → Start: 10-20%
-- Start → Complete: 60-80%
-- Complete → Verify: 70-90%
-- Verify → Active: 80-95%
-
-### Onboarding
-
-```
-Account Created → Profile Setup → First Action → Core Value → Retained
-```
-
-### Feature Adoption
-
-```
-Feature Discovered → Feature Tried → Feature Used Again → Regular Use
-```
-
-## Interpretation Guidelines
-
-### Healthy Drop-offs
-
-Some drop-off is normal:
-- Browsing without intent
-- Research phase
-- Changed mind (okay)
-
-### Concerning Drop-offs
-
-Investigate when:
-- Drop-off exceeds benchmarks
-- Drop-off increased suddenly
-- Drop-off at unexpected step
-
-### Comparing Funnels
-
-When comparing:
-- Same time periods
-- Same user segments
-- Account for seasonality
 
 ## Segmented Analysis
 
-### By Device
-
-Mobile vs Desktop funnels:
-- Mobile often has higher drop-off
-- Different UX challenges
-- Network/speed factors
-
-### By Traffic Source
-
-Source quality varies:
-- Paid traffic may convert differently
-- Organic often higher intent
-- Social may browse more
-
-### By User Type
-
-New vs Returning:
-- New users need more guidance
-- Returning may skip steps
-- Different expectations
-
-## Recommendations Framework
-
-### High Drop-off at Early Steps
-
-Possible issues:
-- Wrong traffic/expectations
-- Poor value proposition
-- Confusing entry point
-
-Actions:
-- Improve ad targeting
-- Clarify landing page
-- A/B test messaging
-
-### High Drop-off at Middle Steps
-
-Possible issues:
-- Friction in process
-- Missing information
-- Technical issues
-
-Actions:
-- Simplify forms
-- Add progress indicators
-- Fix UX issues
-
-### High Drop-off at Final Steps
-
-Possible issues:
-- Trust concerns
-- Unexpected costs
-- Technical failures
-
-Actions:
-- Add trust signals
-- Transparent pricing
-- Monitor errors
+When comparing funnels across segments (device, traffic source, user type):
+- Always compare identical step definitions and time periods
+- Call out which segment has the worst conversion and at which step
+- Account for sample size -- small segments can produce misleading rates
 
 ## Common Pitfalls
 
-- Too many steps (simplify)
-- Too few steps (missing insight)
-- Wrong conversion window
-- Ignoring segment differences
-- Not accounting for data lag
-- Comparing incomparable periods
+- **Wrong conversion window**: Too short cuts off legitimate conversions; too long inflates rates with unrelated sessions. Match the window to the expected user behavior.
+- **Too many steps**: Including minor intermediate events dilutes the analysis. Keep funnels to 3-7 meaningful steps.
+- **Too few steps**: Jumping from entry to conversion hides where users actually drop off.
+- **Ignoring ordering**: Using "any" ordering when the flow is inherently sequential produces misleading results.
+- **Comparing mismatched periods**: Ensure segments or time comparisons use the same date ranges and funnel definitions.
+- **Not previewing before creating an insight**: Always preview funnel results to verify step definitions are correct before saving.
 
 ## Reference Files
 

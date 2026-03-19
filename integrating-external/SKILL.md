@@ -11,326 +11,111 @@ metadata:
 
 ## Quick Start
 
-External integrations enable:
-1. Connecting to third-party data sources
-2. Sending notifications to external systems
-3. Extending agent capabilities
-4. Syncing with external platforms
+When a user asks about external integrations:
+1. Check which integrations are available via the Altertable MCP server
+2. Identify the integration type the user needs (data source, notification, or MCP server)
+3. Help the user configure the integration
+4. Verify the connection is working
 
 ## When to Use This Skill
 
-- Connecting to external MCP servers
-- Configuring Slack notifications
-- Integrating with Amplitude
-- Connecting to Omni
-- Setting up webhooks
-- Managing external data sources
+- User wants to connect an external data source (Amplitude, Omni, etc.)
+- User wants to send notifications to Slack or other channels
+- User wants to set up or troubleshoot an MCP server connection
+- User wants to configure webhooks for alerts or data sync
 
-## Integration Types
+## Core Workflow
 
-### MCP Servers
+### Step 1: Identify the Integration Type
 
-External Model Context Protocol servers:
-- Amplitude MCP
-- Omni MCP
-- Custom MCP servers
+Ask what the user is trying to accomplish, then map to the right integration:
 
-### Notification Channels
+| Goal | Integration Type |
+|------|-----------------|
+| Query product analytics events, cohorts, funnels | Amplitude MCP |
+| Query metrics, dashboards, reports | Omni MCP |
+| Send alerts or share discoveries | Slack notifications |
+| Push data to external systems | Webhooks |
+| Pull data from external APIs | Data connectors |
 
-Output destinations:
-- Slack
-- Email
-- Webhooks
-- Custom endpoints
+### Step 2: Check Existing Configuration
 
-### Data Connectors
+Before setting up a new integration:
+- List currently connected MCP servers and their status (each MCP server has a slug, OAuth state, and connection status)
+- Check if the requested integration is already configured
+- Verify credentials and permissions are in place
 
-External data sources:
-- Third-party APIs
-- External databases
-- SaaS platforms
+### Step 3: Configure the Integration
 
-## MCP Integration
+Follow the integration-specific procedure below.
 
-### What is MCP
+### Step 4: Verify the Connection
 
-Model Context Protocol enables:
-- Tool discovery
-- Context sharing
-- Capability extension
-- Standardized communication
-
-### Adding MCP Server
-
-```yaml
-mcp_server:
-  name: amplitude
-  url: https://mcp.amplitude.com
-  api_key: ${AMPLITUDE_API_KEY}
-  capabilities:
-    - query_events
-    - get_cohorts
-    - export_data
-```
-
-### Using MCP Tools
-
-Once connected:
-- Tools appear in agent context
-- Can be invoked by agents
-- Results flow back to analysis
-
-## Slack Integration
-
-### Setup
-
-Configure Slack connection:
-- Create Slack app
-- Set up OAuth
-- Configure permissions
-- Connect workspace
-
-### Notification Types
-
-| Type | Use Case |
-|------|----------|
-| Discovery alerts | New findings |
-| Watcher notifications | Automated monitoring |
-| Direct messages | Personal alerts |
-| Channel posts | Team updates |
-
-### Message Formatting
-
-Slack messages can include:
-- Rich text formatting
-- Charts and images
-- Interactive buttons
-- Thread replies
-
-### Channel Configuration
-
-```yaml
-slack_channel:
-  name: "#analytics-alerts"
-  notification_types:
-    - critical_discoveries
-    - daily_summaries
-  format: rich
-  mention_on_critical: true
-```
-
-## External Data Sources
-
-### API Integration
-
-Connect to external APIs:
-- REST endpoints
-- GraphQL APIs
-- Webhook receivers
-
-### Configuration
-
-```yaml
-external_source:
-  name: external_api
-  type: rest
-  base_url: https://api.example.com
-  auth:
-    type: bearer
-    token: ${API_TOKEN}
-  endpoints:
-    - path: /metrics
-      method: GET
-    - path: /events
-      method: POST
-```
-
-### Data Sync
-
-Options for syncing:
-- Real-time (webhooks)
-- Scheduled (polling)
-- On-demand (manual)
+After configuration:
+- Run a test query or send a test notification
+- Confirm the response is valid and data flows correctly
+- Report the result to the user
 
 ## Amplitude Integration
 
-### Capabilities
+To connect or use Amplitude:
+1. Verify the Amplitude MCP server is registered and reachable
+2. Confirm the API key is configured (stored as an environment variable, never hardcoded)
+3. Use available Amplitude tools to query events, cohorts, funnels, or retention data
+4. Return results to the user or feed them into insight creation
 
-With Amplitude MCP:
-- Query event data
-- Access cohorts
-- Run analyses
-- Export reports
-
-### Common Operations
-
-| Operation | Description |
-|-----------|-------------|
-| Query events | Fetch event data |
-| Get cohort | Retrieve user segment |
-| Run funnel | Analyze conversion |
-| Get retention | Analyze retention |
-
-### Example Usage
-
-```yaml
-amplitude_query:
-  event_type: "purchase_completed"
-  time_range: "last_30_days"
-  group_by: "product_category"
-  metrics:
-    - total_events
-    - unique_users
-```
+Available operations: query events, get cohorts, run funnel analysis, get retention data, export reports.
 
 ## Omni Integration
 
-### Capabilities
+To connect or use Omni:
+1. Verify the Omni MCP server is registered and reachable
+2. Confirm credentials are configured
+3. Use available Omni tools to query metrics, list dashboards, run reports, or explore dimensions
+4. Return results to the user or feed them into insight creation
 
-With Omni MCP:
-- Query metrics
-- Access dashboards
-- Run reports
-- Get dimensions
+Available operations: query metrics, list dashboards, get reports, explore data.
 
-### Common Operations
+## Slack Integration
 
-| Operation | Description |
-|-----------|-------------|
-| Query metric | Get metric values |
-| List dashboards | Find dashboards |
-| Get report | Run saved report |
-| Explore data | Ad-hoc analysis |
+Slack connects via OAuth and delivers notifications through an incoming webhook URL.
+
+To set up or use Slack notifications:
+1. Check if a Slack connection is already configured for the organization
+2. If not, guide the user through connecting their Slack workspace via the Altertable settings (OAuth flow)
+3. Help the user choose the target channel and notification types:
+   - Discovery alerts for new findings
+   - Watcher notifications for automated monitoring
+   - Channel posts for team updates
+4. Send a test notification to confirm delivery
+
+To disconnect Slack, use the disconnect tool. This removes the OAuth identity and stops all Slack notifications.
 
 ## Webhook Configuration
 
-### Incoming Webhooks
+To set up webhooks:
+1. Determine direction: incoming (receive data) or outgoing (send alerts/data)
+2. For outgoing webhooks: configure the target URL, authentication, and payload format
+3. For incoming webhooks: provide the webhook endpoint URL and expected payload schema
+4. Test the webhook with a sample payload and verify the response
 
-Receive data from external systems:
-- Event notifications
-- Data updates
-- Trigger signals
+## Data Connectors
 
-### Outgoing Webhooks
-
-Send data to external systems:
-- Discovery alerts
-- Status updates
-- Data exports
-
-### Webhook Security
-
-- Signature verification
-- IP whitelisting
-- Token authentication
-- HTTPS required
-
-## Integration Patterns
-
-### Data Enrichment
-
-```
-Internal Data → Query External → Combine → Analysis
-```
-
-### Cross-Platform Analysis
-
-```
-Amplitude Events + Internal Data → Unified Analysis
-```
-
-### Alert Distribution
-
-```
-Discovery → Slack + Email + Webhook
-```
-
-### Scheduled Sync
-
-```
-Every Hour: External API → Internal Storage → Analysis
-```
-
-## Authentication Methods
-
-### API Key
-
-Simple key-based auth:
-```yaml
-auth:
-  type: api_key
-  header: X-API-Key
-  value: ${API_KEY}
-```
-
-### OAuth 2.0
-
-Token-based auth:
-```yaml
-auth:
-  type: oauth2
-  client_id: ${CLIENT_ID}
-  client_secret: ${CLIENT_SECRET}
-  token_url: https://auth.example.com/token
-```
-
-### Bearer Token
-
-JWT or similar:
-```yaml
-auth:
-  type: bearer
-  token: ${BEARER_TOKEN}
-```
-
-## Error Handling
-
-### Retry Logic
-
-For transient failures:
-- Exponential backoff
-- Max retry limits
-- Circuit breakers
-
-### Fallback Behavior
-
-When integration fails:
-- Log error
-- Alert admin
-- Use cached data
-- Graceful degradation
-
-## Best Practices
-
-### Security
-
-- Store credentials securely
-- Use environment variables
-- Rotate tokens regularly
-- Audit access logs
-
-### Reliability
-
-- Implement retry logic
-- Monitor integration health
-- Set appropriate timeouts
-- Handle rate limits
-
-### Performance
-
-- Cache where appropriate
-- Batch requests
-- Use async operations
-- Monitor latency
+To connect an external API as a data source:
+1. Get the API base URL and authentication details from the user
+2. Configure the connection with appropriate auth (API key, bearer token, or OAuth)
+3. Define the endpoints to query and their expected response format
+4. Test the connection with a sample request
+5. Never store credentials in plain text -- always use environment variables
 
 ## Common Pitfalls
 
-- Hardcoded credentials
-- Missing error handling
-- Ignoring rate limits
-- No retry logic
-- Missing monitoring
-- Over-reliance on external
+- Attempting to configure an integration that is already active (check existing connections first)
+- Hardcoding credentials instead of using environment variables
+- Not testing the connection after setup -- always verify with a live request
+- Sending notifications to the wrong Slack channel without confirming with the user
+- Ignoring rate limits on external APIs, causing requests to fail silently
+- Creating duplicate MCP server registrations for the same service
 
 ## Reference Files
 
