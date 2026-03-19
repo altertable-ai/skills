@@ -58,10 +58,28 @@ Place detailed content in `references/`:
 
 Keep references **one level deep** (no nested directories).
 
+## Setup
+
+```bash
+git clone https://github.com/altertable-ai/skills.git
+cd skills
+uv sync
+uv run pre-commit install
+```
+
 ## Testing
 
 ```bash
 uv run skills validate ./skill-name
+uv run pytest scripts/tests/ -v
+```
+
+## Scoring
+
+Score a skill with the LLM judge (threshold: 70/100):
+
+```bash
+uv run python scripts/score-skills.py ./skill-name --verbose
 ```
 
 ## Style Guide
