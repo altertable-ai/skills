@@ -63,7 +63,7 @@ description: {Third-person description with trigger keywords}
 
 <available_skills>
   <skill>
-    <name>analyzing-charts</name>
+    <name>analyzing-insights</name>
     <description>Interprets chart data to identify patterns, anomalies, and trends. Use when analyzing visualizations, extracting insights from charts, explaining what data shows, or when asked about patterns in graphs.</description>
   </skill>
   <skill>

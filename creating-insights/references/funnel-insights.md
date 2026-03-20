@@ -214,7 +214,7 @@ Shows separate funnels for:
 
 ## Visualization
 
-### Funnel Chart
+### Funnel Insight
 
 Default visualization showing:
 - Step-by-step flow

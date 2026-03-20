@@ -1,8 +1,8 @@
-# Chart Types Reference
+# Insight Types Reference
 
-Detailed guide to each chart type available in Altertable.
+Detailed guide to each insight type available in Altertable.
 
-## SQL Charts
+## SQL Insights
 
 Custom SQL query visualized as a chart.
 
@@ -22,7 +22,7 @@ Query results with:
 - Verify aggregation level
 - Consider query performance
 
-## Semantic Charts
+## Semantic Insights
 
 Metrics from the semantic layer.
 
@@ -42,7 +42,7 @@ Metrics from the semantic layer.
 - Check filter application
 - Consider dimension cardinality
 
-## Segmentation Charts
+## Segmentation Insights
 
 User cohort and segment analysis.
 
@@ -62,7 +62,7 @@ User cohort and segment analysis.
 - Verify filter logic
 - Consider segment overlap
 
-## Funnel Charts
+## Funnel Insights
 
 Conversion flow analysis.
 
@@ -95,7 +95,7 @@ Value
   |   _/        \
   |__/           \__
   +------------------
-        Time
+       Time
 ```
 
 **Analysis focus**:
@@ -134,7 +134,7 @@ Value
   |  █████████████
   | ████████████████
   +------------------
-        Time
+       Time
 ```
 
 **Analysis focus**:
@@ -211,9 +211,9 @@ Other      ██             8%
 - Long tail
 - Concentration
 
-## Choosing the Right Type
+## Choosing the Right Visualization
 
-| Question | Chart Type |
+| Question | Visualization Type |
 |----------|------------|
 | How does X change over time? | Line, Area |
 | How do categories compare? | Bar, BarList |

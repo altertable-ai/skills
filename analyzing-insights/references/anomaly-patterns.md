@@ -1,6 +1,6 @@
 # Anomaly Patterns Reference
 
-Identifying and interpreting data anomalies in charts.
+Identifying and interpreting data anomalies in insights.
 
 ## Types of Anomalies
 
