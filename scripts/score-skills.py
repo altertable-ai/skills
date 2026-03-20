@@ -92,7 +92,8 @@ def score(
         print("Skipping LLM scoring due to validation errors", file=sys.stderr)
         sys.exit(1)
 
-    from scorer import fetch_spec_context, score_batch
+    from scorer.judges import score_batch
+    from scorer.spec import fetch_spec_context
 
     try:
         spec_context = fetch_spec_context()
