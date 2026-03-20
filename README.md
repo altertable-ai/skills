@@ -18,7 +18,7 @@ Agent Skills are an [open standard](https://agentskills.io/specification) for gi
 
 | Skill | Description |
 |-------|-------------|
-| [analyzing-charts](analyzing-charts/) | Interprets chart data to identify patterns, anomalies, and trends |
+| [analyzing-insights](analyzing-insights/) | Interprets chart data to identify patterns, anomalies, and trends |
 | [analyzing-funnels](analyzing-funnels/) | Creates and analyzes conversion funnels to understand user journeys |
 | [analyzing-web-traffic](analyzing-web-traffic/) | Analyzes web analytics data to identify traffic patterns |
 | [building-segments](building-segments/) | Creates user segments and cohorts using filters and dimensions |

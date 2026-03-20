@@ -1,7 +1,7 @@
 ---
 name: building-segments
 compatibility: Requires Altertable MCP server
-description: Creates user segments and cohorts using filters and dimensions. Use when segmenting users, building cohorts, filtering populations, defining audiences, or when asked about user groups.
+description: Builds segmentation insights to compare event behavior across cohorts using filters, dimensions, and breakdowns. Use when segmenting users, comparing event metrics by properties, building cohorts, filtering populations, or defining audiences.
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"
@@ -13,14 +13,16 @@ metadata:
 
 To build a segment:
 1. Clarify what user group the user wants to isolate
-2. Identify the primary dimension and filters from available semantic models
-3. Preview the segmentation insight via the Altertable MCP server to validate
-4. Create the segmentation insight (or segmentation insight discovery to save and share it)
+2. Select events/metrics and aggregation to compare across segments
+3. Identify breakdown dimensions and filters from available semantic models
+4. Preview the segmentation insight via the Altertable MCP server to validate
+5. Create the segmentation insight (or segmentation insight discovery to save and share it)
 
 ## When to Use This Skill
 
 - User asks to define a cohort or audience
 - Comparing user groups (e.g., free vs paid, active vs churned)
+- Comparing event behavior across properties (e.g., feature usage by plan, region, device)
 - Filtering a population for deeper analysis
 - Building a segment as input for a funnel, retention, or other insight
 
@@ -39,15 +41,21 @@ List semantic models and get connection details via the Altertable MCP server to
 
 ### Step 3: Build the Segment Definition
 
-A segment consists of:
+A segmentation setup typically includes:
 
 ```yaml
 segment:
   name: segment-name
   description: Human-readable description
+  event_definitions:
+    - event: "event_name"
+  aggregation_mode: Count
   primary_dimension_ref:
     source: source-slug
     name: dimension-name
+  breakdowns:
+    - source: source-slug
+      name: plan_type
   filters:
     - dimension: dimension-name
       operator: Eq

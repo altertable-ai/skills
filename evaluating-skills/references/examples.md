@@ -68,7 +68,7 @@ User request → Check keywords → Match to skill → Execute
 
 - Data question? → exploring-data
 - Need query? → querying-lakehouse
-- Chart output? → analyzing-charts
+- Chart output? → analyzing-insights
 ```
 
 ### Code Example (Technical)
@@ -155,7 +155,7 @@ Request
 ```markdown
 | Signal | Weight | Skill Match |
 |--------|--------|-------------|
-| "chart" in query | High | analyzing-charts |
+| "chart" in query | High | analyzing-insights |
 | "SQL" in query | High | querying-lakehouse |
 | "what data" | Medium | exploring-data |
 ```

@@ -1,13 +1,15 @@
 ---
 name: querying-lakehouse
 compatibility: Requires Altertable MCP server
-description: Writes and executes SQL queries against the DuckDB Lakehouse. Use when analyzing data, building reports, aggregating metrics, exploring tables, or when the user asks about data in connections.
+description: Writes and executes DuckDB SQL queries against Altertable's analytical database. Use when analyzing data, building reports, aggregating metrics, exploring tables, or when the user asks about data in connections.
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"
 ---
 
 # Querying the Lakehouse
+
+Altertable uses the DuckDB SQL dialect. Under the hood, queries run on hosted DuckDB workers over Parquet files stored in distributed object storage.
 
 ## Quick Start
 
@@ -35,6 +37,7 @@ Always qualify table names with `catalog.schema.table` format.
 ### Step 1: Understand the Data
 
 Before writing queries:
+
 - List available connections
 - Get schema details for relevant connections
 - Check if semantic models already define needed metrics
@@ -42,28 +45,31 @@ Before writing queries:
 ### Step 2: Validate SQL Syntax
 
 Always validate queries before execution:
+
 - Catches syntax errors early
 - Identifies missing tables or columns
 - Saves time on large queries
 
 ### Step 3: Explain Complex Queries
 
-For complex queries, use the `explain_sql` tool to get the execution plan. This tool analyzes a DuckLake SQL query and returns execution plan information including table scan estimates and file statistics. Use it to understand query performance characteristics before execution.
+For complex queries, use the `explain_sql` tool to get the execution plan. This tool analyzes a DuckDB SQL query and returns execution plan information including table scan estimates and file statistics. Use it to understand query performance characteristics before execution.
 
 The tool returns:
+
 - Table scan details (table name, estimated rows, filters applied)
 - Total files and bytes in scanned tables
 - Estimated files and bytes that will be scanned
-- Optionally, the raw DuckLake EXPLAIN plan (set `include_plan: true`)
+- Optionally, the raw EXPLAIN plan (set `include_plan: true`)
 
 ### Step 4: Execute and Analyze
 
 Run the query and interpret results:
+
 - Check row counts
 - Verify data types
 - Look for unexpected nulls or values
 
-## DuckDB SQL Patterns
+## DuckDB SQL Dialect Patterns
 
 ### Date and Time Functions
 
@@ -264,7 +270,7 @@ ORDER BY 1, 2
 ## Common Pitfalls
 
 - **Missing table qualification**: Always use `catalog.schema.table`
-- **PostgreSQL vs DuckDB syntax**: Some functions differ (e.g., `DATEADD` vs `date_add`)
+- **PostgreSQL vs DuckDB syntax**: Use DuckDB syntax; some functions differ (e.g., `DATEADD` vs `date_add`)
 - **Large result sets**: Always use `LIMIT` when exploring
 - **Not validating first**: Validate SQL before executing large queries
 - **Implicit type coercion**: Be explicit with casts (e.g., `::FLOAT`)

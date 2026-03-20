@@ -31,7 +31,7 @@ To create an insight:
 |------|----------|---------------|
 | SQL | Custom query results | Yes |
 | Semantic | Metrics from semantic layer | Yes |
-| Segmentation | User groups by attributes/properties | Yes |
+| Segmentation | Event metrics over time, compared across property-based segments | Yes |
 | Funnel | Conversion analysis | Yes |
 | Retention | Do users come back after an event? | Yes |
 | FYI | Informational findings | No |
@@ -53,7 +53,7 @@ Before choosing, triage through these questions:
 2. **Is the metric available in the semantic layer?** Yes → **Semantic**. Not sure → check the model first.
 3. **Is the finding about sequential user behavior** (steps, conversion, drop-off)? Yes → **Funnel**.
 4. **Is the finding about whether users come back** after a starting event? Yes → **Retention**.
-5. **Is the finding about grouping users by attributes/properties** (not sequence)? Yes → **Segmentation**.
+5. **Is the finding about comparing event metrics across cohorts or property breakdowns** (without ordered step dependencies)? Yes → **Segmentation**.
 6. **Does it require custom joins, calculations, or raw data not covered above?** Yes → **SQL**.
 
 Select based on the analysis:
@@ -61,7 +61,7 @@ Select based on the analysis:
 - **Retention Insight**: Whether users return after a starting event (start event → returning event over time)
 - **Semantic Insight**: Standard metrics from semantic models, trends, breakdowns
 - **SQL Insight**: Custom query with specific logic, joins, calculations not in the semantic layer
-- **Segmentation Insight**: User groups defined by attributes or properties (not sequential behavior)
+- **Segmentation Insight**: Event analysis over time with breakdowns by event, user, or session properties to compare segment behavior
 - **FYI Discovery**: Text-only observations, no visualization needed
 
 See the [`deciding-actions`](../deciding-actions/SKILL.md) skill for the full decision matrix and disambiguation rules.
@@ -153,20 +153,23 @@ For metrics from the semantic layer:
 
 ## Creating Segmentation Insights
 
-For user cohort analysis:
+For segment and cohort comparisons:
 
 ```
-1. Define the segment criteria
-2. Choose primary dimension
-3. Set time range
-4. Preview segment results
-5. Create discovery
+1. Select the events/metrics to analyze
+2. Choose aggregation (count, unique users, sum, average)
+3. Add breakdowns by event, user, or session properties
+4. Set filters and time range
+5. Preview segment results
+6. Create discovery
 ```
 
 ### Segmentation Parameters
 
-- `primary_dimension_ref`: Main grouping dimension
-- `filters`: Segment criteria
+- `event_definitions`: Which events to analyze
+- `aggregation_mode`: How to aggregate results (count, unique users, sum, average)
+- `breakdowns`: Properties used to compare segments
+- `filters`: Segment/filter criteria
 - `timeframe`: Analysis period
 
 ## Creating Funnel Insights

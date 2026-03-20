@@ -228,7 +228,7 @@ visualization: Metric
 
 ### Limit Dimensions
 
-- 1-2 dimensions for charts
+- 1-2 dimensions for insights
 - More dimensions → use Table
 
 ### Filter Early
