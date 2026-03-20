@@ -63,12 +63,12 @@ description: {Third-person description with trigger keywords}
 
 <available_skills>
   <skill>
-    <name>analyzing-charts</name>
-    <description>Interprets chart data to identify patterns, anomalies, and trends. Use when analyzing visualizations, extracting insights from charts, explaining what data shows, or when asked about patterns in graphs.</description>
-  </skill>
-  <skill>
     <name>analyzing-funnels</name>
     <description>Creates and analyzes conversion funnels to understand user journeys and drop-off points. Use when analyzing conversion, onboarding, checkout flows, or multi-step processes.</description>
+  </skill>
+  <skill>
+    <name>analyzing-insights</name>
+    <description>Interprets chart data to identify patterns, anomalies, and trends. Use when analyzing visualizations, extracting findings from charts, explaining what data shows, or when asked about patterns in graphs.</description>
   </skill>
   <skill>
     <name>analyzing-web-traffic</name>
@@ -76,7 +76,7 @@ description: {Third-person description with trigger keywords}
   </skill>
   <skill>
     <name>building-segments</name>
-    <description>Creates user segments and cohorts using filters and dimensions. Use when segmenting users, building cohorts, filtering populations, defining audiences, or when asked about user groups.</description>
+    <description>Builds segmentation insights to compare event behavior across cohorts using filters, dimensions, and breakdowns. Use when segmenting users, comparing event metrics by properties, building cohorts, filtering populations, or defining audiences.</description>
   </skill>
   <skill>
     <name>configuring-watchers</name>
@@ -107,12 +107,8 @@ description: {Third-person description with trigger keywords}
     <description>Manages the discovery approval workflow and user feedback processing. Use when handling discovery reviews, understanding approval states, processing user feedback, or managing discovery lifecycle.</description>
   </skill>
   <skill>
-    <name>modeling-semantics</name>
-    <description>Creates and maintains semantic models with dimensions, measures, and relations. Use when defining business metrics, creating reusable data models, setting up the semantic layer, or when users ask about dimensions and measures.</description>
-  </skill>
-  <skill>
     <name>querying-lakehouse</name>
-    <description>Writes and executes SQL queries against the DuckDB Lakehouse. Use when analyzing data, building reports, aggregating metrics, exploring tables, or when the user asks about data in connections.</description>
+    <description>Writes and executes DuckDB SQL queries against Altertable&#x27;s analytical database. Use when analyzing data, building reports, aggregating metrics, exploring tables, or when the user asks about data in connections.</description>
   </skill>
   <skill>
     <name>tracking-events</name>
@@ -120,7 +116,7 @@ description: {Third-person description with trigger keywords}
   </skill>
   <skill>
     <name>understanding-platform</name>
-    <description>Explains Altertable platform concepts and architecture. Use when user asks about organizations, environments, connections, versioning, or how the platform works.</description>
+    <description>Explains Altertable platform concepts and architecture. Use when users ask what Altertable is, how agents work, and how discoveries, memories, insights, and dashboards fit together.</description>
   </skill>
   <skill>
     <name>using-memory</name>

@@ -51,7 +51,7 @@ User Question
 ├─ Complex/custom/joins needed?
 │   └─ → SQL INSIGHT
 │
-├─ About segments/cohorts (by attributes, not sequence)?
+├─ About comparing event metrics across segments/cohorts?
 │   └─ → SEGMENTATION INSIGHT
 │
 └─ Just informing/acknowledging?
@@ -94,13 +94,14 @@ The phrase "users who" is ambiguous. Apply this test:
 
 | Pattern | Type | Why |
 |---------|------|-----|
-| "users who **have** property X" | Segmentation | Defining a group by attributes |
+| "users who **have** property X" | Segmentation | Defining a cohort for behavioral comparison |
 | "users who **did** event A **then** event B" | Funnel | Sequential event analysis |
+| "event count by plan/device/source" | Segmentation | Event metric comparison across property values |
 | "users **stuck at** step/level X" | Funnel | Step-to-step progression |
 | "users who **completed** X but **not** Y" | Funnel | Measuring drop-off between steps |
 | "users **in** segment/group X" | Segmentation | Pre-defined cohort |
 
-**Key test:** Is the finding about *who users are* (properties/attributes → segmentation) or *what users did in sequence* (events/steps → funnel)?
+**Key test:** Is the finding about *comparing event behavior across cohorts/properties* (→ segmentation) or *movement through ordered steps* (→ funnel)?
 
 **Disambiguation — Semantic vs SQL:**
 
@@ -173,8 +174,9 @@ Both involve user events over time. Apply this test:
 
 #### Use SEGMENTATION INSIGHT When
 
-- The output is a **user group**, not a metric value
-- Users are grouped by attributes or properties, not by sequential behavior
+- Comparing event metrics across cohorts (e.g., feature usage by plan, device, or region)
+- Breaking down events by event, user, or session properties
+- Segmenting behavior over time without requiring ordered steps
 - Building cohorts for targeting, comparison, or further analysis
 - Filtering users by dimensions like device, plan, region, etc.
 

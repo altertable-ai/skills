@@ -12,6 +12,7 @@ metadata:
 ## Quick Start
 
 To manage discoveries:
+
 1. List discoveries filtered by status via the Altertable MCP server
 2. Inspect each discovery to get full details (title, description, reasoning, status, data type, tags, plan)
 3. Accept, reject, or ignore based on your assessment
@@ -45,29 +46,22 @@ For batch reviews, sort by priority first, then group by topic, and apply the sa
 
 ## Discovery Lifecycle
 
-Discoveries flow through these states:
+From the user-facing perspective, discoveries flow through these states:
 
 ```
-pending_visualization_generation
-         |
-    pending_admin_review  -->  admin_rejected
-         |
-    pending_review
-         |
-  accepted | rejected | ignored
+pending_review  -->  accepted | rejected | ignored
 ```
 
-| State | Description | Next States |
-|-------|-------------|-------------|
-| `pending_visualization_generation` | Waiting for chart to be generated | pending_admin_review |
-| `pending_admin_review` | Awaiting admin approval | pending_review, admin_rejected |
-| `pending_review` | Approved by admin, awaiting organization action | accepted, rejected, ignored |
-| `accepted` | Accepted by organization | (terminal) |
-| `rejected` | Rejected by organization | (terminal) |
-| `ignored` | Ignored by organization | (terminal) |
-| `admin_rejected` | Admin rejected before organization sees it | (terminal) |
+| State            | Description                  | Next States                 |
+| ---------------- | ---------------------------- | --------------------------- |
+| `pending_review` | Awaiting organization action | accepted, rejected, ignored |
+| `accepted`       | Accepted by organization     | (terminal)                  |
+| `rejected`       | Rejected by organization     | (terminal)                  |
+| `ignored`        | Ignored by organization      | (terminal)                  |
 
-Some discoveries auto-approve (skip `pending_admin_review`) based on watcher configuration, confidence score, or organization settings. Do not assume every discovery passes through admin review.
+Internally, Altertable may place a human employee validation step before `pending_review` (for quality control). These internal states (for example, `pending_admin_review` and `admin_rejected`) are implementation details and should not be presented as end-user workflow states.
+
+Some discoveries bypass this internal validation step based on watcher configuration, confidence score, or organization settings.
 
 ## Processing User Feedback
 
@@ -78,15 +72,16 @@ When a user provides feedback on a discovery, follow this procedure:
 3. **Detect implicit preferences** -- Does the feedback signal a topic they care more or less about?
 4. **Take the corresponding action** immediately.
 
-| Feedback Type | Meaning | What to Do |
-|---------------|---------|------------|
-| `useful` | Valuable insight | Note what made it useful; produce more findings like it |
-| `not_useful` | No value | Identify why it missed; avoid similar findings |
-| `already_knew` | Known information | Deprioritize this topic unless new data appears |
-| `incorrect` | Wrong analysis | Investigate the error source; correct and re-create if warranted |
-| `follow_up` | Wants more detail | Continue the analysis and surface deeper findings |
+| Feedback Type  | Meaning           | What to Do                                                       |
+| -------------- | ----------------- | ---------------------------------------------------------------- |
+| `useful`       | Valuable insight  | Note what made it useful; produce more findings like it          |
+| `not_useful`   | No value          | Identify why it missed; avoid similar findings                   |
+| `already_knew` | Known information | Deprioritize this topic unless new data appears                  |
+| `incorrect`    | Wrong analysis    | Investigate the error source; correct and re-create if warranted |
+| `follow_up`    | Wants more detail | Continue the analysis and surface deeper findings                |
 
 When feedback includes free-text comments, parse them for:
+
 - Direct requests ("show me this by region")
 - Threshold adjustments ("only alert me if the change is over 10%")
 - Topic preferences ("I don't care about this metric")

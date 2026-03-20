@@ -1,17 +1,17 @@
 ---
-name: analyzing-charts
+name: analyzing-insights
 compatibility: Requires Altertable MCP server
-description: Interprets chart data to identify patterns, anomalies, and trends. Use when analyzing visualizations, extracting insights from charts, explaining what data shows, or when asked about patterns in graphs.
+description: Interprets chart data to identify patterns, anomalies, and trends. Use when analyzing visualizations, extracting findings from charts, explaining what data shows, or when asked about patterns in graphs.
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"
 ---
 
-# Analyzing Charts
+# Analyzing Insights
 
 ## Quick Start
 
-When analyzing a chart:
+When analyzing an insight:
 1. Identify the chart type and what it measures
 2. Look for patterns (trends, seasonality, anomalies)
 3. Quantify observations with specific numbers
@@ -19,7 +19,7 @@ When analyzing a chart:
 
 ## When to Use This Skill
 
-- User asks "what does this chart show?"
+- User asks "what does this insight show?"
 - Analyzing visualization results
 - Identifying trends or anomalies
 - Explaining patterns in data
@@ -231,6 +231,6 @@ Questions to answer:
 
 ## Reference Files
 
-- [Chart types detail](references/chart-types.md)
+- [Insight types detail](references/insight-types.md)
 - [Visualizations guide](references/visualizations.md)
 - [Anomaly patterns](references/anomaly-patterns.md)
