@@ -280,5 +280,6 @@ ORDER BY 1, 2
 
 - [DuckDB functions](references/duckdb-functions.md)
 - [Altertable DuckDB functions](references/altertable-duckdb-functions.md)
+- [Friendly DuckDB SQL](references/friendly-duckdb-sql.md)
 - [Query patterns](references/query-patterns.md)
 - [Optimization tips](references/optimization.md)
