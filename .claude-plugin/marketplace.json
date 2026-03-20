@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "alterable-skills",
-      "description": "Complete skill set for Altertable AI agents. Covers data exploration, semantic modeling, chart and funnel analysis, web traffic analysis, segment building, watcher configuration, insight creation, memory management, discovery management, event tracking, external integrations, and platform understanding.",
+      "description": "Skills for Altertable AI agents covering data exploration, querying, analysis, insights, and platform operations.",
       "version": "0.1.0",
       "source": "./",
       "strict": false
