@@ -5,13 +5,13 @@
   },
   "metadata": {
     "description": "Skills for Altertable AI agents",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "plugins": [
     {
       "name": "altertable-skills",
       "description": "Skills for Altertable AI agents covering data exploration, querying, analysis, insights, and platform operations.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "source": "./",
       "strict": false
     }
