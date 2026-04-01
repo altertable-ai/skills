@@ -14,6 +14,12 @@ Altertable uses the DuckDB SQL dialect. Under the hood, queries run on hosted Du
 ## Quick Start
 
 ```sql
+-- Discover table shape
+DESCRIBE catalog.schema.table
+
+-- Statistical profile (min, max, avg, nulls, unique counts)
+SUMMARIZE catalog.schema.table
+
 -- Basic query pattern
 SELECT column1, column2
 FROM catalog.schema.table
@@ -41,6 +47,13 @@ Before writing queries:
 - List available connections
 - Get schema details for relevant connections
 - Check if semantic models already define needed metrics
+- When column names are unknown, discover the table shape first:
+
+```sql
+DESCRIBE catalog.schema.table
+-- or
+SELECT * FROM catalog.schema.table LIMIT 1
+```
 
 ### Step 2: Validate SQL Syntax
 
