@@ -59,6 +59,10 @@ description: {Third-person description with trigger keywords}
 - Include trigger keywords
 - References one level deep only
 
+## Commands
+
+- `/altertable:ask <query>` -- routes user queries to the best skill (see `skills/ask/SKILL.md`)
+
 ## Available Skills
 
 <available_skills>
