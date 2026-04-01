@@ -13,12 +13,27 @@ A collection of [Agent Skills](https://agentskills.io) for [Altertable](https://
 
 Agent Skills are an [open standard](https://agentskills.io/specification) for giving AI agents specialized capabilities. Each skill is a self-contained folder with a `SKILL.md` file containing instructions that agents load on demand. Build once, use across any compatible platform.
 
+## Quick Start with `/altertable:ask`
+
+Don't know which skill to use? Just type:
+
+```
+/altertable:ask <your question>
+```
+
+The `/altertable:ask` command routes your query to the best skill automatically. Examples:
+
+- `/altertable:ask show me my web traffic` -> `analyzing-web-traffic`
+- `/altertable:ask what tables do I have?` -> `exploring-data`
+- `/altertable:ask analyze my signup funnel` -> `analyzing-funnels`
+- `/altertable:ask what is Altertable?` -> `understanding-platform`
+
 ## Available Skills
 
 | Skill | Description |
 |-------|-------------|
-| [analyzing-insights](analyzing-insights/) | Interprets chart data to identify patterns, anomalies, and trends |
 | [analyzing-funnels](analyzing-funnels/) | Creates and analyzes conversion funnels to understand user journeys |
+| [analyzing-insights](analyzing-insights/) | Interprets chart data to identify patterns, anomalies, and trends |
 | [analyzing-web-traffic](analyzing-web-traffic/) | Analyzes web analytics data to identify traffic patterns |
 | [building-segments](building-segments/) | Creates user segments and cohorts using filters and dimensions |
 | [configuring-watchers](configuring-watchers/) | Configures monitoring agents with intervals and targets |
@@ -28,7 +43,6 @@ Agent Skills are an [open standard](https://agentskills.io/specification) for gi
 | [exploring-data](exploring-data/) | Explores data connections and schemas |
 | [forecasting-timeseries](forecasting-timeseries/) | Analyzes time series data for trends, anomalies, and forecasts |
 | [managing-discoveries](managing-discoveries/) | Manages the discovery approval workflow and user feedback |
-| [modeling-semantics](modeling-semantics/) | Creates and maintains semantic models with dimensions and measures |
 | [querying-lakehouse](querying-lakehouse/) | Writes and executes SQL queries against the DuckDB Lakehouse |
 | [tracking-events](tracking-events/) | Works with product analytics events and user identification |
 | [understanding-platform](understanding-platform/) | Explains platform concepts and architecture |
