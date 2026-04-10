@@ -5,9 +5,11 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+from scorer.models import SKILLS_DIR as _SKILLS_DIR_NAME
 from scorer.models import VALID_REQUIRES
 
 ROOT = Path(__file__).resolve().parent.parent
+SKILLS_DIR = ROOT / _SKILLS_DIR_NAME
 AGENTS_FILE = ROOT / "AGENTS.md"
 FRONTMATTER_RE = re.compile(r"^---\s*\n(.+?)\n---", re.DOTALL)
 AVAILABLE_SKILLS_SECTION_RE = re.compile(r"(## Available Skills\n)\n.*?(?=\n## |\Z)", re.DOTALL)
@@ -22,10 +24,10 @@ def parse_frontmatter(skill_file: Path) -> dict[str, Any]:
     return parsed if isinstance(parsed, dict) else {}
 
 
-def build_skills_xml(root: Path) -> str:
+def build_skills_xml(skills_dir: Path) -> str:
     skills: list[tuple[str, str]] = []
     seen_names: set[str] = set()
-    for skill_file in sorted(root.glob("*/SKILL.md")):
+    for skill_file in sorted(skills_dir.glob("*/SKILL.md")):
         if skill_file.parent.name == "SKILL_TEMPLATE":
             continue
         fm = parse_frontmatter(skill_file)
@@ -69,7 +71,7 @@ def update_agents_md(agents_file: Path, skills_xml: str) -> None:
 
 
 def main() -> None:
-    skills_xml = build_skills_xml(ROOT)
+    skills_xml = build_skills_xml(SKILLS_DIR)
     update_agents_md(AGENTS_FILE, skills_xml)
     count = skills_xml.count("<skill>")
     print(f"Updated AGENTS.md with {count} skills")

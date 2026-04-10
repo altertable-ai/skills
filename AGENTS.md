@@ -9,10 +9,11 @@ A collection of skills for AI agents following the [Agent Skills Specification](
 ## Structure
 
 ```
-{skill-name}/
-  SKILL.md
-  references/
-    {topic}.md
+skills/
+  {skill-name}/
+    SKILL.md
+    references/
+      {topic}.md
 
 scripts/
   score-skills.py
@@ -79,6 +80,10 @@ description: {Third-person description with trigger keywords}
     <description>Analyzes web analytics data to identify traffic patterns and user behavior trends. Use when asked about pageviews, sessions, web metrics, traffic sources, or user behavior on websites.</description>
   </skill>
   <skill>
+    <name>ask</name>
+    <description>Routes user queries to the best Altertable skill. Invoke with /altertable:ask &lt;query&gt; when unsure which skill to use.</description>
+  </skill>
+  <skill>
     <name>building-segments</name>
     <description>Builds segmentation insights to compare event behavior across cohorts using filters, dimensions, and breakdowns. Use when segmenting users, comparing event metrics by properties, building cohorts, filtering populations, or defining audiences.</description>
   </skill>
@@ -134,5 +139,5 @@ description: {Third-person description with trigger keywords}
 uv sync
 uv run pre-commit install
 uv run pytest scripts/tests/
-uv run skills validate ./skill-name
+uv run skills validate ./skills/skill-name
 ```

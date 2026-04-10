@@ -4,8 +4,8 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - '*/SKILL.md'
-      - '*/references/**'
+      - 'skills/*/SKILL.md'
+      - 'skills/*/references/**'
 
 jobs:
   score:
@@ -24,10 +24,10 @@ jobs:
         uses: tj-actions/changed-files@v46
         with:
           files: |
-            */SKILL.md
-            */references/**
+            skills/*/SKILL.md
+            skills/*/references/**
           dir_names: true
-          dir_names_max_depth: 1
+          dir_names_max_depth: 2
           dir_names_exclude_current_dir: true
 
       - name: Install uv
@@ -41,7 +41,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           skills="${{ steps.changed.outputs.all_changed_files }}"
-          skills=$(echo "$skills" | tr ' ' '\n' | grep -v '^SKILL_TEMPLATE$' | tr '\n' ' ' | xargs)
+          skills=$(echo "$skills" | tr ' ' '\n' | grep -v 'SKILL_TEMPLATE' | tr '\n' ' ' | xargs)
           if [ -z "$skills" ]; then
             echo "No skills to score (only SKILL_TEMPLATE changed)"
             echo "skipped=1" >> $GITHUB_OUTPUT
