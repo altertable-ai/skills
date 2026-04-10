@@ -32,21 +32,21 @@ The `/altertable:ask` command routes your query to the best skill automatically.
 
 | Skill | Description |
 |-------|-------------|
-| [analyzing-funnels](analyzing-funnels/) | Creates and analyzes conversion funnels to understand user journeys |
-| [analyzing-insights](analyzing-insights/) | Interprets chart data to identify patterns, anomalies, and trends |
-| [analyzing-web-traffic](analyzing-web-traffic/) | Analyzes web analytics data to identify traffic patterns |
-| [building-segments](building-segments/) | Creates user segments and cohorts using filters and dimensions |
-| [configuring-watchers](configuring-watchers/) | Configures monitoring agents with intervals and targets |
-| [creating-insights](creating-insights/) | Creates discoveries with insights through the approval workflow |
-| [deciding-actions](deciding-actions/) | Decision matrices for choosing insight types and discovery actions |
-| [evaluating-skills](evaluating-skills/) | Evaluates and creates agent skills following best practices |
-| [exploring-data](exploring-data/) | Explores data connections and schemas |
-| [forecasting-timeseries](forecasting-timeseries/) | Analyzes time series data for trends, anomalies, and forecasts |
-| [managing-discoveries](managing-discoveries/) | Manages the discovery approval workflow and user feedback |
-| [querying-lakehouse](querying-lakehouse/) | Writes and executes SQL queries against the DuckDB Lakehouse |
-| [tracking-events](tracking-events/) | Works with product analytics events and user identification |
-| [understanding-platform](understanding-platform/) | Explains platform concepts and architecture |
-| [using-memory](using-memory/) | Stores and retrieves agent memories for learning and context |
+| [analyzing-funnels](skills/analyzing-funnels/) | Creates and analyzes conversion funnels to understand user journeys |
+| [analyzing-insights](skills/analyzing-insights/) | Interprets chart data to identify patterns, anomalies, and trends |
+| [analyzing-web-traffic](skills/analyzing-web-traffic/) | Analyzes web analytics data to identify traffic patterns |
+| [building-segments](skills/building-segments/) | Creates user segments and cohorts using filters and dimensions |
+| [configuring-watchers](skills/configuring-watchers/) | Configures monitoring agents with intervals and targets |
+| [creating-insights](skills/creating-insights/) | Creates discoveries with insights through the approval workflow |
+| [deciding-actions](skills/deciding-actions/) | Decision matrices for choosing insight types and discovery actions |
+| [evaluating-skills](skills/evaluating-skills/) | Evaluates and creates agent skills following best practices |
+| [exploring-data](skills/exploring-data/) | Explores data connections and schemas |
+| [forecasting-timeseries](skills/forecasting-timeseries/) | Analyzes time series data for trends, anomalies, and forecasts |
+| [managing-discoveries](skills/managing-discoveries/) | Manages the discovery approval workflow and user feedback |
+| [querying-lakehouse](skills/querying-lakehouse/) | Writes and executes SQL queries against the DuckDB Lakehouse |
+| [tracking-events](skills/tracking-events/) | Works with product analytics events and user identification |
+| [understanding-platform](skills/understanding-platform/) | Explains platform concepts and architecture |
+| [using-memory](skills/using-memory/) | Stores and retrieves agent memories for learning and context |
 
 ## Getting Started
 
@@ -60,7 +60,7 @@ uv run pre-commit install
 ### Validate a skill
 
 ```bash
-uv run skills validate ./skill-name
+uv run skills validate ./skills/skill-name
 ```
 
 ### Score a skill
@@ -68,7 +68,7 @@ uv run skills validate ./skill-name
 Every skill is scored by an LLM judge against the Agent Skills spec (threshold: 70/100):
 
 ```bash
-uv run python scripts/score-skills.py ./skill-name --verbose
+uv run python scripts/score-skills.py ./skills/skill-name --verbose
 ```
 
 ### Run tests
@@ -80,17 +80,18 @@ uv run pytest scripts/tests/ -v
 ## Creating a New Skill
 
 ```bash
-cp -r SKILL_TEMPLATE my-new-skill
+cp -r skills/SKILL_TEMPLATE skills/my-new-skill
 ```
 
 Each skill follows the [Agent Skills Specification](https://agentskills.io/specification):
 
 ```
-skill-name/
-  SKILL.md          # Required: metadata + instructions
-  references/       # Optional: detailed documentation
-  scripts/          # Optional: executable code
-  assets/           # Optional: templates, resources
+skills/
+  skill-name/
+    SKILL.md          # Required: metadata + instructions
+    references/       # Optional: detailed documentation
+    scripts/          # Optional: executable code
+    assets/           # Optional: templates, resources
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines.

@@ -4,6 +4,10 @@ import sys
 import tempfile
 from pathlib import Path
 
+from scorer.models import SKILLS_DIR
+
+SAMPLE_SKILL = str(Path(SKILLS_DIR) / "exploring-data")
+
 
 def _run_score(*args: str, env: dict | None = None) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
@@ -15,7 +19,7 @@ def _run_score(*args: str, env: dict | None = None) -> subprocess.CompletedProce
 
 
 def test_validate_only_passes_for_valid_skill():
-    result = _run_score("exploring-data", "--validate_only")
+    result = _run_score(SAMPLE_SKILL, "--validate_only")
 
     assert result.returncode == 0
     assert "valid" in result.stdout.lower()
@@ -38,7 +42,7 @@ def test_validate_only_works_without_litellm():
         startup = f.name
 
     env = {**os.environ, "PYTHONSTARTUP": startup}
-    result = _run_score("exploring-data", "--validate_only", env=env)
+    result = _run_score(SAMPLE_SKILL, "--validate_only", env=env)
 
     assert result.returncode == 0, result.stderr
     assert "valid" in result.stdout.lower()

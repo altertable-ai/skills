@@ -7,7 +7,7 @@ Guidelines for creating and modifying skills following the [Agent Skills Specifi
 ### 1. Directory Structure
 
 ```bash
-cp -r SKILL_TEMPLATE my-new-skill
+cp -r skills/SKILL_TEMPLATE skills/my-new-skill
 ```
 
 ### 2. Naming Convention
@@ -70,7 +70,7 @@ uv run pre-commit install
 ## Testing
 
 ```bash
-uv run skills validate ./skill-name
+uv run skills validate ./skills/skill-name
 uv run pytest scripts/tests/ -v
 ```
 
@@ -79,7 +79,7 @@ uv run pytest scripts/tests/ -v
 Score a skill with the LLM judge (threshold: 70/100):
 
 ```bash
-uv run python scripts/score-skills.py ./skill-name --verbose
+uv run python scripts/score-skills.py ./skills/skill-name --verbose
 ```
 
 ## Style Guide
