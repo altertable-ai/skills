@@ -4,9 +4,9 @@ The MCP task-creation tool accepts three type values. All three run AI analysis 
 
 ## anomaly_detection
 
-AI detects outliers and unusual values in a chart's data.
+AI detects outliers and unusual values in an Insight's data.
 
-**Target**: Chart slug
+**Target**: Insight slug
 
 **Good for**: flagging sudden spikes, drops, or anomalies that break from the metric's recent pattern.
 
@@ -15,9 +15,9 @@ AI detects outliers and unusual values in a chart's data.
 
 ## forecast
 
-AI projects future values from a chart's data and flags divergence from expectations.
+AI projects future values from an Insight's data and flags divergence from expectations.
 
-**Target**: Chart slug
+**Target**: Insight slug
 
 **Good for**: projecting future values, setting expectations, and alerting when actuals diverge from the projection.
 
@@ -26,9 +26,9 @@ AI projects future values from a chart's data and flags divergence from expectat
 
 ## monitor
 
-Open-ended AI analysis of a chart or dashboard.
+Open-ended AI analysis of an Insight or Dashboard.
 
-**Target**: Chart or dashboard slug
+**Target**: Insight or Dashboard slug
 
 **Good for**: cross-metric analysis, narrative insights, or any analysis not captured by the other types.
 
@@ -41,4 +41,4 @@ Open-ended AI analysis of a chart or dashboard.
 |------|------|
 | Find unexpected patterns in a metric | `anomaly_detection` |
 | Project future values | `forecast` |
-| Open-ended AI analysis of charts or dashboards | `monitor` |
+| Open-ended AI analysis of Insights or Dashboards | `monitor` |

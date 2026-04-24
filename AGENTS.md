@@ -73,7 +73,7 @@ description: {Third-person description with trigger keywords}
   </skill>
   <skill>
     <name>analyzing-insights</name>
-    <description>Interprets chart data to identify patterns, anomalies, and trends. Use when analyzing visualizations, extracting findings from charts, explaining what data shows, or when asked about patterns in graphs.</description>
+    <description>Interprets Insight data to identify patterns, anomalies, and trends. Use when analyzing visualizations, extracting findings from Insights, explaining what data shows, or when asked about patterns in graphs.</description>
   </skill>
   <skill>
     <name>analyzing-web-traffic</name>
@@ -89,7 +89,7 @@ description: {Third-person description with trigger keywords}
   </skill>
   <skill>
     <name>configuring-tasks</name>
-    <description>Configures scheduled AI tasks that analyze charts and dashboards on a cron and create discoveries for anomaly detection, forecasting, or open-ended monitoring. Use when the user wants recurring automated analysis, alerts, or monitoring driven by AI instructions.</description>
+    <description>Configures scheduled AI tasks that analyze Insights and Dashboards on a cron and create discoveries for anomaly detection, forecasting, or open-ended monitoring. Use when the user wants recurring automated analysis, alerts, or monitoring driven by AI instructions.</description>
   </skill>
   <skill>
     <name>creating-insights</name>

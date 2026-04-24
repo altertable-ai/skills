@@ -204,13 +204,13 @@ When the user needs **automated, recurring analysis** rather than a one-off insi
 ```
 User wants automation
 │
-├─ Detect outliers/anomalies in a chart?
+├─ Detect outliers/anomalies in an Insight?
 │   └─ → anomaly_detection task
 │
-├─ Project future values from a chart?
+├─ Project future values from an Insight?
 │   └─ → forecast task
 │
-└─ Open-ended AI analysis of chart/dashboard?
+└─ Open-ended AI analysis of an Insight/Dashboard?
     └─ → monitor task
 ```
 

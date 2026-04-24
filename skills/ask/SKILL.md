@@ -24,11 +24,11 @@ Central entry point for Altertable skills. Every Altertable task starts here. Ma
 | `querying-lakehouse` | Run an ad-hoc SQL query against the lakehouse to answer a specific question |
 | `analyzing-funnels` | Build or analyze a step-by-step conversion flow (drop-off between ordered events) |
 | `analyzing-web-traffic` | Web analytics: pageviews, sessions, traffic sources, UTM, device, country breakdowns |
-| `analyzing-insights` | Interpret an existing chart or visualization the user is looking at |
+| `analyzing-insights` | Interpret an existing Insight or visualization the user is looking at |
 | `building-segments` | Define or compare user cohorts by properties (not step-based) |
 | `forecasting-timeseries` | Project future metric values or detect whether a change is within normal range |
 | `tracking-events` | Work with tracked product analytics events, identities, or traits (querying or advising on instrumentation) |
-| `creating-insights` | Create a new chart or discovery that will be saved and visible to users |
+| `creating-insights` | Create a new Insight or discovery that will be saved and visible to users |
 | `deciding-actions` | Decide which insight or task type to use, or whether to create / update / skip a discovery |
 | `managing-discoveries` | Review, approve, or reject existing discoveries and process user feedback on them |
 | `configuring-tasks` | Set up a scheduled AI task (anomaly detection, forecast, monitor) that runs on a cron |
