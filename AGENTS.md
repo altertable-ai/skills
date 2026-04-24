@@ -73,7 +73,7 @@ description: {Third-person description with trigger keywords}
   </skill>
   <skill>
     <name>analyzing-insights</name>
-    <description>Interprets chart data to identify patterns, anomalies, and trends. Use when analyzing visualizations, extracting findings from charts, explaining what data shows, or when asked about patterns in graphs.</description>
+    <description>Interprets Insight data to identify patterns, anomalies, and trends. Use when analyzing visualizations, extracting findings from Insights, explaining what data shows, or when asked about patterns in graphs.</description>
   </skill>
   <skill>
     <name>analyzing-web-traffic</name>
@@ -81,15 +81,15 @@ description: {Third-person description with trigger keywords}
   </skill>
   <skill>
     <name>ask</name>
-    <description>Routes user queries to the best Altertable skill. Invoke with /altertable:ask &lt;query&gt; when unsure which skill to use.</description>
+    <description>Routes the user&#x27;s query to the best-fit Altertable skill. Use when an AI agent needs to decide which Altertable skill to invoke for a user request.</description>
   </skill>
   <skill>
     <name>building-segments</name>
     <description>Builds segmentation insights to compare event behavior across cohorts using filters, dimensions, and breakdowns. Use when segmenting users, comparing event metrics by properties, building cohorts, filtering populations, or defining audiences.</description>
   </skill>
   <skill>
-    <name>configuring-watchers</name>
-    <description>Configures monitoring agents (watchers) with intervals and targets. Use when setting up automated monitoring, scheduled analysis, alerts, or autonomous data observation.</description>
+    <name>configuring-tasks</name>
+    <description>Configures scheduled AI tasks that analyze Insights and Dashboards on a cron and create discoveries for anomaly detection, forecasting, or open-ended monitoring. Use when the user wants recurring automated analysis, alerts, or monitoring driven by AI instructions.</description>
   </skill>
   <skill>
     <name>creating-insights</name>
@@ -97,7 +97,7 @@ description: {Third-person description with trigger keywords}
   </skill>
   <skill>
     <name>deciding-actions</name>
-    <description>Decision matrices for choosing insight types, discovery actions, and avoiding duplicates. Use when deciding between funnel, retention, semantic, segmentation, or SQL insights, or when determining whether to create, update, or skip discoveries.</description>
+    <description>Decision matrices for choosing insight types (funnel, retention, semantic, segmentation, SQL), task types (anomaly_detection, forecast, monitor), discovery actions, and avoiding duplicates. Use when deciding between insight or task types, or when determining whether to create, update, or skip discoveries.</description>
   </skill>
   <skill>
     <name>evaluating-skills</name>

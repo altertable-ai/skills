@@ -7,12 +7,12 @@ Record specific events with outcomes.
 **Characteristics:**
 - Time-bound (when did it happen?)
 - Context-rich (what was the situation?)
-- Has an outcome (success, failure, rejected, accepted)
+- Has an outcome (success, failure, rejected, approved)
 
 **Examples:**
 - "Created DSC-789 for 15% revenue drop. User rejected - threshold should be 20%."
 - "Analysis of churn patterns completed successfully, identified weekend spike."
-- "Funnel insight DSC-456 was accepted - user confirmed conversion drop was actionable."
+- "Funnel insight DSC-456 was approved - user confirmed conversion drop was actionable."
 
 **Include:**
 - What happened

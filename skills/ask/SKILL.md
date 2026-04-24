@@ -1,43 +1,48 @@
 ---
 name: ask
-description: Routes user queries to the best Altertable skill. Invoke with /altertable:ask <query> when unsure which skill to use.
+description: Routes the user's query to the best-fit Altertable skill. Use when an AI agent needs to decide which Altertable skill to invoke for a user request.
 metadata:
   author: altertable-ai
 ---
 
-# Altertable
+# Altertable Ask
 
-Entry point for all Altertable skills. Match the user's query to the best skill and invoke it.
+Central entry point for Altertable skills. Every Altertable task starts here. Match the user query to the best available skill and hand off.
 
-1. Read the user's query: `$ARGUMENTS`
-2. Match it against the routing table below
-3. Invoke the best matching skill using the Skill tool
-4. If no clear match, invoke `understanding-platform` to orient the user
+## Procedure
+
+1. Read the user's query.
+2. Match the query against the routing table below, then apply the rules.
+3. Invoke the matched skill via the Skill tool, passing the original query through so the matched skill has full context.
+4. If no skill matches with confidence, invoke `understanding-platform` to orient the user.
 
 ## Routing Table
 
 | Skill | When to route |
 |-------|---------------|
-| `exploring-data` | Asks about tables, columns, schemas, data sources, what data is available |
-| `querying-lakehouse` | Wants to run SQL, query data, build reports, aggregate metrics, analyze data in connections |
-| `analyzing-funnels` | Asks about conversion rates, user journeys, drop-off, step progression, onboarding flows |
-| `analyzing-web-traffic` | Asks about pageviews, sessions, traffic sources, web metrics, user behavior on websites |
-| `analyzing-insights` | Wants to interpret charts, understand patterns in visualizations, explain what data shows |
-| `building-segments` | Wants to segment users, compare cohorts, filter by properties, build audiences |
-| `forecasting-timeseries` | Asks about trends, anomalies, predictions, spikes, drops, forecasting, projections |
-| `tracking-events` | Asks about event tracking, user identification, aliasing, traits, analytics instrumentation |
-| `creating-insights` | Wants to save findings, create visualizations, surface patterns, share analysis results |
-| `deciding-actions` | Unsure which insight type to use, choosing between funnel/retention/semantic/SQL/segmentation |
-| `managing-discoveries` | Asks about discovery approval, review workflow, user feedback, discovery lifecycle |
-| `configuring-watchers` | Wants to set up monitoring, scheduled analysis, alerts, autonomous data observation |
-| `using-memory` | Wants to save findings, recall past analysis, build knowledge, search for context |
-| `evaluating-skills` | Asks about skill quality, writing new skills, skill structure or specification |
-| `understanding-platform` | Asks what Altertable is, how agents work, platform concepts, architecture overview |
+| `exploring-data` | Discover what data exists: connections, schemas, tables, columns, semantic models |
+| `querying-lakehouse` | Run an ad-hoc SQL query against the lakehouse to answer a specific question |
+| `analyzing-funnels` | Build or analyze a step-by-step conversion flow (drop-off between ordered events) |
+| `analyzing-web-traffic` | Web analytics: pageviews, sessions, traffic sources, UTM, device, country breakdowns |
+| `analyzing-insights` | Interpret an existing Insight or visualization the user is looking at |
+| `building-segments` | Define or compare user cohorts by properties (not step-based) |
+| `forecasting-timeseries` | Project future metric values or detect whether a change is within normal range |
+| `tracking-events` | Work with tracked product analytics events, identities, or traits (querying or advising on instrumentation) |
+| `creating-insights` | Create a new Insight or discovery that will be saved and visible to users |
+| `deciding-actions` | Decide which insight or task type to use, or whether to create / update / skip a discovery |
+| `managing-discoveries` | Review, approve, or reject existing discoveries and process user feedback on them |
+| `configuring-tasks` | Set up a scheduled AI task (anomaly detection, forecast, monitor) that runs on a cron |
+| `using-memory` | Persist or retrieve agent-side context across runs (not user-visible findings; that is `creating-insights`) |
+| `evaluating-skills` | Review or author agent skills themselves (skill structure, spec, quality) |
+| `understanding-platform` | Explain Altertable concepts, architecture, or how agents work |
+
+When a skill is added, renamed, or removed from this repository, update this table in the same change.
 
 ## Routing Rules
 
-1. **Single best match**: Pick the one skill that best fits the query. Do not invoke multiple skills.
-2. **Ambiguous queries**: If the query could match multiple skills, prefer the more specific one (e.g., `analyzing-funnels` over `querying-lakehouse` for "conversion funnel").
-3. **Data-first queries**: If the user wants to analyze data but doesn't specify how, start with `exploring-data` to understand what's available.
-4. **Unknown queries**: If the query doesn't match any skill, invoke `understanding-platform` to explain what Altertable can do.
-5. **Pass arguments through**: When invoking the matched skill, pass the original `$ARGUMENTS` so the skill has the full user context.
+1. **Single best match**: pick one skill. Do not fan out.
+2. **Prefer the narrower skill**: when two skills could match, prefer the more specific one.
+3. **Data-first when intent is vague**: if the user wants to analyze data but does not specify how, start with `exploring-data`.
+4. **Fallback for unknown queries**: if nothing matches with confidence, route to `understanding-platform`.
+5. **Pass context through**: hand the original query to the matched skill.
+6. **Never invent a skill**: only invoke skills that are actually installed.

@@ -1,7 +1,7 @@
 ---
 name: deciding-actions
 compatibility: Requires Altertable MCP server
-description: Decision matrices for choosing insight types, discovery actions, and avoiding duplicates. Use when deciding between funnel, retention, semantic, segmentation, or SQL insights, or when determining whether to create, update, or skip discoveries.
+description: Decision matrices for choosing insight types (funnel, retention, semantic, segmentation, SQL), task types (anomaly_detection, forecast, monitor), discovery actions, and avoiding duplicates. Use when deciding between insight or task types, or when determining whether to create, update, or skip discoveries.
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"
@@ -12,14 +12,16 @@ metadata:
 ## Quick Start
 
 This skill provides decision frameworks for:
-1. Choosing the right insight type
-2. Deciding discovery actions (new/update/skip)
-3. Avoiding duplicate discoveries
-4. Selecting analysis approaches
+1. Choosing the right insight type (funnel, retention, semantic, segmentation, SQL)
+2. Choosing the right task type (anomaly_detection, forecast, monitor)
+3. Deciding discovery actions (new/update/skip)
+4. Avoiding duplicate discoveries
+5. Selecting analysis approaches
 
 ## When to Use This Skill
 
-- Choosing between funnel, retention, semantic, or SQL insights
+- Choosing between funnel, retention, semantic, segmentation, or SQL insights
+- Choosing a task type for automated monitoring (anomaly_detection, forecast, monitor)
 - Deciding whether to create a new discovery
 - Checking for duplicate discoveries
 - Selecting the right analysis method
@@ -53,6 +55,9 @@ User Question
 │
 ├─ About comparing event metrics across segments/cohorts?
 │   └─ → SEGMENTATION INSIGHT
+│
+├─ Need automated recurring analysis?
+│   └─ → TASK (see configuring-tasks skill)
 │
 └─ Just informing/acknowledging?
     └─ → FYI DISCOVERY
@@ -192,6 +197,25 @@ Both involve user events over time. Apply this test:
 
 **Keywords**: thanks, got it, understood, noted, will do
 
+## Task Type Decision Matrix
+
+When the user needs **automated, recurring analysis** rather than a one-off insight, choose a task type:
+
+```
+User wants automation
+│
+├─ Detect outliers/anomalies in an Insight?
+│   └─ → anomaly_detection task
+│
+├─ Project future values from an Insight?
+│   └─ → forecast task
+│
+└─ Open-ended AI analysis of an Insight/Dashboard?
+    └─ → monitor task
+```
+
+See the **configuring-tasks** skill for full task creation workflow.
+
 ## Discovery Action Decision Matrix
 
 ### Create vs Update vs Skip
@@ -281,7 +305,7 @@ Need data?
 | "What's the conversion..." | Funnel | SQL with steps |
 | "Do users come back after..." | Retention | Funnel fallback |
 | "Compare A vs B" | Semantic comparison | SQL union |
-| "Predict/forecast" | Not supported | Explain limitation |
+| "Predict/forecast" | Forecast task | Semantic trend as fallback |
 
 ### Complexity Assessment
 

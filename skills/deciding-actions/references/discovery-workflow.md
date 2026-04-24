@@ -15,7 +15,7 @@ What initiates a potential discovery:
 | Trigger Type | Example |
 |--------------|---------|
 | User question | "How is revenue doing?" |
-| Watcher alert | Threshold exceeded |
+| Task alert | Threshold exceeded |
 | Scheduled analysis | Daily summary |
 | Pattern detection | Anomaly found |
 | Follow-up | Continuing conversation |
@@ -41,7 +41,7 @@ Should I create a discovery?
 │
 ├─ User explicitly asked? → YES, create
 │
-├─ Watcher triggered? → Check threshold, likely YES
+├─ Task triggered? → Check threshold, likely YES
 │
 ├─ Duplicate detected? → NO, skip
 │
@@ -103,10 +103,10 @@ User asks question
     └─ NO → Ask clarifying question
 ```
 
-### Watcher Trigger
+### Task Trigger
 
 ```
-Watcher fires
+Task fires
 │
 ├─ Above significance threshold?
 │   ├─ YES → CREATE alert discovery
@@ -233,7 +233,7 @@ Pattern detected
 ### Alert Discovery Flow
 
 ```
-1. Watcher triggers
+1. Task triggers
 2. Verify threshold breach
 3. Check if already alerted
 4. Assess severity

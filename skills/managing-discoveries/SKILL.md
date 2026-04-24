@@ -14,8 +14,8 @@ metadata:
 To manage discoveries:
 
 1. List discoveries filtered by status via the Altertable MCP server
-2. Inspect each discovery to get full details (title, description, reasoning, status, data type, tags, plan)
-3. Accept, reject, or ignore based on your assessment
+2. Inspect each discovery to get full details (title, summary, explanation, content, status)
+3. Approve or reject based on your assessment
 4. When feedback arrives, extract the user's intent and act on it
 
 ## Listing Discoveries
@@ -23,11 +23,10 @@ To manage discoveries:
 Use the Altertable MCP server to retrieve and act on discoveries:
 
 - **List discoveries** -- filter by status, date range, or search query
-- **View a discovery** -- inspect full details including reasoning and plan
-- **Update a discovery** -- change status to accepted, rejected, or ignored
-- **Suggest replies** -- generate reply suggestions for user feedback
+- **View a discovery** -- inspect full details including explanation
+- **Review a discovery** -- approve or reject
 
-Available statuses for filtering: `pending_review`, `accepted`, `rejected`, `ignored`.
+Available statuses for filtering: `pending`, `approved`, `rejected`.
 
 ## Reviewing a Discovery
 
@@ -38,64 +37,52 @@ When you need to review a discovery, follow these steps in order:
 3. **Assess actionability** -- Can the reader do something with this information? If not, reject.
 4. **Evaluate timing** -- Is this finding still current, or has the data gone stale?
 5. **Decide**:
-   - **Accept** if steps 1-4 all pass.
+   - **Approve** if steps 1-4 all pass.
    - **Reject** if the analysis is wrong, duplicated, or not actionable.
-   - **Ignore** if the finding is low-priority and not worth surfacing.
 
 For batch reviews, sort by priority first, then group by topic, and apply the same five-step check to each.
 
 ## Discovery Lifecycle
 
-From the user-facing perspective, discoveries flow through these states:
+Discoveries flow through these states:
 
 ```
-pending_review  -->  accepted | rejected | ignored
+pending  -->  approved | rejected
 ```
 
-| State            | Description                  | Next States                 |
-| ---------------- | ---------------------------- | --------------------------- |
-| `pending_review` | Awaiting organization action | accepted, rejected, ignored |
-| `accepted`       | Accepted by organization     | (terminal)                  |
-| `rejected`       | Rejected by organization     | (terminal)                  |
-| `ignored`        | Ignored by organization      | (terminal)                  |
+| State      | Description             | Transitions                    |
+| ---------- | ----------------------- | ------------------------------ |
+| `pending`  | Awaiting review         | approve → approved; reject → rejected |
+| `approved` | Approved                | reject → rejected              |
+| `rejected` | Rejected                | approve → approved             |
 
-Internally, Altertable may place a human employee validation step before `pending_review` (for quality control). These internal states (for example, `pending_admin_review` and `admin_rejected`) are implementation details and should not be presented as end-user workflow states.
-
-Some discoveries bypass this internal validation step based on watcher configuration, confidence score, or organization settings.
+Both `approve` and `reject` are reversible: an approved discovery can later be rejected, and a rejected one can later be approved.
 
 ## Processing User Feedback
 
-When a user provides feedback on a discovery, follow this procedure:
+Feedback on a discovery has two fields: a **reaction** (`approved` or `rejected`) and an optional **reason** (free-text, max 1000 chars).
 
-1. **Identify the feedback type** from the table below.
-2. **Extract explicit instructions** -- Did the user ask for a specific follow-up or correction?
-3. **Detect implicit preferences** -- Does the feedback signal a topic they care more or less about?
-4. **Take the corresponding action** immediately.
+When processing feedback:
 
-| Feedback Type  | Meaning           | What to Do                                                       |
-| -------------- | ----------------- | ---------------------------------------------------------------- |
-| `useful`       | Valuable insight  | Note what made it useful; produce more findings like it          |
-| `not_useful`   | No value          | Identify why it missed; avoid similar findings                   |
-| `already_knew` | Known information | Deprioritize this topic unless new data appears                  |
-| `incorrect`    | Wrong analysis    | Investigate the error source; correct and re-create if warranted |
-| `follow_up`    | Wants more detail | Continue the analysis and surface deeper findings                |
+1. **Note the reaction** -- approved or rejected.
+2. **Parse the reason text** -- free-text comments often contain the actionable signal.
+3. **Detect implicit preferences** -- does the feedback signal a topic the user cares more or less about?
+4. **Take action** immediately on anything concrete in the reason.
 
 When feedback includes free-text comments, parse them for:
 
 - Direct requests ("show me this by region")
 - Threshold adjustments ("only alert me if the change is over 10%")
 - Topic preferences ("I don't care about this metric")
+- Accuracy challenges ("the number is wrong because...")
 
 ## Common Pitfalls
 
-- **Approving without checking for duplicates.** Always search existing discoveries before accepting a new one.
-- **Ignoring `already_knew` feedback.** This signals you are surfacing stale knowledge -- deprioritize that topic.
-- **Treating `incorrect` as `not_useful`.** Incorrect means the analysis has a bug; investigate and fix the root cause rather than just moving on.
-- **Over-alerting.** If a user has rejected or ignored several discoveries on the same topic, stop surfacing similar findings until new data changes the picture.
-- **Not acting on free-text feedback.** Users often embed specific requests inside rejection comments. Always parse the text for actionable instructions.
+- **Approving without checking for duplicates.** Always search existing discoveries before approving a new one.
+- **Ignoring the free-text reason.** The `approved`/`rejected` reaction alone carries little information; the reason text is where the actionable signal usually lives.
+- **Over-alerting.** If a user has rejected several discoveries on the same topic, stop surfacing similar findings until new data changes the picture.
 
 ## Reference Files
 
-- [Approval states](references/approval-states.md) - Read when a discovery is in an unexpected state or when you need to understand valid state transitions
 - [Review patterns](references/review-patterns.md) - Read when batch-reviewing multiple discoveries or designing a review strategy
 - [Intent detection](references/intent-detection.md) - Read when processing free-text feedback to extract actionable instructions

@@ -18,11 +18,13 @@ metadata:
 ## When to Use This Skill
 
 - User asks about trends, spikes, or drops in a metric over time
-- User wants to predict or forecast future values
+- User wants to predict or forecast future values using local analysis tools
 - User asks "is this normal?" about a metric value
-- Investigating anomalies or unexpected changes
+- Investigating anomalies or unexpected changes in an ad-hoc session
 - User asks for projections, predictions, or what to expect next week/month
 - Keywords: "forecast", "predict", "anomaly", "spike", "drop", "trend", "projection", "unusual", "normal range"
+
+**This skill vs. forecast tasks:** This skill runs *on-demand, local analysis* using Python tools (Chronos, statsmodels). For *recurring, automated* forecasting on a schedule, use the **configuring-tasks** skill to create a `forecast` task instead.
 
 ## Two Tools, Two Purposes
 
