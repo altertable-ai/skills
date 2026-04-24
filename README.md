@@ -36,7 +36,7 @@ The `/altertable:ask` command routes your query to the best skill automatically.
 | [analyzing-insights](skills/analyzing-insights/) | Interprets chart data to identify patterns, anomalies, and trends |
 | [analyzing-web-traffic](skills/analyzing-web-traffic/) | Analyzes web analytics data to identify traffic patterns |
 | [building-segments](skills/building-segments/) | Creates user segments and cohorts using filters and dimensions |
-| [configuring-watchers](skills/configuring-watchers/) | Configures monitoring agents with intervals and targets |
+| [configuring-tasks](skills/configuring-tasks/) | Configures autonomous background tasks for AI analysis |
 | [creating-insights](skills/creating-insights/) | Creates discoveries with insights through the approval workflow |
 | [deciding-actions](skills/deciding-actions/) | Decision matrices for choosing insight types and discovery actions |
 | [evaluating-skills](skills/evaluating-skills/) | Evaluates and creates agent skills following best practices |

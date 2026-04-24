@@ -32,7 +32,7 @@ Search when:
 **Only after something valuable happens** - quality over quantity.
 
 Create a memory when:
-- A discovery was accepted or rejected (learn from feedback)
+- A discovery was approved or rejected (learn from feedback)
 - You found an organization-specific pattern or threshold
 - A technique worked well (or failed in a specific context)
 - You learned something that would help future runs
@@ -50,11 +50,11 @@ Create a memory when:
 Record specific events with outcomes.
 
 **Use when:** Something happened that you should remember
-- Discovery was created, accepted, or rejected
+- Discovery was created, approved, or rejected
 - Analysis succeeded or failed
 - User gave feedback
 
-**Include:** The outcome (success, failure, rejected, accepted)
+**Include:** The outcome (success, failure, rejected, approved)
 
 **Example:** "Created DSC-789 for 15% revenue drop. User rejected - said threshold should be 20%."
 
@@ -104,7 +104,7 @@ Quick reference for common situations:
 
 | Situation | Type | Scope | Importance | Decay |
 |-----------|------|-------|------------|-------|
-| Discovery accepted | Episodic | Workflow | 8 | Weekly |
+| Discovery approved | Episodic | Workflow | 8 | Weekly |
 | Discovery rejected with feedback | Episodic | Workflow | 9 | Monthly |
 | User stated preference | Semantic | Organization | 9 | Monthly |
 | Data pattern found | Semantic | Organization | 7 | Weekly |

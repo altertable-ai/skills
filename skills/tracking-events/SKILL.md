@@ -45,8 +45,9 @@ curl -X POST https://api.altertable.ai/track \
   -H "Content-Type: application/json" \
   -d '{
     "event":"Purchase Completed",
-    "properties":{"amount":99.99,"currency":"USD"},
-    "distinct_id":"u_01jza857w4f23s1hf2s61befmw"
+    "environment":"production",
+    "distinct_id":"u_01jza857w4f23s1hf2s61befmw",
+    "properties":{"amount":99.99,"currency":"USD"}
   }'
 ```
 
@@ -81,6 +82,7 @@ curl -X POST https://api.altertable.ai/identify \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
+    "environment":"production",
     "distinct_id":"u_01jza857w4f23s1hf2s61befmw",
     "traits":{"plan":"premium","email":"user@example.com"}
   }'
@@ -135,8 +137,9 @@ curl -X POST https://api.altertable.ai/alias \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
+    "environment":"production",
     "distinct_id":"user_123",
-    "alias_id":"stripe:cus_abc123"
+    "new_user_id":"stripe:cus_abc123"
   }'
 ```
 

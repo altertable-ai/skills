@@ -13,7 +13,7 @@ metadata:
 
 To create an insight:
 1. Analyze data to identify a finding
-2. Choose the appropriate insight type (SQL, Semantic, Segmentation, Funnel, Retention, FYI)
+2. Choose the appropriate insight type (SQL, Semantic, Segmentation, Funnel, Retention) or create a text-only FYI discovery
 3. Preview the insight to validate
 4. Create the discovery with visualization
 
@@ -86,26 +86,16 @@ Create with:
 Discoveries flow through an approval workflow:
 
 ```
-pending_visualization_generation
-         ↓
-    pending_admin_review  →  admin_rejected
-         ↓
-    pending_review
-         ↓
-  accepted | rejected | ignored
+pending  -->  approved | rejected
 ```
 
-### States Explained
+| State      | Description          |
+|------------|----------------------|
+| `pending`  | Awaiting review      |
+| `approved` | Approved             |
+| `rejected` | Rejected             |
 
-| State | Description |
-|-------|-------------|
-| `pending_visualization_generation` | Generating chart |
-| `pending_admin_review` | Awaiting admin approval |
-| `pending_review` | Awaiting user review |
-| `accepted` | User accepted the finding |
-| `rejected` | User rejected as not useful |
-| `ignored` | User ignored/dismissed |
-| `admin_rejected` | Admin filtered out |
+Both transitions are reversible: an approved discovery can later be rejected, and a rejected one can later be approved.
 
 ## Creating SQL Insights
 
@@ -208,6 +198,8 @@ For analyzing whether users come back after a starting event:
 - `returning_event`: The event that counts as a return
 - `timeframe`: Analysis period
 
+> **Note:** Retention can be previewed via the `preview_insight` MCP tool but is not currently exposed for creation via MCP (no `create_retention_insight` tool).
+
 ## Creating FYI Discoveries
 
 For informational findings without visualization:
@@ -278,17 +270,12 @@ Include:
 
 ## Troubleshooting Rejected Discoveries
 
-**If `admin_rejected`:**
-- Review admin feedback for rejection reason
-- Check if finding meets quality threshold
-- Refine: make title more specific, add context to description
-- Re-create with improvements
-
-**If `rejected` by user:**
+**If `rejected`:**
 - Finding may not be actionable enough
 - Consider: Is the insight significant? Is timing relevant?
 - Refine: strengthen the "so what" - why should they care?
 - Add clearer recommendation or next step
+- Parse the free-text `reason` on the feedback for specific issues
 
 **Common rejection reasons and fixes:**
 
@@ -306,5 +293,4 @@ Include:
 - [Semantic insights](references/semantic-insights.md)
 - [Segmentation insights](references/segmentation-insights.md)
 - [Funnel insights](references/funnel-insights.md)
-- [Retention insights](references/retention-insights.md)
 - [FYI discoveries](references/fyi-discoveries.md)

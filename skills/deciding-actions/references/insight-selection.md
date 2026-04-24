@@ -7,6 +7,7 @@ Detailed guide for choosing the right insight type.
 | Type | Purpose | Data Source | Best For |
 |------|---------|-------------|----------|
 | Funnel | Conversion analysis | Events | Step-by-step flows |
+| Retention | Return behavior | Events | Churn/repeat analysis |
 | Semantic | Metric analysis | Semantic model | Standard analytics |
 | SQL | Custom queries | Raw tables | Complex/custom needs |
 | Segmentation | User grouping | Events + traits | Targeting/cohorts |

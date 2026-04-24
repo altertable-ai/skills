@@ -9,7 +9,7 @@ Without memory, every run starts from zero. With memory, agents preserve context
 Memories help agents:
 
 - Remember business preferences and KPI expectations
-- Learn from accepted or rejected discoveries
+- Learn from approved or rejected discoveries
 - Reuse proven analytical strategies
 - Avoid repeating known mistakes
 
