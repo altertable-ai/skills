@@ -14,14 +14,16 @@ Central entry point for Altertable skills. Every Altertable task starts here. Ma
 1. Read the user's query.
 2. Match the query against the routing table below, then apply the rules.
 3. Invoke the matched skill via the Skill tool, passing the original query through so the matched skill has full context.
-4. If no skill matches with confidence, invoke `understanding-platform` to orient the user.
+4. If the query is Altertable-related but no skill matches with confidence, invoke `understanding-platform` to orient the user.
+
+For data questions, route to `exploring-data` when schema is unclear; otherwise route to `querying-lakehouse`. The matched skill handles MCP initialization as needed.
 
 ## Routing Table
 
 | Skill | When to route |
 |-------|---------------|
 | `exploring-data` | Discover what data exists: connections, schemas, tables, columns, semantic models |
-| `querying-lakehouse` | Run an ad-hoc SQL query against the lakehouse to answer a specific question |
+| `querying-lakehouse` | Answer questions that require querying lakehouse data using SQL |
 | `analyzing-funnels` | Build or analyze a step-by-step conversion flow (drop-off between ordered events) |
 | `analyzing-web-traffic` | Web analytics: pageviews, sessions, traffic sources, UTM, device, country breakdowns |
 | `analyzing-insights` | Interpret an existing Insight or visualization the user is looking at |
@@ -46,3 +48,4 @@ When a skill is added, renamed, or removed from this repository, update this tab
 4. **Fallback for unknown queries**: if nothing matches with confidence, route to `understanding-platform`.
 5. **Pass context through**: hand the original query to the matched skill.
 6. **Never invent a skill**: only invoke skills that are actually installed.
+7. **Clarify before routing**: if the query could reasonably mean different things, propose the most likely directions and let the user choose.
