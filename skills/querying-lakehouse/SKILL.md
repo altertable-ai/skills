@@ -82,6 +82,10 @@ Run the query and interpret results:
 - Verify data types
 - Look for unexpected nulls or values
 
+### Step 5: Render as a Chart (Optional)
+
+When the user wants the result visualized rather than just tabular, call `preview_insight` with the SQL kind. In MCP clients that support MCP Apps, this surfaces a built-in chart UI for the result instead of a raw table.
+
 ## DuckDB SQL Dialect Patterns
 
 ### Date and Time Functions
