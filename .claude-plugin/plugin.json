@@ -1,7 +1,7 @@
 {
   "name": "altertable",
   "description": "Skills for Altertable AI agents covering data exploration, querying, analysis, insights, and platform operations.",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "author": {
     "name": "altertable-ai",
     "url": "https://github.com/altertable-ai"
