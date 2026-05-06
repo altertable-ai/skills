@@ -12,8 +12,18 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - uses: dorny/paths-filter@d1c1ffe0248fe513906c8e24db8ea791d46f8590 # v3.0.3
+        id: changes
+        with:
+          filters: |
+            skills:
+              - 'skills/**'
+              - 'scripts/score-skills.py'
+
       - name: Install uv
+        if: steps.changes.outputs.skills == 'true'
         uses: astral-sh/setup-uv@v7
 
       - name: Validate skill structure
+        if: steps.changes.outputs.skills == 'true'
         run: uv run python scripts/score-skills.py ./skills --scan_all --validate_only

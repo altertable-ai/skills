@@ -3,9 +3,6 @@ name: Score Skills
 on:
   pull_request:
     branches: [main]
-    paths:
-      - 'skills/*/SKILL.md'
-      - 'skills/*/references/**'
 
 jobs:
   score:
@@ -16,32 +13,28 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Get changed skills
-        id: changed
-        uses: tj-actions/changed-files@v46
+      - uses: dorny/paths-filter@d1c1ffe0248fe513906c8e24db8ea791d46f8590 # v3.0.3
+        id: changes
         with:
-          files: |
-            skills/*/SKILL.md
-            skills/*/references/**
-          dir_names: true
-          dir_names_max_depth: 2
-          dir_names_exclude_current_dir: true
+          list-files: shell
+          filters: |
+            skills:
+              - 'skills/*/SKILL.md'
+              - 'skills/*/references/**'
 
       - name: Install uv
-        if: steps.changed.outputs.any_changed == 'true'
+        if: steps.changes.outputs.skills == 'true'
         uses: astral-sh/setup-uv@v5
 
       - name: Score skills
         id: score
-        if: steps.changed.outputs.any_changed == 'true'
+        if: steps.changes.outputs.skills == 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          CHANGED_FILES: ${{ steps.changes.outputs.skills_files }}
         run: |
-          skills="${{ steps.changed.outputs.all_changed_files }}"
-          skills=$(echo "$skills" | tr ' ' '\n' | grep -v 'SKILL_TEMPLATE' | tr '\n' ' ' | xargs)
+          skills=$(echo "$CHANGED_FILES" | tr ' ' '\n' | awk -F/ 'NF>=2 {print $1"/"$2}' | sort -u | grep -v 'SKILL_TEMPLATE' | tr '\n' ' ' | xargs)
           if [ -z "$skills" ]; then
             echo "No skills to score (only SKILL_TEMPLATE changed)"
             echo "skipped=1" >> $GITHUB_OUTPUT
@@ -54,7 +47,7 @@ jobs:
           echo "failed=${failed:-0}" >> $GITHUB_OUTPUT
 
       - name: Comment PR
-        if: steps.changed.outputs.any_changed == 'true' && steps.score.outputs.skipped != '1'
+        if: steps.changes.outputs.skills == 'true' && steps.score.outputs.skipped != '1'
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: skill-score
