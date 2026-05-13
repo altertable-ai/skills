@@ -1,7 +1,7 @@
 ---
 name: building-segments
 compatibility: Requires Altertable MCP server
-description: Builds segmentation insights to compare event behavior across cohorts using filters, dimensions, and breakdowns. Use when segmenting users, comparing event metrics by properties, building cohorts, filtering populations, or defining audiences.
+description: Builds segmentation insights with filters, dimensions, and breakdowns. Use when segmenting users, comparing event metrics by properties, building cohorts, or defining audiences.
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"

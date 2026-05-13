@@ -14,7 +14,9 @@ from .models import (
     SkillContent,
 )
 
-DEFAULT_MODEL = "gemini/gemini-3.1-pro-preview"
+litellm.suppress_debug_info = True  # type: ignore[assignment]
+
+DEFAULT_MODEL = "gemini/gemini-pro-latest"
 
 PROMPT_TEMPLATE = """You are an expert evaluator of Agent Skills per agentskills.io specification.
 
