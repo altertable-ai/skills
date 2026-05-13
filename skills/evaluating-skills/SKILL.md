@@ -1,6 +1,6 @@
 ---
 name: evaluating-skills
-description: "Evaluates and creates agent skills following best practices. Use when reviewing skill quality, writing new skills, refactoring existing skills, or when the user asks about skill structure, format, or specification."
+description: "Evaluates and creates agent skills following best practices. Use when reviewing, writing, or refactoring skills, or asking about skill structure, format, or specification."
 metadata:
   author: altertable-ai
 ---

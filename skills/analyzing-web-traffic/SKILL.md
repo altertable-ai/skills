@@ -1,7 +1,7 @@
 ---
 name: analyzing-web-traffic
 compatibility: Requires Altertable MCP server
-description: Analyzes web analytics data to identify traffic patterns and user behavior trends. Use when asked about pageviews, sessions, web metrics, traffic sources, or user behavior on websites.
+description: Analyzes web analytics traffic patterns and user behavior. Use when asked about pageviews, sessions, traffic sources, or website user behavior.
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"

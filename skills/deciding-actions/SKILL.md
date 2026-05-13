@@ -1,7 +1,7 @@
 ---
 name: deciding-actions
 compatibility: Requires Altertable MCP server
-description: Decision matrices for choosing insight types (funnel, retention, semantic, segmentation, SQL), task types (anomaly_detection, forecast, monitor), discovery actions, and avoiding duplicates. Use when deciding between insight or task types, or when determining whether to create, update, or skip discoveries.
+description: Decision matrices for picking insight types (funnel, retention, semantic, segmentation, SQL), task types, and discovery actions. Use when choosing types or whether to create, update, or skip discoveries.
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"

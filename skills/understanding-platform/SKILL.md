@@ -1,7 +1,7 @@
 ---
 name: understanding-platform
 compatibility: Requires Altertable MCP server
-description: Explains Altertable platform concepts and architecture. Use when users ask what Altertable is, how agents work, and how discoveries, memories, insights, and dashboards fit together.
+description: Explains Altertable platform concepts and architecture. Use when asking what Altertable is or how agents, discoveries, memories, insights, and dashboards fit together.
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"

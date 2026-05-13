@@ -1,7 +1,7 @@
 ---
 name: configuring-tasks
 compatibility: Requires Altertable MCP server
-description: Configures scheduled AI tasks that analyze Insights and Dashboards on a cron and create discoveries for anomaly detection, forecasting, or open-ended monitoring. Use when the user wants recurring automated analysis, alerts, or monitoring driven by AI instructions.
+description: Configures scheduled AI tasks that analyze Insights and Dashboards. Use for anomaly detection, forecasting, alerts, or recurring automated monitoring.
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"
