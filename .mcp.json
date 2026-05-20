@@ -2,7 +2,7 @@
   "mcpServers": {
     "altertable-mcp": {
       "type": "http",
-      "url": "https://mcp.altertable.ai"
+      "url": "https://mcp.altertable.ai/mcp"
     }
   }
 }
