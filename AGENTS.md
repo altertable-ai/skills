@@ -92,8 +92,12 @@ description: {Third-person description with trigger keywords}
     <description>Configures scheduled AI tasks that analyze Insights and Dashboards. Use for anomaly detection, forecasting, alerts, or recurring automated monitoring.</description>
   </skill>
   <skill>
+    <name>creating-discoveries</name>
+    <description>Creates Altertable discoveries from meaningful findings. Use when analysis finds a change, anomaly, root cause, recommendation, warning, or contextual finding that should notify users and enter review.</description>
+  </skill>
+  <skill>
     <name>creating-insights</name>
-    <description>Creates discoveries with insights through the approval workflow. Use when generating findings, creating visualizations, or saving and sharing analysis results.</description>
+    <description>Creates, drafts, renders, and saves Altertable insights. Use when generating findings, creating visualizations, or saving and sharing analysis results.</description>
   </skill>
   <skill>
     <name>deciding-actions</name>
@@ -105,7 +109,7 @@ description: {Third-person description with trigger keywords}
   </skill>
   <skill>
     <name>exploring-data</name>
-    <description>Explores data connections and schemas. Use when asking about tables, columns, data types, data structure, or available sources before querying.</description>
+    <description>Explores Altertable catalogs, schemas, semantic models, tables, and columns. Use when asking about available data, data structure, connections, or sources before querying.</description>
   </skill>
   <skill>
     <name>forecasting-timeseries</name>
@@ -117,7 +121,7 @@ description: {Third-person description with trigger keywords}
   </skill>
   <skill>
     <name>querying-lakehouse</name>
-    <description>Writes and executes DuckDB SQL against the Altertable lakehouse. Use when analyzing data, aggregating metrics, building reports, or querying tables in connections.</description>
+    <description>Writes, validates, optimizes, and executes DuckDB SQL against the Altertable lakehouse. Use when analyzing data, aggregating metrics, building reports, or querying catalogs and external connections.</description>
   </skill>
   <skill>
     <name>tracking-events</name>

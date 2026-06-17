@@ -13,7 +13,7 @@ metadata:
 
 1. **Track an event**: Call the track API or SDK method with event name and properties
 2. **Identify a user**: Link anonymous activity to a known user after authentication
-3. **Query events**: Use SQL to analyze tracked events and identity traits
+3. **Query events**: Use SQL against the built-in `product_analytics` catalog to analyze tracked events and identity traits
 
 ## When to Use This Skill
 
@@ -31,7 +31,7 @@ All SDKs and the API share the same payload shape:
 | Field | Required | Description |
 |-------|----------|-------------|
 | `event` | Yes | Event name, e.g. `Checkout Completed` |
-| `properties` | No | Event attributes for filtering and analysis |
+| `properties` | Yes for direct API, optional in SDK helpers | Event attributes for filtering and analysis; send `{}` when empty |
 | `distinct_id` | No | User or device identifier (client SDKs set automatically) |
 | `timestamp` | No | Server uses current time when omitted |
 
@@ -41,7 +41,7 @@ All SDKs and the API share the same payload shape:
 
 ```bash
 curl -X POST https://api.altertable.ai/track \
-  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "X-API-Key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "event":"Purchase Completed",
@@ -159,10 +159,12 @@ SELECT
   event,
   properties->>'currency' AS currency,
   COUNT(*) AS total
-FROM altertable.analytics.events
+FROM product_analytics.main.events
 GROUP BY ALL
 ORDER BY total DESC;
 ```
+
+Use `product_analytics.main.events` for raw `/track` payloads and `product_analytics.analytics.events` when you need alias and anonymous identity resolution.
 
 ### Events with Identity Traits
 
@@ -173,7 +175,7 @@ SELECT
   e.timestamp,
   e.identity_traits->>'email' AS email,
   e.identity_traits->>'plan' AS plan
-FROM altertable.analytics.events e
+FROM product_analytics.analytics.events e
 WHERE e.distinct_id = 'u_01jza857w4f23s1hf2s61befmw'
 ORDER BY e.timestamp DESC;
 ```
@@ -186,7 +188,7 @@ SELECT
   traits->>'email' AS email,
   traits->>'plan' AS plan,
   updated_at
-FROM altertable.analytics.identities
+FROM product_analytics.analytics.identities
 ORDER BY updated_at DESC;
 ```
 

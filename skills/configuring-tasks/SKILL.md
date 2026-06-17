@@ -15,7 +15,7 @@ A task is a scheduled AI agent that runs on a cron, analyzes an Insight or Dashb
 
 To create a task:
 
-1. Identify what the user wants the AI to watch for (anomalies, a forecast, or open-ended analysis)
+1. Call `initialize`, then identify what the user wants the AI to watch for (anomalies, a forecast, or open-ended analysis)
 2. Choose the task type and target slug
 3. Write clear natural-language instructions -- these are the AI's prompt every run
 4. Pick a cron schedule that fits the task instructions
@@ -44,7 +44,7 @@ All three types run AI analysis driven by your `instructions`. They differ in wh
 
 The user needs an existing resource to target. If they don't have one yet:
 
-1. Help them create the Insight, Dashboard, or connection first (see creating-insights or exploring-data skills)
+1. Help them create or find the Insight or Dashboard first (see creating-insights, exploring-data, or `list_insights`/`view_dashboard`)
 2. Use the resulting slug as the `target_slug`
 
 ### Step 2: Choose Task Type

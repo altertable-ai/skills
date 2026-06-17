@@ -11,7 +11,6 @@ Detailed guide for choosing the right insight type.
 | Semantic | Metric analysis | Semantic model | Standard analytics |
 | SQL | Custom queries | Raw tables | Complex/custom needs |
 | Segmentation | User grouping | Events + traits | Targeting/cohorts |
-| FYI | Information only | None | Acknowledgments |
 
 ## Funnel Insight Deep Dive
 
@@ -146,7 +145,7 @@ Detailed guide for choosing the right insight type.
 - "Create a cohort of churned users" → Segmentation
 - "Segment by engagement level" → Segmentation
 
-## FYI Discovery Deep Dive
+## Non-Analysis Responses
 
 ### When to Use
 
@@ -179,7 +178,7 @@ START
   ▼
 Does user expect data/analysis?
   │
-  ├─NO──► FYI DISCOVERY
+  ├─NO──► RESPOND WITHOUT DISCOVERY
   │
   ▼ YES
 Is it about user steps/journey?

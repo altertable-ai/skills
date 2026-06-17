@@ -47,7 +47,7 @@ Should I create a discovery?
 │
 ├─ Adds value? → YES if adds value
 │
-└─ Just acknowledging? → FYI only if needed
+└─ Just acknowledging? → Skip discovery
 ```
 
 ### 4. Create or Skip
@@ -90,7 +90,7 @@ User asks question
 │
 ├─ Needs analysis?
 │   ├─ YES → Select insight type → CREATE
-│   └─ NO → Acknowledge → FYI or no discovery
+│   └─ NO → Acknowledge without discovery
 │
 ├─ Asked before recently?
 │   ├─ YES → Check if data changed
@@ -253,13 +253,12 @@ Pattern detected
 6. Deliver per schedule
 ```
 
-### FYI Discovery Flow
+### Acknowledgement Flow
 
 ```
 1. Determine acknowledgment needed
 2. Check if adds any value
-3. Create minimal FYI if needed
-4. Or respond without discovery
+3. Respond without discovery
 ```
 
 ## Conversation Context
@@ -274,7 +273,7 @@ Message 2: User says "break it down by region"
 → Create follow-up insight (not duplicate)
 
 Message 3: User says "thanks"
-→ FYI or no discovery (don't over-acknowledge)
+→ Respond without discovery (don't over-acknowledge)
 
 Message 4: User asks "what about orders?"
 → Create new insight (different topic)

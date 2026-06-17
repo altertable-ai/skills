@@ -35,9 +35,13 @@ Ask the user (or infer from context):
 
 ### Step 2: Query Traffic Data
 
-Use the Altertable MCP server to fetch web analytics data. The primary tool returns the top 50 pages by pageviews, visitors, and sessions grouped by week, with breakdowns by URL, referrer, country, UTM source/campaign, device, and device type.
+Use Altertable MCP tools to fetch web analytics data:
 
-For deeper analysis, complement with SQL queries against the lakehouse to compute:
+- `get_catalog` to confirm the Product Analytics tables and columns available in this environment
+- `query_lakehouse` for custom web traffic analysis
+- `render_insight` when the user wants a chart preview
+
+Common Product Analytics tables include `product_analytics.analytics.web_sessions` and `product_analytics.analytics.web_pageviews`. Query them to compute:
 - **Volume**: pageviews, sessions, unique visitors
 - **Engagement**: bounce rate, pages per session, avg session duration
 - **Acquisition**: traffic by source/medium, referrer breakdown

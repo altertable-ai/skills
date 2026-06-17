@@ -13,20 +13,23 @@ metadata:
 
 To manage discoveries:
 
-1. List discoveries filtered by status via the Altertable MCP server
-2. Inspect each discovery to get full details (title, summary, explanation, content, status)
-3. Approve or reject based on your assessment
-4. When feedback arrives, extract the user's intent and act on it
+1. Call `initialize` before inspecting organization data
+2. Find discovery entities with `search_entities` and read the selected entity resource for details
+3. Assess factual accuracy, novelty, actionability, and timing
+4. Recommend approve/reject, or perform the review in the Altertable app if your harness exposes that action
+5. When feedback arrives, extract the user's intent and act on it
 
-## Listing Discoveries
+## Finding Discoveries
 
-Use the Altertable MCP server to retrieve and act on discoveries:
+Use the MCP entity tools to retrieve discoveries:
 
-- **List discoveries** -- filter by status, date range, or search query
-- **View a discovery** -- inspect full details including explanation
-- **Review a discovery** -- approve or reject
+- `search_entities` with discovery-related query terms or `node_types` when available
+- `altertable://ontology/entities/{slug}` to read the full entity content after finding a slug
+- `take_screenshot` when you need to verify how the discovery renders
 
 Available statuses for filtering: `pending`, `approved`, `rejected`.
+
+The public MCP tool surface may not expose an approval mutation. If no review tool is available in your harness, provide a clear recommendation and direct the user to review the discovery in Altertable.
 
 ## Reviewing a Discovery
 
@@ -36,9 +39,7 @@ When you need to review a discovery, follow these steps in order:
 2. **Verify it is not a duplicate** -- Search existing discoveries for overlapping findings before approving.
 3. **Assess actionability** -- Can the reader do something with this information? If not, reject.
 4. **Evaluate timing** -- Is this finding still current, or has the data gone stale?
-5. **Decide**:
-   - **Approve** if steps 1-4 all pass.
-   - **Reject** if the analysis is wrong, duplicated, or not actionable.
+5. **Decide**: approve if steps 1-4 all pass; reject if the analysis is wrong, duplicated, stale, or not actionable.
 
 For batch reviews, sort by priority first, then group by topic, and apply the same five-step check to each.
 

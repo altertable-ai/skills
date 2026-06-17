@@ -1,7 +1,7 @@
 ---
 name: querying-lakehouse
 compatibility: Requires Altertable MCP server
-description: Writes and executes DuckDB SQL against the Altertable lakehouse. Use when analyzing data, aggregating metrics, building reports, or querying tables in connections.
+description: Writes, validates, optimizes, and executes DuckDB SQL against the Altertable lakehouse. Use when analyzing data, aggregating metrics, building reports, or querying catalogs and external connections.
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"
@@ -12,6 +12,11 @@ metadata:
 Altertable uses the DuckDB SQL dialect. Under the hood, queries run on hosted DuckDB workers over Parquet files stored in distributed object storage.
 
 ## Quick Start
+
+1. Call `initialize`, then inspect catalogs with `list_catalogs` and `get_catalog` when table shape is unclear.
+2. Validate SQL with `validate_sql`; for expensive or complex queries, use `explain_sql` or `optimize_sql`.
+3. Execute with `query_lakehouse`. Add deterministic `ORDER BY` when results may be paginated.
+4. Use `render_insight` with `kind: sql` when the user wants a chart without saving it.
 
 ```sql
 -- Discover table shape
@@ -44,8 +49,8 @@ Always qualify table names with `catalog.schema.table` format.
 
 Before writing queries:
 
-- List available connections
-- Get schema details for relevant connections
+- List available catalogs with `list_catalogs`
+- Get schema details for relevant catalogs with `get_catalog`
 - Check if semantic models already define needed metrics
 - When column names are unknown, discover the table shape first:
 
@@ -57,7 +62,7 @@ SELECT * FROM catalog.schema.table LIMIT 1
 
 ### Step 2: Validate SQL Syntax
 
-Always validate queries before execution:
+Use `validate_sql` before execution:
 
 - Catches syntax errors early
 - Identifies missing tables or columns
@@ -76,15 +81,16 @@ The tool returns:
 
 ### Step 4: Execute and Analyze
 
-Run the query and interpret results:
+Run the query with `query_lakehouse` and interpret results:
 
 - Check row counts
 - Verify data types
 - Look for unexpected nulls or values
+- If results are truncated, fetch the next page with the returned offset and keep the same deterministic ordering
 
 ### Step 5: Render as a Chart (Optional)
 
-When the user wants the result visualized rather than just tabular, call `preview_insight` with the SQL kind. In MCP clients that support MCP Apps, this surfaces a built-in chart UI for the result instead of a raw table.
+When the user wants the result visualized rather than just tabular, call `render_insight` with the SQL kind. In MCP clients that support MCP Apps, this surfaces a built-in chart UI for the result instead of a raw table.
 
 ## DuckDB SQL Dialect Patterns
 

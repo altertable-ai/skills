@@ -39,9 +39,9 @@ Filter to relevant data:
 - Specific values
 - Exclude conditions
 
-### 5. Preview and Create
+### 5. Render and Create
 
-Validate results and create discovery.
+Validate results with `render_insight`. Use `create_insight` to save the chart.
 
 ## Insight Parameters
 
@@ -49,8 +49,8 @@ Validate results and create discovery.
 
 | Parameter | Description |
 |-----------|-------------|
-| `source_slug` | Semantic source to query |
-| `measures` | List of measure names |
+| `semantic_definition` | Semantic source, measures, dimensions, filters, and visualization settings |
+| `measures` | List of measure names inside the semantic definition |
 
 ### Optional
 

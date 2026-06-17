@@ -53,7 +53,7 @@ repos:
     hooks:
       - id: sync-agents-md
         name: sync AGENTS.md available skills
-        entry: python3 scripts/sync-agents-md.py
+        entry: uv run python scripts/sync-agents-md.py
         language: system
         files: 'SKILL\.md$'
         exclude: 'SKILL_TEMPLATE/'

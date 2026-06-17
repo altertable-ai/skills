@@ -13,7 +13,7 @@ metadata:
 
 To analyze a funnel:
 1. Clarify the user journey the user wants to measure
-2. Use the Altertable MCP server to create the funnel with the right steps, window, and ordering
+2. Use `list_events` and `render_insight` to validate the funnel steps, window, and ordering
 3. Query the funnel data and calculate drop-off rates per step
 4. Identify the biggest bottleneck and present actionable findings
 
@@ -41,9 +41,11 @@ Default to **strict ordering** unless the user specifies otherwise.
 ### Step 2: Preview and Create the Funnel
 
 Use the Altertable MCP server to:
-1. Preview the funnel first to validate step definitions and check the data looks correct
-2. Once validated, create the funnel insight (or funnel insight discovery to save and share it)
-3. Query the funnel to retrieve per-step user counts
+1. Call `list_events` to confirm exact event names and recent volume
+2. Call `render_insight` with `kind: funnel` to validate step definitions and check the data looks correct
+3. Once validated, call `create_insight` with `kind: funnel` if the user wants a saved chart
+4. Call `create_discovery` if the bottleneck or finding should be reviewed or notified
+5. Use the rendered or saved insight results to retrieve per-step user counts
 
 ### Step 3: Calculate Metrics
 

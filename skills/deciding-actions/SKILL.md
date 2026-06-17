@@ -60,38 +60,35 @@ User Question
 │   └─ → TASK (see configuring-tasks skill)
 │
 └─ Just informing/acknowledging?
-    └─ → FYI DISCOVERY
+    └─ → RESPOND WITHOUT DISCOVERY
 ```
 
 ### Detailed Decision Matrix
 
-| Signal | Funnel | Retention | Semantic | SQL | Segmentation | FYI |
-|--------|--------|-----------|----------|-----|--------------|-----|
-| "conversion rate" | ✓✓✓ | | | | | |
-| "drop-off" | ✓✓✓ | | | | | |
-| "steps to purchase" | ✓✓✓ | | | | | |
-| "user journey" | ✓✓✓ | | | | | |
-| "stuck at step/level" | ✓✓✓ | | | | | |
-| "progression from X to Y" | ✓✓✓ | | | | | |
-| "did X but not Y" | ✓✓✓ | | | | | |
-| "come back" | | ✓✓✓ | | | | |
-| "return after" | | ✓✓✓ | | | | |
-| "retained" | | ✓✓✓ | | | | |
-| "churn" | | ✓✓✓ | | | | |
-| "how many" | | | ✓✓✓ | | | |
-| "trend over time" | | | ✓✓✓ | | | |
-| "breakdown by" | | | ✓✓✓ | | | |
-| "compare periods" | | | ✓✓✓ | | | |
-| "join tables" | | | | ✓✓✓ | | |
-| "custom calculation" | | | | ✓✓✓ | | |
-| "raw data" | | | | ✓✓✓ | | |
-| "complex query" | | | | ✓✓✓ | | |
-| "users who [have property]" | | | | | ✓✓✓ | |
-| "cohort of" | | | | | ✓✓✓ | |
-| "segment where" | | | | | ✓✓✓ | |
-| "acknowledge" | | | | | | ✓✓✓ |
-| "got it" | | | | | | ✓✓✓ |
-| "thanks" | | | | | | ✓✓✓ |
+| Signal | Funnel | Retention | Semantic | SQL | Segmentation |
+|--------|--------|-----------|----------|-----|--------------|
+| "conversion rate" | ✓✓✓ | | | | |
+| "drop-off" | ✓✓✓ | | | | |
+| "steps to purchase" | ✓✓✓ | | | | |
+| "user journey" | ✓✓✓ | | | | |
+| "stuck at step/level" | ✓✓✓ | | | | |
+| "progression from X to Y" | ✓✓✓ | | | | |
+| "did X but not Y" | ✓✓✓ | | | | |
+| "come back" | | ✓✓✓ | | | |
+| "return after" | | ✓✓✓ | | | |
+| "retained" | | ✓✓✓ | | | |
+| "churn" | | ✓✓✓ | | | |
+| "how many" | | | ✓✓✓ | | |
+| "trend over time" | | | ✓✓✓ | | |
+| "breakdown by" | | | ✓✓✓ | | |
+| "compare periods" | | | ✓✓✓ | | |
+| "join tables" | | | | ✓✓✓ | |
+| "custom calculation" | | | | ✓✓✓ | |
+| "raw data" | | | | ✓✓✓ | |
+| "complex query" | | | | ✓✓✓ | |
+| "users who [have property]" | | | | | ✓✓✓ |
+| "cohort of" | | | | | ✓✓✓ |
+| "segment where" | | | | | ✓✓✓ |
 
 **Disambiguation — Segmentation vs Funnel:**
 
@@ -187,7 +184,7 @@ Both involve user events over time. Apply this test:
 
 **Keywords**: segment, cohort, group of, target, users with, users in
 
-#### Use FYI DISCOVERY When
+#### Respond Without Creating a Discovery When
 
 - Acknowledging user input
 - No analysis needed
