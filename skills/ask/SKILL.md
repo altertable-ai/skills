@@ -12,17 +12,18 @@ Central entry point for Altertable skills. Every Altertable task starts here. Ma
 ## Procedure
 
 1. Read the user's query.
-2. Match the query against the routing table below, then apply the rules.
-3. Invoke the matched skill via the Skill tool, passing the original query through so the matched skill has full context.
-4. If the query is Altertable-related but no skill matches with confidence, invoke `understanding-platform` to orient the user.
+2. If using Altertable MCP tools, call `initialize` before any other Altertable tool so organization, environment, and knowledge context are correct.
+3. Match the query against the routing table below, then apply the rules.
+4. Activate the matched skill in your harness, passing the original query through so the matched skill has full context.
+5. If the query is Altertable-related but no skill matches with confidence, use `understanding-platform` to orient the user.
 
-For data questions, route to `exploring-data` when schema is unclear; otherwise route to `querying-lakehouse`. The matched skill handles MCP initialization as needed.
+For data questions, route to `exploring-data` when schema is unclear; otherwise route to `querying-lakehouse`.
 
 ## Routing Table
 
 | Skill | When to route |
 |-------|---------------|
-| `exploring-data` | Discover what data exists: connections, schemas, tables, columns, semantic models |
+| `exploring-data` | Discover what data exists: catalogs, schemas, tables, columns, semantic models |
 | `querying-lakehouse` | Answer questions that require querying lakehouse data using SQL |
 | `analyzing-funnels` | Build or analyze a step-by-step conversion flow (drop-off between ordered events) |
 | `analyzing-web-traffic` | Web analytics: pageviews, sessions, traffic sources, UTM, device, country breakdowns |
@@ -30,11 +31,12 @@ For data questions, route to `exploring-data` when schema is unclear; otherwise 
 | `building-segments` | Define or compare user cohorts by properties (not step-based) |
 | `forecasting-timeseries` | Project future metric values or detect whether a change is within normal range |
 | `tracking-events` | Work with tracked product analytics events, identities, or traits (querying or advising on instrumentation) |
-| `creating-insights` | Create a new Insight or discovery that will be saved and visible to users |
+| `creating-insights` | Create a new Insight that will be saved and visible to users |
+| `creating-discoveries` | Create a discovery from a meaningful finding that should notify users and enter review |
 | `deciding-actions` | Decide which insight or task type to use, or whether to create / update / skip a discovery |
 | `managing-discoveries` | Review, approve, or reject existing discoveries and process user feedback on them |
 | `configuring-tasks` | Set up a scheduled AI task (anomaly detection, forecast, monitor) that runs on a cron |
-| `using-memory` | Persist or retrieve agent-side context across runs (not user-visible findings; that is `creating-insights`) |
+| `using-memory` | Search or create agent memories; create organization knowledge only when the user explicitly asks |
 | `evaluating-skills` | Review or author agent skills themselves (skill structure, spec, quality) |
 | `understanding-platform` | Explain Altertable concepts, architecture, or how agents work |
 

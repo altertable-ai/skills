@@ -13,10 +13,10 @@ metadata:
 
 Use this framing when someone asks what Altertable is:
 
-1. Altertable is an operational data platform built for continuous, agent-driven workloads.
-2. Its lakehouse foundation combines real-time ingestion, fast columnar analytics, and open standards.
-3. Agents run continuously on top of this data layer to monitor, model, and analyze data.
-4. The platform's core operating loop is: `Insights/Dashboards -> Agent Monitoring -> Discoveries -> Human Review -> Memories -> Better Future Analysis`.
+1. Altertable is the data runtime for the AI era: one governed lakehouse for humans, applications, analytics, and agents.
+2. Its foundation combines DuckDB compute, Parquet storage, managed catalogs, external catalogs, and semantic models.
+3. Agents and MCP clients use the same governed context to inspect schemas, run SQL, build insights, monitor dashboards, and use knowledge.
+4. The platform's core operating loop is: `Data -> Insights/Dashboards -> Tasks/Agents -> Notifications/Discoveries -> Review/Feedback -> Memories/Knowledge -> Better Future Analysis`.
 
 ## When to Use This Skill
 
@@ -32,11 +32,11 @@ Most data stacks were optimized for batch pipelines, dashboards, and occasional 
 
 Use these points in order:
 
-1. **Foundation:** modern lakehouse architecture with warehouse-grade performance and better economics for high query volume.
-2. **Access:** data stays continuously queryable by both humans and software.
-3. **Intelligence layer:** agents orchestrate multiple LLMs through an asynchronous job system.
-4. **Operational output:** discoveries surface anomalies, trends, and opportunities for human review.
-5. **Learning loop:** memories retain validated context and improve future agent behavior.
+1. **Foundation:** modern lakehouse architecture with DuckDB workers over Parquet and object storage.
+2. **Access:** managed catalogs, external catalogs, HTTP APIs, SQL adapters, MCP tools, and Ask Agent all query the same data layer.
+3. **Context layer:** semantic models and knowledge entries give agents shared business definitions.
+4. **Operational output:** insights, dashboards, tasks, notifications, and discoveries turn analysis into ongoing workflows.
+5. **Learning loop:** memories retain feedback and improve future agent behavior.
 
 ## Concept Map
 
@@ -45,9 +45,10 @@ Use these points in order:
 Autonomous data collaborators that execute both repetitive and higher-level analytics work.
 
 - Synchronize sources and maintain data readiness
-- Build or update models, queries, and visual outputs
+- Inspect catalogs, run SQL, and use semantic models
+- Build or update queries and visual outputs
 - Monitor insights and dashboards continuously
-- Generate discoveries when something noteworthy happens
+- Generate notifications or discoveries when something noteworthy happens
 - Learn from feedback through memories
 
 ### Discoveries
@@ -68,6 +69,14 @@ Persistent knowledge accumulated by agents across runs.
 - Procedural: how to handle it next time
 - Reinforced or weakened by discovery review outcomes and repeated use
 
+### Knowledge Entries
+
+Durable reference material that the team writes down or syncs from repositories.
+
+- Metric definitions, operating procedures, product terminology, and source caveats
+- Used by Ask Agent, MCP clients, and tasks while answering questions
+- Complements memories, which are learned from agent runs and feedback
+
 ### Insights
 
 Persistent analyses and visualizations over lakehouse data.
@@ -87,12 +96,13 @@ Collections of insights organized for KPI tracking and shared monitoring.
 ## How the Concepts Work Together
 
 ```text
-Data ingestion -> Lakehouse storage/query engine
+Data ingestion -> Catalogs + lakehouse storage/query engine
+    -> Semantic models + knowledge
     -> Insights and Dashboards
-        -> Continuous Agent Monitoring
-            -> Discoveries
-                -> Human Review (accept/reject)
-                    -> Memories updated
+        -> Tasks and Agent Monitoring
+            -> Notifications and Discoveries
+                -> Human Review and feedback
+                    -> Memories and knowledge updated
                         -> Better future monitoring and analysis
 ```
 

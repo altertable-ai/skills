@@ -14,9 +14,9 @@ metadata:
 To build a segment:
 1. Clarify what user group the user wants to isolate
 2. Select events/metrics and aggregation to compare across segments
-3. Identify breakdown dimensions and filters from available semantic models
-4. Preview the segmentation insight via the Altertable MCP server to validate
-5. Create the segmentation insight (or segmentation insight discovery to save and share it)
+3. Identify breakdown dimensions and filters from `get_catalog` semantic details, `list_events`, and `list_user_traits`
+4. Render the segmentation insight with `render_insight` to validate
+5. Save with `create_insight`, or create a discovery when the finding should enter the review/notification workflow
 
 ## When to Use This Skill
 
@@ -37,7 +37,13 @@ Ask the user (or infer from context) what group they want to isolate:
 
 ### Step 2: Identify Available Dimensions
 
-List semantic models and get connection details via the Altertable MCP server to discover which dimensions and traits are available for filtering. Match the user's criteria to actual dimension names.
+Use the Altertable MCP server to discover which dimensions and traits are available for filtering:
+
+- `get_catalog` for semantic dimensions, measures, and table columns
+- `list_events` for event names and event statistics
+- `list_user_traits` for user attributes that can drive segmentation
+
+Match the user's criteria to actual dimension or trait names.
 
 ### Step 3: Build the Segment Definition
 
@@ -66,7 +72,7 @@ All filters use AND logic -- every condition must be true.
 
 ### Step 4: Preview and Validate
 
-Preview the segmentation insight via the Altertable MCP server to check:
+Render the segmentation insight via `render_insight` to check:
 - Is the segment size reasonable? (not zero, not everyone)
 - Do the results match the user's expectation?
 - Are edge cases handled (NULLs, test accounts)?
@@ -76,8 +82,8 @@ If the preview looks wrong, adjust filters and preview again.
 ### Step 5: Create the Insight
 
 Once validated:
-- Create a segmentation insight to save the segment as a chart
-- Or create a segmentation insight discovery to save it as a discovery that flows through the approval workflow
+- Use `create_insight` with `kind: segmentation` to save the segment as a chart
+- Use `create_discovery` when the validated finding should flow through the review and notification workflow
 
 ## Filter Operators
 
@@ -99,7 +105,7 @@ See [Filter operators reference](references/filter-operators.md) for detailed be
 - **Forgetting NULL handling** -- equality operators don't match NULL; use `IsNull`/`IsNotNull` explicitly
 - **Overly broad segments** -- if the segment includes most users, the filters are likely too loose
 - **Missing exclusion criteria** -- always consider whether test accounts, internal users, or bots should be excluded
-- **Not checking dimension names** -- list semantic models to confirm exact dimension names before building filters
+- **Not checking dimension names** -- inspect semantic model details and traits to confirm exact names before building filters
 
 ## Reference Files
 

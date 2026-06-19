@@ -31,13 +31,13 @@ Add conditions to narrow the population:
 - Include criteria (must have)
 - Exclude criteria (must not have)
 
-### 4. Preview and Validate
+### 4. Render and Validate
 
-Check segment size and composition.
+Use `render_insight` with `kind: segmentation` to check segment size and composition.
 
-### 5. Create Discovery
+### 5. Save Insight
 
-Save as insight with visualization.
+Use `create_insight` to save the segmentation visualization.
 
 ## Segment Parameters
 
@@ -45,6 +45,7 @@ Save as insight with visualization.
 
 | Parameter | Description |
 |-----------|-------------|
+| `segmentation_definition` | Events, aggregation, breakdowns, filters, and visualization settings |
 | `primary_dimension_ref` | Main grouping dimension |
 
 ### Optional

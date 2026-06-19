@@ -12,10 +12,11 @@ metadata:
 ## Quick Start
 
 When analyzing an insight:
-1. Identify the chart type and what it measures
-2. Look for patterns (trends, seasonality, anomalies)
-3. Quantify observations with specific numbers
-4. Provide actionable interpretation
+1. Call `view_insight` for saved insights, or use provided chart data directly
+2. Identify the chart type and what it measures
+3. Look for patterns (trends, seasonality, anomalies)
+4. Quantify observations with specific numbers
+5. Provide actionable interpretation
 
 ## When to Use This Skill
 

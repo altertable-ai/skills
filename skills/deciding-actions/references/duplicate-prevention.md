@@ -157,7 +157,7 @@ Scheduled, so less duplicate concern:
 - Weekly summary = 1 per week
 - Avoid ad-hoc duplicates of scheduled
 
-### FYI Discoveries
+### Acknowledgements
 
 Rarely duplicate concern:
 - Acknowledgments are contextual

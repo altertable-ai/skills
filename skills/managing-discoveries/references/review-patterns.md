@@ -87,7 +87,7 @@ Questions:
 - Is tone appropriate?
 - Are trends correctly characterized?
 
-### FYI Reviews
+### Contextual Reviews
 
 Focus on:
 - Necessity

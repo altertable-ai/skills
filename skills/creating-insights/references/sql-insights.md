@@ -39,19 +39,19 @@ Before creating the insight:
 - Execute on sample to verify results
 - Check for reasonable output size
 
-### 3. Preview the Insight
+### 3. Render the Insight
 
-Preview shows:
+`render_insight` shows:
 - Query results
-- Visualization preview
+- Visualization output
 - Any warnings or issues
 
-### 4. Create the Discovery
+### 4. Save the Insight or Create a Discovery
 
 Provide:
 - Title: Clear, actionable statement
 - Description: Context and recommendations
-- Connection: Which data source
+- Catalog/query context: Which data source
 - Visualization: Appropriate chart type
 
 ## Query Best Practices
@@ -242,6 +242,6 @@ For slow queries:
 
 ### Invalid Syntax
 
-- Run validation before preview
+- Run `validate_sql` before rendering
 - Check column names exist
 - Verify table qualification

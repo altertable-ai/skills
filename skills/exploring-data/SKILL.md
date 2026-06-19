@@ -1,7 +1,7 @@
 ---
 name: exploring-data
 compatibility: Requires Altertable MCP server
-description: Explores data connections and schemas. Use when asking about tables, columns, data types, data structure, or available sources before querying.
+description: Explores Altertable catalogs, schemas, semantic models, tables, and columns. Use when asking about available data, data structure, connections, or sources before querying.
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"
@@ -12,9 +12,10 @@ metadata:
 ## Quick Start
 
 To explore available data:
-1. List all connections to see available data sources
-2. Get connection details to see schemas, tables, and columns
-3. List semantic models to discover pre-defined metrics and dimensions
+1. Call `initialize` before any other Altertable MCP tool
+2. Use `list_catalogs` to see available Altertable databases and external catalogs
+3. Use `get_catalog` for schemas, tables, columns, semantic measures, and dimensions
+4. Narrow `get_catalog` with `schemas` or `tables` when a catalog is large
 
 ## When to Use This Skill
 
@@ -22,26 +23,41 @@ To explore available data:
 - User wants to understand table structure
 - Before writing queries to understand available columns
 - When onboarding a new data source
-- User asks about available connections or databases
+- User asks about available catalogs, connections, or databases
+- User needs to find semantic models, measures, dimensions, or table descriptions
 
 ## Core Workflow
 
-### Step 1: List Available Connections
+### Step 1: Initialize Context
 
-List all connections via the Altertable MCP server. Each connection has a name, engine type, and slug.
+Call `initialize` first. It returns the current organization, environment, and relevant knowledge-entry context. Do not inspect or query data before initialization.
 
-Built-in connections include `altertable` (platform data) and `sample-data`.
+### Step 2: List Available Catalogs
 
-### Step 2: Get Connection Schema
+Call `list_catalogs`. Each entry includes:
 
-Retrieve the full schema for a connection of interest:
-- Catalogs, schemas, and tables
+- `catalog_name` to pass into `get_catalog`
+- display name and engine
+- optional description
+
+Catalogs can be Altertable-managed databases or external data sources such as Snowflake, BigQuery, Redshift, Postgres, MySQL, MariaDB, object-storage tables, and product analytics.
+
+### Step 3: Get Catalog Schema
+
+Call `get_catalog` for the catalog of interest:
+
+- Schemas and tables
 - Column names, data types, and nullability
-- Note the catalog and schema names for query qualification (e.g., `catalog.schema.table`)
+- Semantic endorsement labels (`draft`, `verified`, `excluded`)
+- Semantic dimensions, measures, and relations when available
+- Note the catalog and schema names for query qualification (`catalog.schema.table`)
 
-### Step 3: Explore Semantic Models
+Use `level: overview` for broad discovery, `level: columns` for table shape, and `level: full` for semantic details. For wide catalogs, pass specific `schemas` or `tables`.
 
-List semantic models to discover pre-defined business logic:
+### Step 4: Explore Semantic Models
+
+Semantic model details are included in `get_catalog`. Use them to discover pre-defined business logic:
+
 - Dimensions (categorical attributes for grouping)
 - Measures (aggregations like count, sum, average)
 - Relations (join paths between sources)
@@ -64,12 +80,13 @@ List semantic models to discover pre-defined business logic:
 | MySQL / MariaDB | Popular relational databases |
 | Clickhouse | Column-oriented OLAP database |
 
-### Built-in Connections
+### Built-in Catalogs
 
 | Name | Purpose |
 |------|---------|
-| `altertable` | Platform data (events, identities, pageviews) |
-| `sample-data` | Demo data for testing and learning |
+| `product_analytics` | Product events, identities, web sessions, and pageviews when Product Analytics is enabled |
+| `opentelemetry` | Logs and traces when OpenTelemetry is enabled |
+| User-created catalogs | Managed lakehouse tables and connected external sources |
 
 ## Understanding Schemas
 
@@ -96,9 +113,9 @@ Common types across engines:
 - `DATE` - Date only
 - `JSON`, `VARIANT` - Semi-structured data
 
-## Built-in Semantic Sources
+## Product Analytics Semantic Sources
 
-The `altertable` connection includes pre-defined semantic sources:
+The `product_analytics` catalog can include pre-defined semantic sources:
 
 | Source | Description |
 |--------|-------------|
@@ -135,7 +152,8 @@ Look for foreign key patterns:
 - Assuming table names without checking the schema first
 - Forgetting to qualify tables with catalog.schema
 - Missing that some tables may be views or materialized views
-- Not checking for semantic models that may already define the metrics needed
+- Querying tables marked `excluded` from the semantic model
+- Not checking semantic measures and dimensions that may already define the metrics needed
 
 ## Reference Files
 

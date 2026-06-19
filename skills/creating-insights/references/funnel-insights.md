@@ -25,16 +25,16 @@ Configure:
 - Ordering mode
 - Time range
 
-### 3. Preview Funnel
+### 3. Render Funnel
 
-View:
+Use `render_insight` with `kind: funnel` to view:
 - Step counts
 - Conversion rates
 - Drop-off percentages
 
-### 4. Create Discovery
+### 4. Save Insight
 
-Save with funnel visualization.
+Use `create_insight` to save the funnel visualization.
 
 ## Funnel Parameters
 
@@ -42,6 +42,7 @@ Save with funnel visualization.
 
 | Parameter | Description |
 |-----------|-------------|
+| `funnel_definition` | Steps, filters, conversion window, ordering, and visualization settings |
 | `steps` | Ordered list of events |
 
 ### Optional

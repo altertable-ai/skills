@@ -11,11 +11,16 @@ metadata:
 
 ## Purpose
 
-Memory transforms agents from stateless tools into learning entities. Instead of starting fresh each run, agents can:
+Memory and knowledge transform agents from stateless tools into learning entities. Instead of starting fresh each run, agents can:
 - Recall what worked before
 - Avoid repeating mistakes
 - Apply organization-specific knowledge
 - Build expertise over time
+
+Altertable distinguishes **knowledge entries** from **memories**:
+
+- **Knowledge entries** are durable reference material added by the team or synced from repositories. Use `create_knowledge` only when the user wants a stable source of truth recorded exactly.
+- **Memories** are learned observations from agent work, notifications, discoveries, and feedback. Use memory tools for patterns, preferences, and working context learned through analysis.
 
 ## When to Search
 
@@ -26,6 +31,7 @@ Search when:
 - Before creating discoveries or insights
 - When context from past runs would help
 - When working with familiar entities (tables, metrics, users)
+- When `initialize` returns relevant knowledge entries, read them before deciding
 
 ## When to Create
 
@@ -37,11 +43,17 @@ Create a memory when:
 - A technique worked well (or failed in a specific context)
 - You learned something that would help future runs
 
+Create a knowledge entry when:
+- The user gives a canonical metric definition, business rule, or operating procedure
+- The content should be durable, searchable, and applied exactly in future work
+- The source of truth is not already available through a connected repository or semantic model
+
 **Do not create memories for:**
 - Routine success ("query returned results")
 - Minor details ("table has 1M rows")
 - Information easily re-discoverable
 - Duplicates of existing memories
+- Stable definitions that belong in the semantic layer or a knowledge entry instead
 
 ## Memory Types
 
