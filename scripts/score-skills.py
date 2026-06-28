@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 import fire
+from scorer.models import DEFAULT_MODEL
 from skills_cli.cli import validate as validate_skill
 
 SKILL_FILENAME = "SKILL.md"
@@ -62,7 +63,7 @@ def score(
     scan_all: bool = False,
     verbose: bool = False,
     validate_only: bool = False,
-    model: str | None = None,
+    model: str = DEFAULT_MODEL,
 ) -> None:
     """Score skills using LLM judge.
 
@@ -74,7 +75,7 @@ def score(
         scan_all: Score all skills in directory
         verbose: Show suggestions
         validate_only: Run validation only, no LLM scoring
-        model: LLM model (default: gemini/gemini-3.1-pro-preview)
+        model: LLM model
     """
     skill_paths = _resolve_skill_paths(paths, scan_all)
     if not skill_paths:

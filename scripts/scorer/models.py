@@ -8,6 +8,7 @@ from pydantic import BaseModel
 SKILL_FILENAME: Final[str] = "SKILL.md"
 SKILLS_DIR: Final[str] = "skills"
 DEFAULT_MIN_SCORE: Final[int] = 70
+DEFAULT_MODEL: Final[str] = "gemini/gemini-pro-latest"
 MAX_RETRIES: Final[int] = 3
 RETRY_DELAY: Final[float] = 1.0
 

@@ -6,6 +6,7 @@ import litellm
 from pydantic import BaseModel
 
 from .models import (
+    DEFAULT_MODEL,
     MAX_RETRIES,
     RETRY_DELAY,
     Issue,
@@ -15,8 +16,6 @@ from .models import (
 )
 
 litellm.suppress_debug_info = True  # type: ignore[assignment]
-
-DEFAULT_MODEL = "gemini/gemini-pro-latest"
 
 PROMPT_TEMPLATE = """You are an expert evaluator of Agent Skills per agentskills.io specification.
 
