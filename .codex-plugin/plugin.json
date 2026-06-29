@@ -1,7 +1,7 @@
 {
   "name": "altertable",
   "version": "0.4.0",
-  "description": "Skills for Altertable AI agents covering data exploration, querying, analysis, insights, and platform operations.",
+  "description": "Skills for AI agents working with Altertable, covering data exploration, querying, analysis, insights, and platform operations.",
   "author": {
     "name": "Altertable",
     "url": "https://github.com/altertable-ai"
@@ -21,7 +21,7 @@
   "interface": {
     "displayName": "Altertable Skills",
     "shortDescription": "Analyze Altertable lakehouse data.",
-    "longDescription": "Skills for Altertable AI agents covering data exploration, querying, analysis, insights, and platform operations.",
+    "longDescription": "Skills for AI agents working with Altertable, covering data exploration, querying, analysis, insights, and platform operations.",
     "developerName": "Altertable",
     "category": "Data & Analytics",
     "capabilities": [
