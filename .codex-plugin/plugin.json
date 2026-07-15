@@ -1,0 +1,35 @@
+{
+  "name": "altertable",
+  "version": "0.4.0",
+  "description": "Skills for AI agents working with Altertable, covering data exploration, querying, analysis, insights, and platform operations.",
+  "author": {
+    "name": "Altertable",
+    "url": "https://github.com/altertable-ai"
+  },
+  "homepage": "https://altertable.ai",
+  "repository": "https://github.com/altertable-ai/skills",
+  "license": "MIT",
+  "keywords": [
+    "altertable",
+    "analytics",
+    "lakehouse",
+    "data-warehouse",
+    "sql"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Altertable Skills",
+    "shortDescription": "Analyze Altertable lakehouse data.",
+    "longDescription": "Skills for AI agents working with Altertable, covering data exploration, querying, analysis, insights, and platform operations.",
+    "developerName": "Altertable",
+    "category": "Data & Analytics",
+    "capabilities": [
+      "Read"
+    ],
+    "defaultPrompt": [
+      "Explore my Altertable data sources.",
+      "Write a lakehouse query for my metric."
+    ]
+  }
+}

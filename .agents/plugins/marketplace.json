@@ -1,0 +1,20 @@
+{
+  "name": "altertable-skills",
+  "interface": {
+    "displayName": "Altertable Skills"
+  },
+  "plugins": [
+    {
+      "name": "altertable",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Data & Analytics"
+    }
+  ]
+}
