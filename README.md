@@ -23,31 +23,31 @@ Don't know which skill to use? Just type:
 
 The `/altertable:ask` command routes your query to the best skill automatically. Examples:
 
-- `/altertable:ask show me my web traffic` -> `analyzing-web-traffic`
-- `/altertable:ask what tables do I have?` -> `exploring-data`
-- `/altertable:ask analyze my signup funnel` -> `analyzing-funnels`
-- `/altertable:ask what is Altertable?` -> `understanding-platform`
+- `/altertable:ask show me my web traffic` -> `analyze-web-traffic`
+- `/altertable:ask what tables do I have?` -> `explore-data`
+- `/altertable:ask analyze my signup funnel` -> `analyze-funnels`
+- `/altertable:ask what is Altertable?` -> `understand-platform`
 
 ## Available Skills
 
 | Skill                                                    | Description                                                                            |
 | -------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| [analyzing-funnels](skills/analyzing-funnels/)           | Creates and analyzes conversion funnels to understand user journeys                    |
-| [analyzing-insights](skills/analyzing-insights/)         | Interprets chart data to identify patterns, anomalies, and trends                      |
-| [analyzing-web-traffic](skills/analyzing-web-traffic/)   | Analyzes web analytics data to identify traffic patterns                               |
-| [building-segments](skills/building-segments/)           | Creates user segments and cohorts using filters and dimensions                         |
-| [configuring-tasks](skills/configuring-tasks/)           | Configures autonomous background tasks for AI analysis                                 |
-| [creating-insights](skills/creating-insights/)           | Creates discoveries with insights through the approval workflow                        |
-| [creating-discoveries](skills/creating-discoveries/)     | Creates discoveries from meaningful findings that should notify users and enter review |
-| [deciding-actions](skills/deciding-actions/)             | Decision matrices for choosing insight types and discovery actions                     |
-| [evaluating-skills](skills/evaluating-skills/)           | Evaluates and creates agent skills following best practices                            |
-| [exploring-data](skills/exploring-data/)                 | Explores data connections and schemas                                                  |
-| [forecasting-timeseries](skills/forecasting-timeseries/) | Analyzes time series data for trends, anomalies, and forecasts                         |
-| [managing-discoveries](skills/managing-discoveries/)     | Manages the discovery approval workflow and user feedback                              |
-| [querying-lakehouse](skills/querying-lakehouse/)         | Writes and executes SQL queries against the DuckDB Lakehouse                           |
-| [tracking-events](skills/tracking-events/)               | Works with product analytics events and user identification                            |
-| [understanding-platform](skills/understanding-platform/) | Explains platform concepts and architecture                                            |
-| [using-memory](skills/using-memory/)                     | Stores and retrieves agent memories for learning and context                           |
+| [analyze-funnels](skills/analyze-funnels/)               | Creates and analyzes conversion funnels to understand user journeys                    |
+| [analyze-insights](skills/analyze-insights/)             | Interprets chart data to identify patterns, anomalies, and trends                      |
+| [analyze-web-traffic](skills/analyze-web-traffic/)       | Analyzes web analytics data to identify traffic patterns                               |
+| [build-segments](skills/build-segments/)                 | Creates user segments and cohorts using filters and dimensions                         |
+| [configure-tasks](skills/configure-tasks/)               | Configures autonomous background tasks for AI analysis                                 |
+| [create-insights](skills/create-insights/)               | Creates discoveries with insights through the approval workflow                        |
+| [create-discoveries](skills/create-discoveries/)         | Creates discoveries from meaningful findings that should notify users and enter review |
+| [decide-actions](skills/decide-actions/)                 | Decision matrices for choosing insight types and discovery actions                     |
+| [evaluate-skills](skills/evaluate-skills/)               | Evaluates and creates agent skills following best practices                            |
+| [explore-data](skills/explore-data/)                     | Explores data connections and schemas                                                  |
+| [forecast-timeseries](skills/forecast-timeseries/)       | Analyzes time series data for trends, anomalies, and forecasts                         |
+| [manage-discoveries](skills/manage-discoveries/)         | Manages the discovery approval workflow and user feedback                              |
+| [query-lakehouse](skills/query-lakehouse/)               | Writes and executes SQL queries against the DuckDB Lakehouse                           |
+| [track-events](skills/track-events/)                     | Works with product analytics events and user identification                            |
+| [understand-platform](skills/understand-platform/)       | Explains platform concepts and architecture                                            |
+| [use-memory](skills/use-memory/)                         | Stores and retrieves agent memories for learning and context                           |
 
 ## Getting Started
 

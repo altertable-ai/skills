@@ -12,10 +12,10 @@ cp -r skills/SKILL_TEMPLATE skills/my-new-skill
 
 ### 2. Naming Convention
 
-Use **gerund form** (verb + -ing), lowercase, hyphens only:
+Use an imperative verb, lowercase, and hyphens only:
 
-- `analyzing-data` ✓
-- `analyze-data` ✗
+- `analyze-data` ✓
+- `analyzing-data` ✗
 
 ### 3. SKILL.md Requirements
 

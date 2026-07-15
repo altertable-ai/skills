@@ -25,9 +25,9 @@ scripts/
 
 ### Naming Convention
 
-Use **gerund form** (verb + -ing), lowercase, hyphens only:
-- `analyzing-data` ✓
-- `analyze-data` ✗
+Use an imperative verb, lowercase, and hyphens only:
+- `analyze-data` ✓
+- `analyzing-data` ✗
 
 ### SKILL.md Format
 
@@ -68,15 +68,15 @@ description: {Third-person description with trigger keywords}
 
 <available_skills>
   <skill>
-    <name>analyzing-funnels</name>
+    <name>analyze-funnels</name>
     <description>Creates and analyzes conversion funnels. Use when analyzing user journeys, drop-off points, onboarding, checkout, or multi-step flows.</description>
   </skill>
   <skill>
-    <name>analyzing-insights</name>
+    <name>analyze-insights</name>
     <description>Interprets Insight data to identify patterns, anomalies, and trends. Use when analyzing visualizations, extracting findings, or explaining patterns in graphs.</description>
   </skill>
   <skill>
-    <name>analyzing-web-traffic</name>
+    <name>analyze-web-traffic</name>
     <description>Analyzes web analytics traffic patterns and user behavior. Use when asked about pageviews, sessions, traffic sources, or website user behavior.</description>
   </skill>
   <skill>
@@ -84,55 +84,55 @@ description: {Third-person description with trigger keywords}
     <description>Routes user queries to the best-fit Altertable skill. Use when unsure which Altertable skill applies to a request.</description>
   </skill>
   <skill>
-    <name>building-segments</name>
+    <name>build-segments</name>
     <description>Builds segmentation insights with filters, dimensions, and breakdowns. Use when segmenting users, comparing event metrics by properties, building cohorts, or defining audiences.</description>
   </skill>
   <skill>
-    <name>configuring-tasks</name>
+    <name>configure-tasks</name>
     <description>Configures scheduled AI tasks that analyze Insights and Dashboards. Use for anomaly detection, forecasting, alerts, or recurring automated monitoring.</description>
   </skill>
   <skill>
-    <name>creating-discoveries</name>
+    <name>create-discoveries</name>
     <description>Creates Altertable discoveries from meaningful findings. Use when analysis finds a change, anomaly, root cause, recommendation, warning, or contextual finding that should notify users and enter review.</description>
   </skill>
   <skill>
-    <name>creating-insights</name>
+    <name>create-insights</name>
     <description>Creates, drafts, renders, and saves Altertable insights. Use when generating findings, creating visualizations, or saving and sharing analysis results.</description>
   </skill>
   <skill>
-    <name>deciding-actions</name>
+    <name>decide-actions</name>
     <description>Decision matrices for picking insight types (funnel, retention, semantic, segmentation, SQL), task types, and discovery actions. Use when choosing types or whether to create, update, or skip discoveries.</description>
   </skill>
   <skill>
-    <name>evaluating-skills</name>
+    <name>evaluate-skills</name>
     <description>Evaluates and creates agent skills following best practices. Use when reviewing, writing, or refactoring skills, or asking about skill structure, format, or specification.</description>
   </skill>
   <skill>
-    <name>exploring-data</name>
+    <name>explore-data</name>
     <description>Explores Altertable catalogs, schemas, semantic models, tables, and columns. Use when asking about available data, data structure, connections, or sources before querying.</description>
   </skill>
   <skill>
-    <name>forecasting-timeseries</name>
+    <name>forecast-timeseries</name>
     <description>Analyzes time series for trends, anomalies, and forecasts. Use when detecting spikes or drops, predicting future values, or finding unusual patterns over time.</description>
   </skill>
   <skill>
-    <name>managing-discoveries</name>
+    <name>manage-discoveries</name>
     <description>Manages the discovery approval workflow. Use when handling discovery reviews, approval states, user feedback, or discovery lifecycle.</description>
   </skill>
   <skill>
-    <name>querying-lakehouse</name>
+    <name>query-lakehouse</name>
     <description>Writes, validates, optimizes, and executes DuckDB SQL against the Altertable lakehouse. Use when analyzing data, aggregating metrics, building reports, or querying catalogs and external connections.</description>
   </skill>
   <skill>
-    <name>tracking-events</name>
+    <name>track-events</name>
     <description>Works with Altertable product analytics events, user identification, and aliasing. Use when tracking events, identifying users, managing traits, or resolving identities.</description>
   </skill>
   <skill>
-    <name>understanding-platform</name>
+    <name>understand-platform</name>
     <description>Explains Altertable platform concepts and architecture. Use when asking what Altertable is or how agents, discoveries, memories, insights, and dashboards fit together.</description>
   </skill>
   <skill>
-    <name>using-memory</name>
+    <name>use-memory</name>
     <description>Stores and retrieves agent memories for context persistence. Use when saving findings, recalling past analysis, or searching for relevant context.</description>
   </skill>
 </available_skills>
