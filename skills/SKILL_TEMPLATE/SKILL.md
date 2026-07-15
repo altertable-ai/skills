@@ -16,11 +16,11 @@ allowed-tools: <space-delimited tool list>     # e.g. "Bash(git:*) Bash(jq:*) Re
 Frontmatter examples:
 
 Minimal:
-  name: exploring-data
+  name: explore-data
   description: Explores data connections and schemas. Use when asked about tables, columns, or data types.
 
 With optional fields:
-  name: forecasting-timeseries
+  name: forecast-timeseries
   description: Analyzes time series data for trends, anomalies, and forecasts. Use when detecting spikes or drops, predicting future values, or identifying anomalies in metrics over time.
   compatibility: Requires Python 3.12+, altertable-mcp, chronos, statsforecast, and statsmodels
   metadata:

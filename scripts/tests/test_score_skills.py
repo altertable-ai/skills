@@ -6,7 +6,7 @@ from pathlib import Path
 
 from scorer.models import SKILLS_DIR
 
-SAMPLE_SKILL = str(Path(SKILLS_DIR) / "exploring-data")
+SAMPLE_SKILL = str(Path(SKILLS_DIR) / "explore-data")
 
 
 def _run_score(*args: str, env: dict | None = None) -> subprocess.CompletedProcess[str]:
