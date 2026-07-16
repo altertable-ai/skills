@@ -52,14 +52,3 @@ When a skill is added, renamed, or removed from this repository, update this tab
 5. **Pass context through**: hand the original query to the matched skill.
 6. **Never invent a skill**: only invoke skills that are actually installed.
 7. **Clarify before routing**: if the query could reasonably mean different things, propose the most likely directions and let the user choose.
-
-## Collision Rules
-
-Apply these rules before falling back to general SQL or platform guidance:
-
-1. **Instrument vs query**: code or implementation changes route to `instrument-product-analytics`; questions about data already collected route to `query-product-events`.
-2. **Product events vs lakehouse**: keep `query-product-events` when event or identity semantics are central. Use `query-lakehouse` for non-product catalogs, cross-catalog joins, or general DuckDB work.
-3. **Events vs funnels**: ordered steps, conversion windows, completion, or drop-off route to `analyze-funnels`, even when the source is product events.
-4. **Events vs web traffic**: sessions, pageviews, referrers, UTM, landing pages, bounce, or acquisition route to `analyze-web-traffic`.
-5. **Queries vs segments**: a reusable cohort or audience definition routes to `build-segments`; an ad hoc event breakdown stays with `query-product-events`.
-6. **Instrumentation diagnosis**: requests to change tracking code route to `instrument-product-analytics`. Requests to inspect whether events arrived route to `query-product-events` first, then hand the evidence back to instrumentation if code changes are needed.
