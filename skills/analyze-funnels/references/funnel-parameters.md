@@ -1,261 +1,79 @@
-# Funnel Parameters Reference
+# Funnel Parameters
 
-Configuring funnels for accurate analysis.
+Use the `render_insight` or `create_insight` MCP schema. Both calls require a funnel definition. Use at least two events to measure conversion through a journey. A rendered funnel requires top-level `from`, `to`, and `interval` values. A saved funnel does not consume these preview-only fields.
 
-## Step Configuration
-
-### Basic Steps
-
-Define steps by event name:
+## Minimal Rendered Funnel
 
 ```yaml
-steps:
-  - event: page_view
-  - event: signup_started
-  - event: signup_completed
+kind: funnel
+title: Signup funnel
+from: "2026-06-01T00:00:00Z"
+to: "2026-07-01T00:00:00Z"
+interval: daily
+funnel_definition:
+  events:
+    - key: signup-started
+      name: signup_started
+    - key: signup-completed
+      name: signup_completed
 ```
 
-### Steps with Properties
+Events are evaluated chronologically in the order listed.
 
-Filter steps by event properties:
+## Completion Window
+
+Set the maximum seconds allowed between the first and final events:
 
 ```yaml
-steps:
-  - event: page_view
-    filters:
-      - property: page_type
-        operator: Eq
-        value: "landing"
-  - event: button_click
-    filters:
-      - property: button_id
-        operator: Eq
-        value: "cta_signup"
+funnel_definition:
+  events:
+    - key: checkout-started
+      name: checkout_started
+    - key: purchase-completed
+      name: purchase_completed
+  completed_within_seconds: 1800
 ```
 
-### Recommended Step Count
+Omit `completed_within_seconds` when no maximum completion time is required.
 
-| Use Case | Steps |
-|----------|-------|
-| Quick conversion | 3-4 |
-| Standard funnel | 4-6 |
-| Detailed journey | 6-8 |
-| Complex process | 8-10 |
+## Event Property Filters
 
-More steps = more detail but more noise.
-
-## Conversion Window
-
-### Time-Based Windows
+Each event can filter event properties, user traits, or semantic segments. Property and trait filters use an operator plus a `values` array.
 
 ```yaml
-conversion_window:
-  value: 7
-  unit: days
+funnel_definition:
+  events:
+    - key: product-viewed
+      name: product_viewed
+      property_filters:
+        - property: category
+          operator: "="
+          values: [books]
+    - key: purchase-completed
+      name: purchase_completed
+      user_trait_filters:
+        - trait: plan
+          operator: in
+          values: [pro, enterprise]
 ```
 
-Available units:
-- `minutes`
-- `hours`
-- `days`
+Use `list_events` and `list_user_traits` to confirm names. Read the live MCP schema for the complete operator set.
 
-### Choosing the Right Window
+## Breakdowns
 
-| Journey Type | Recommended Window |
-|--------------|-------------------|
-| Impulse purchase | 1 hour |
-| Session action | 30 minutes |
-| Daily decision | 24 hours |
-| Considered purchase | 7 days |
-| B2B sales | 30 days |
-
-### Window Impact
-
-**Too short**:
-- Miss legitimate conversions
-- Undercount conversion rate
-- Useful for urgent actions
-
-**Too long**:
-- Include unrelated conversions
-- Dilute attribution
-- Less actionable insights
-
-## Ordering Mode
-
-### Strict Ordering
-
-Events must happen in exact sequence:
+Use `breakdowns` on the funnel definition to compare an event property or user trait:
 
 ```yaml
-ordering: strict
+funnel_definition:
+  events:
+    - key: signup-started
+      name: signup_started
+    - key: signup-completed
+      name: signup_completed
+  breakdowns:
+    - property: device_type
+      limit: 10
+      include_other: true
 ```
 
-User journey:
-```
-Step 1 → Step 2 → Step 3 ✓
-Step 2 → Step 1 → Step 3 ✗
-```
-
-**Use for**:
-- Linear processes
-- Checkout flows
-- Sequential requirements
-
-### Any Ordering
-
-Events can happen in any order:
-
-```yaml
-ordering: any
-```
-
-User journey:
-```
-Step 1 → Step 2 → Step 3 ✓
-Step 2 → Step 1 → Step 3 ✓
-```
-
-**Use for**:
-- Non-linear journeys
-- Feature exploration
-- Flexible workflows
-
-## Time Range
-
-### Analysis Period
-
-```yaml
-timeframe:
-  from: "2024-01-01"
-  to: "2024-01-31"
-```
-
-### Relative Periods
-
-```yaml
-timeframe:
-  relative: last_30_days
-```
-
-Options:
-- `last_7_days`
-- `last_14_days`
-- `last_30_days`
-- `last_90_days`
-- `this_month`
-- `last_month`
-
-## Filters
-
-### Global Filters
-
-Apply to entire funnel:
-
-```yaml
-filters:
-  - dimension: device_type
-    operator: Eq
-    value: "mobile"
-```
-
-All users in funnel must match.
-
-### Step-Specific Filters
-
-Apply to individual steps:
-
-```yaml
-steps:
-  - event: page_view
-    filters:
-      - property: page_path
-        operator: StartsWith
-        value: "/products/"
-```
-
-## Breakdown Dimension
-
-Segment funnel by a dimension:
-
-```yaml
-breakdown:
-  dimension: device_type
-```
-
-Creates separate funnels per value:
-- Mobile funnel
-- Desktop funnel
-- Tablet funnel
-
-### Common Breakdowns
-
-| Dimension | Insight |
-|-----------|---------|
-| `device_type` | Mobile vs desktop behavior |
-| `traffic_source` | Channel performance |
-| `user_segment` | Audience comparison |
-| `experiment_variant` | A/B test results |
-| `country` | Geographic differences |
-
-## Advanced Configuration
-
-### Exclusion Events
-
-Exclude users who did certain actions:
-
-```yaml
-exclusions:
-  - event: cancelled
-```
-
-### Hold-out Steps
-
-Optional steps that don't break the funnel:
-
-```yaml
-steps:
-  - event: checkout_started
-  - event: apply_coupon
-    optional: true
-  - event: payment_submitted
-```
-
-### Counting Method
-
-How to count users:
-
-```yaml
-counting: unique_users
-```
-
-Options:
-- `unique_users` - Each user once
-- `sessions` - Each session
-- `events` - Each occurrence
-
-## Best Practices
-
-### Step Definition
-
-- Use specific events
-- Add property filters when needed
-- Avoid ambiguous events
-
-### Window Selection
-
-- Match user behavior
-- Test different windows
-- Consider your business cycle
-
-### Breakdown Usage
-
-- One dimension at a time
-- Low cardinality dimensions
-- Meaningful segments
-
-### Time Range
-
-- Sufficient sample size
-- Stable period (no major changes)
-- Compare similar periods
+When rendering, keep the analysis period in the top-level `from`, `to`, and `interval` fields.

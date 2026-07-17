@@ -13,7 +13,7 @@ metadata:
 
 To analyze a funnel:
 1. Clarify the user journey the user wants to measure
-2. Use `list_events` and `render_insight` to validate the funnel steps, window, and ordering
+2. Use `list_events` and `render_insight` to validate the funnel steps and completion window
 3. Query the funnel data and calculate drop-off rates per step
 4. Identify the biggest bottleneck and present actionable findings
 
@@ -30,13 +30,12 @@ To analyze a funnel:
 
 Ask the user (or infer from context) what journey to measure. You need:
 - **Steps**: Ordered list of events from entry to conversion goal
-- **Conversion window**: Maximum time allowed to complete the funnel
+- **Completion window**: Maximum time allowed between the first and final steps, expressed as `completed_within_seconds`
   - Use short windows (30 min) for session flows like checkout
   - Use medium windows (24 hr) for day-bounded flows
   - Use long windows (7+ days) for consideration flows like onboarding
-- **Ordering**: Strict (exact sequence required) or Any (steps in any order)
 
-Default to **strict ordering** unless the user specifies otherwise.
+Funnel events are evaluated in chronological order.
 
 ### Step 2: Preview and Create the Funnel
 
@@ -94,7 +93,6 @@ When comparing funnels across segments (device, traffic source, user type):
 - **Wrong conversion window**: Too short cuts off legitimate conversions; too long inflates rates with unrelated sessions. Match the window to the expected user behavior.
 - **Too many steps**: Including minor intermediate events dilutes the analysis. Keep funnels to 3-7 meaningful steps.
 - **Too few steps**: Jumping from entry to conversion hides where users actually drop off.
-- **Ignoring ordering**: Using "any" ordering when the flow is inherently sequential produces misleading results.
 - **Comparing mismatched periods**: Ensure segments or time comparisons use the same date ranges and funnel definitions.
 - **Not previewing before creating an insight**: Always preview funnel results to verify step definitions are correct before saving.
 

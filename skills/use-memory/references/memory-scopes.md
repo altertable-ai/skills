@@ -1,12 +1,15 @@
 # Memory Scopes Reference
 
+Scopes classify retrieval breadth and influence default decay. They are not equivalent to access-control boundaries. Only `user` scope enforces owner filtering. Searches for `workflow`, `agent`, and `entity` scopes filter by the scope value, not by a workflow, agent, or entity identifier. Do not store sensitive context under those scopes on the assumption that the label makes it private.
+
 ## Scope Hierarchy
 
 ```
 Organization (broadest)
     └── Workflow
         └── Agent
-            └── Entity (narrowest)
+            └── Entity
+                └── User (narrowest)
 ```
 
 ## Organization
@@ -24,26 +27,26 @@ Knowledge that applies to everyone in the org.
 - "Fiscal year starts in April"
 - "MRR means Monthly Recurring Revenue"
 
-**Visibility:** All agents and users in the organization
+**Retrieval:** Broadest non-user classification within the environment.
 
 ## Workflow
 
-Context specific to a workflow type.
+Knowledge labeled as specific to a workflow type.
 
 **Use for:**
 - Patterns for this analysis type
 - Workflow-specific learnings
-- Session context
+- Reusable workflow context
 
 **Examples:**
 - "Revenue analysis workflow: always check seasonality first"
 - "Funnel workflows need strict event ordering"
 
-**Visibility:** Current workflow only
+**Retrieval:** Scope filtering does not restrict results to one workflow instance.
 
 ## Agent
 
-Knowledge private to a specific agent.
+Knowledge labeled as agent-specific.
 
 **Use for:**
 - Agent-specific optimizations
@@ -54,11 +57,11 @@ Knowledge private to a specific agent.
 - "I work faster with CTEs than subqueries"
 - "My analysis style emphasizes visualization"
 
-**Visibility:** Single agent only
+**Retrieval:** Scope filtering does not restrict results to the creating agent.
 
 ## Entity
 
-Facts about a specific entity (insight, discovery, table).
+Knowledge labeled as specific to an entity (insight, discovery, table).
 
 **Use for:**
 - Entity-specific preferences
@@ -70,14 +73,26 @@ Facts about a specific entity (insight, discovery, table).
 - "DSC-456: Was rejected for being too granular"
 - "events_table: Has NULL values on weekends"
 
-**Visibility:** When working with that entity
+**Retrieval:** Add entity slugs to `entities`, then pass the same slugs to `search_memory` to filter by them. The scope alone does not restrict results to an entity.
+
+## User
+
+Context or preferences that should be visible only to one user.
+
+**Use for:**
+- User-specific preferences
+- Personal working context
+- Information that should not become an organization-wide rule
+
+**Retrieval:** The owning user only. User scope is available only in user sessions, not agentic workflows.
 
 ## Quick Decision
 
 1. **Does this apply to the entire organization?** → Organization
-2. **Is this specific to this workflow type?** → Workflow
-3. **Is this about a specific entity?** → Entity
-4. **Is this my personal learning?** → Agent
+2. **Is this specific to one user, and is the current author a user?** → User
+3. **Is this specific to this workflow type?** → Workflow
+4. **Is this about a specific entity?** → Entity
+5. **Is this my personal learning?** → Agent
 
 ## Scope Promotion
 

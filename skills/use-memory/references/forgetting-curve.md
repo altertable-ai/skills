@@ -8,15 +8,18 @@ Memories decay over time without reinforcement, following the Ebbinghaus forgett
 
 Where:
 - `t` = hours since last access
-- `S` = stability (based on importance and access count)
+- `S` = configured decay hours × `(1 + access_count / 5)` × `(importance / 7)`
 
 ## Decay Rates
 
-| Rate | Half-life | Use For |
-|------|-----------|---------|
+| Rate | Configured hours | Use For |
+|------|------------------|---------|
 | Daily | ~24h | Session context, temporary notes |
-| Weekly | ~168h | Short-term patterns (default) |
-| Monthly | ~720h | Core knowledge, stable facts |
+| Weekly | ~168h | Short-term patterns |
+| Monthly | ~720h | Stable knowledge and user-scoped memory |
+| Yearly | ~8760h | Organization-scoped memory |
+
+When the caller omits a rate, the service derives it from memory type and scope.
 
 ## Importance Effect
 
@@ -31,17 +34,12 @@ Higher importance = slower decay + higher initial relevance.
 
 ## Reinforcement
 
-Memories get stronger when accessed or validated.
+Memories get stronger when accessed.
 
 **Access reinforcement:**
 - Each search that returns a memory increases its strength
 - Decay timer resets
 - Memory stays relevant longer
-
-**Validation reinforcement:**
-- When memory is confirmed correct, larger strength boost
-- Importance may increase
-- Decay rate may slow
 
 ## Relevance Scores
 
@@ -54,7 +52,7 @@ Memories get stronger when accessed or validated.
 
 ## Garbage Collection
 
-Memories below relevance threshold (0.1) are automatically removed.
+The default garbage-collection threshold is 0.15 and can be configured by the service.
 
 - Only AI-authored memories are garbage collected
 - User-created memories are never auto-deleted

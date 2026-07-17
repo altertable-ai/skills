@@ -1,7 +1,7 @@
 ---
 name: decide-actions
 compatibility: Requires Altertable MCP server
-description: Decision matrices for picking insight types (funnel, retention, semantic, segmentation, SQL), task types, and discovery actions. Use when choosing types or whether to create, update, or skip discoveries.
+description: Decision matrices for picking insight types (funnel, retention, semantic, segmentation, SQL), task types, and discovery actions. Use when choosing types or whether to create or skip discoveries.
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"
@@ -13,15 +13,15 @@ metadata:
 
 This skill provides decision frameworks for:
 1. Choosing the right insight type (funnel, retention, semantic, segmentation, SQL)
-2. Choosing the right task type (anomaly_detection, forecast, monitor)
-3. Deciding discovery actions (new/update/skip)
+2. Choosing the right task type (anomaly_detection, forecast, ask)
+3. Deciding discovery actions (create/skip)
 4. Avoiding duplicate discoveries
 5. Selecting analysis approaches
 
 ## When to Use This Skill
 
 - Choosing between funnel, retention, semantic, segmentation, or SQL insights
-- Choosing a task type for automated monitoring (anomaly_detection, forecast, monitor)
+- Choosing a task type for automated monitoring (anomaly_detection, forecast, ask)
 - Deciding whether to create a new discovery
 - Checking for duplicate discoveries
 - Selecting the right analysis method
@@ -47,14 +47,15 @@ User Question
 ├─ About whether users come back after an event?
 │   └─ → RETENTION INSIGHT
 │
-├─ About metrics/dimensions/trends?
-│   └─ → SEMANTIC INSIGHT
-│
-├─ Complex/custom/joins needed?
+├─ Need individual rows or a membership list?
 │   └─ → SQL INSIGHT
 │
 ├─ About comparing event metrics across segments/cohorts?
 │   └─ → SEGMENTATION INSIGHT
+│
+├─ About non-event metrics/dimensions/trends?
+│   ├─ Modeled metric, dimension, relation, or inline measure? → SEMANTIC INSIGHT
+│   └─ Unmodeled data, unsupported grain, or custom join? → SQL INSIGHT
 │
 ├─ Need automated recurring analysis?
 │   └─ → TASK (see configure-tasks skill)
@@ -82,13 +83,15 @@ User Question
 | "trend over time" | | | ✓✓✓ | | |
 | "breakdown by" | | | ✓✓✓ | | |
 | "compare periods" | | | ✓✓✓ | | |
-| "join tables" | | | | ✓✓✓ | |
-| "custom calculation" | | | | ✓✓✓ | |
+| "modeled relation" | | | ✓✓✓ | | |
+| "inline calculation on a modeled table" | | | ✓✓✓ | | |
+| "unmodeled/custom join" | | | | ✓✓✓ | |
+| "unsupported grain or window" | | | | ✓✓✓ | |
 | "raw data" | | | | ✓✓✓ | |
 | "complex query" | | | | ✓✓✓ | |
-| "users who [have property]" | | | | | ✓✓✓ |
-| "cohort of" | | | | | ✓✓✓ |
-| "segment where" | | | | | ✓✓✓ |
+| "event activity for users with [property]" | | | | | ✓✓✓ |
+| "compare cohorts" | | | | | ✓✓✓ |
+| "break down event by property" | | | | | ✓✓✓ |
 
 **Disambiguation — Segmentation vs Funnel:**
 
@@ -96,14 +99,15 @@ The phrase "users who" is ambiguous. Apply this test:
 
 | Pattern | Type | Why |
 |---------|------|-----|
-| "users who **have** property X" | Segmentation | Defining a cohort for behavioral comparison |
+| "show **which users have** property X" | SQL | Returning identity rows |
+| "compare **event activity for users with** property X" | Segmentation | Aggregate behavioral comparison |
 | "users who **did** event A **then** event B" | Funnel | Sequential event analysis |
 | "event count by plan/device/source" | Segmentation | Event metric comparison across property values |
 | "users **stuck at** step/level X" | Funnel | Step-to-step progression |
 | "users who **completed** X but **not** Y" | Funnel | Measuring drop-off between steps |
-| "users **in** segment/group X" | Segmentation | Pre-defined cohort |
+| "event activity for users **in** segment/group X" | Segmentation | Aggregate behavior for a pre-defined cohort |
 
-**Key test:** Is the finding about *comparing event behavior across cohorts/properties* (→ segmentation) or *movement through ordered steps* (→ funnel)?
+**Key test:** Is the request for identity rows (→ SQL), aggregate event behavior across cohorts or properties (→ segmentation), or movement through ordered steps (→ funnel)?
 
 **Disambiguation — Semantic vs SQL:**
 
@@ -112,12 +116,14 @@ Both produce metric values. Apply this test:
 | Factor | Semantic | SQL |
 |--------|----------|-----|
 | Metric/dimension exists in semantic model | ✓ | |
-| Requires joins across tables | | ✓ |
-| Custom calculation or formula | | ✓ |
+| Join is covered by modeled relations | ✓ | |
+| Calculation fits an inline measure on a modeled table | ✓ | |
+| Join is unmodeled or needs custom SQL | | ✓ |
+| Calculation needs an unsupported grain or window | | ✓ |
 | Data not modeled in semantic layer | | ✓ |
 | Standard breakdown (e.g., revenue by region) | ✓ | |
 
-**Key test:** Does the semantic model already expose this metric and dimension? Yes → **Semantic**. No → **SQL**. When unsure, check the semantic model first.
+**Key test:** Does the semantic model expose the needed metric and dimension, or can the calculation be expressed as an inline measure on a modeled table? Yes → **Semantic**. Use **SQL** when the data or relationship is unmodeled, or when the calculation needs an unsupported grain or window. When unsure, check the semantic model first.
 
 **Disambiguation — Funnel vs Retention:**
 
@@ -161,15 +167,17 @@ Both involve user events over time. Apply this test:
 - Needs breakdown by dimension
 - Standard analytics questions
 - Comparing time periods
+- Calculations expressible as inline measures on modeled tables
 
 **Keywords**: how many, trend, breakdown, compare, metric, daily, weekly, growth
 
 #### Use SQL INSIGHT When
 
 - Semantic model doesn't have needed data
-- Complex joins required
-- Custom calculations needed
+- Unmodeled joins or custom join logic required
+- Calculation requires an unsupported grain or window
 - Raw data exploration
+- Individual rows or membership lists
 - Ad-hoc analysis
 
 **Keywords**: join, custom, raw, specific table, complex, calculate
@@ -179,10 +187,10 @@ Both involve user events over time. Apply this test:
 - Comparing event metrics across cohorts (e.g., feature usage by plan, device, or region)
 - Breaking down events by event, user, or session properties
 - Segmenting behavior over time without requiring ordered steps
-- Building cohorts for targeting, comparison, or further analysis
-- Filtering users by dimensions like device, plan, region, etc.
+- Comparing aggregate event activity across existing cohorts, properties, or traits
+- Filtering event series by dimensions like device, plan, or region
 
-**Keywords**: segment, cohort, group of, target, users with, users in
+**Keywords**: segment, cohort comparison, event breakdown, property, trait
 
 #### Respond Without Creating a Discovery When
 
@@ -207,15 +215,15 @@ User wants automation
 ├─ Project future values from an Insight?
 │   └─ → forecast task
 │
-└─ Open-ended AI analysis of an Insight/Dashboard?
-    └─ → monitor task
+└─ Open-ended AI analysis, optionally with Insight or Dashboard context?
+    └─ → ask task
 ```
 
 See the **configure-tasks** skill for full task creation workflow.
 
 ## Discovery Action Decision Matrix
 
-### Create vs Update vs Skip
+### Create vs Skip
 
 ```
 Is this finding new?
@@ -243,21 +251,13 @@ Before creating a discovery, check:
 
 | Check | Action if True |
 |-------|----------------|
-| Same metric, same time range, same finding? | SKIP |
-| Same insight within last 24 hours? | SKIP |
+| Same metric, time range, and finding with no new context? | SKIP |
 | Same topic, minor variation? | SKIP |
 | Contradicts recent discovery? | CREATE (with explanation) |
 | Adds significant new context? | CREATE |
-| User explicitly asked again? | CREATE |
+| User explicitly asked again? | ANSWER; create only for a verified finding worth review or notification |
 
-### Discovery Freshness Rules
-
-| Discovery Age | Same Topic Action |
-|---------------|-------------------|
-| < 1 hour | Always skip unless contradicts |
-| 1-24 hours | Skip unless significant new info |
-| 1-7 days | Create if adds value |
-| > 7 days | Treat as fresh topic |
+Recency alone does not determine the action. Compare the finding and its context. Create a follow-up when it adds material information, corrects a prior result, and warrants review or notification.
 
 ## Semantic Model Check
 
@@ -283,12 +283,12 @@ Need data?
 |--------|----------------|------------|
 | Reusability | ✓ | |
 | Consistency | ✓ | |
-| Performance | ✓ | |
 | Flexibility | | ✓ |
-| Complex joins | | ✓ |
-| One-off analysis | | ✓ |
+| Joins covered by modeled relations | ✓ | |
+| Unmodeled or custom joins | | ✓ |
+| Inline measure on a modeled table | ✓ | |
+| Unsupported grain or window | | ✓ |
 | Standard metrics | ✓ | |
-| Custom calculations | | ✓ |
 
 ## Analysis Approach Selection
 
@@ -298,11 +298,11 @@ Need data?
 |------------------|------------------|----------|
 | "Why did X happen?" | Semantic breakdown | SQL drill-down |
 | "How is X performing?" | Semantic trend | Dashboard |
-| "Who are the users that..." | Segmentation | SQL filter |
+| "Who are the users that..." | SQL filter | Segmentation for aggregate behavior only |
 | "What's the conversion..." | Funnel | SQL with steps |
 | "Do users come back after..." | Retention | Funnel fallback |
-| "Compare A vs B" | Semantic comparison | SQL union |
-| "Predict/forecast" | Forecast task | Semantic trend as fallback |
+| "Compare modeled metric A vs B" | Semantic comparison | SQL union |
+| "Predict/forecast" | Optional local forecast tool when available | Forecast task for recurring analysis |
 
 ### Complexity Assessment
 
@@ -312,16 +312,16 @@ Need data?
 | Metric + filter | Semantic | Add dimension filter |
 | Metric + breakdown | Semantic | Group by dimension |
 | Multi-step analysis | Funnel or SQL | Depends on data |
-| Cross-table | SQL | Joins required |
+| Cross-table with modeled relation | Semantic | SQL when the relation is not modeled |
 | Historical comparison | Semantic | Time dimension |
 
 ## Avoiding Common Mistakes
 
 ### Don't Create Discovery When
 
-- Already said the same thing recently
+- Same metric, period, and finding already exist with no material new context
 - Information is trivial/obvious
-- User didn't ask for insight
+- Analysis produced no verified finding worth review or notification
 - Just acknowledging without adding value
 - Repeating what user already knows
 
@@ -329,7 +329,7 @@ Need data?
 
 - New actionable insight found
 - Significant change detected
-- User explicitly requested analysis
+- User explicitly requested notification or review of a verified finding
 - Important pattern identified
 - Anomaly requires attention
 
@@ -352,9 +352,9 @@ Findings that are frequently assigned the wrong insight type:
 | "Users stuck at step/level X" | Segmentation | Funnel | Step progression = sequential analysis |
 | "Drop-off between A and B" | SQL | Funnel | Sequential steps with conversion |
 | "Users who did X but not Y" | Segmentation | Funnel | Sequential dependency between events |
-| "Metric broken down by property" | SQL | Semantic | Standard breakdown = use semantic model |
-| "Metric X by dimension Y" | SQL | Semantic | Dimension likely exists in model |
-| "Users with property X" | Funnel | Segmentation | Attribute-based group, not a flow |
+| "Modeled metric X by semantic dimension Y" | SQL | Semantic | The metric and dimension use governed model definitions |
+| "Event count by event property or user trait" | Semantic | Segmentation | Event-series breakdowns belong to segmentation |
+| "Users with property X" | Funnel | SQL or Segmentation | Use SQL for identity rows; use Segmentation for aggregate event behavior |
 | "Do users come back after X?" | Funnel | Retention | Return behavior, not step progression |
 | "Churn after event X" | Segmentation | Retention | Measuring who doesn't return over time |
 

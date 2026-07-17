@@ -7,7 +7,7 @@ Guidelines for creating and modifying skills following the [Agent Skills Specifi
 ### 1. Directory Structure
 
 ```bash
-cp -r skills/SKILL_TEMPLATE skills/my-new-skill
+cp -r templates/skill skills/my-new-skill
 ```
 
 ### 2. Naming Convention
@@ -81,6 +81,14 @@ Score a skill with the LLM judge (threshold: 70/100):
 ```bash
 uv run python scripts/score-skills.py ./skills/skill-name --verbose
 ```
+
+## Releasing
+
+1. Update the version in `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, and both version fields in `.claude-plugin/marketplace.json`.
+2. Merge that release commit before creating the tag.
+3. Tag the commit as `vMAJOR.MINOR.PATCH` and push the tag.
+4. Wait for the `Validate release version` workflow to pass. It validates every packaged skill, the repository tests, strict Claude plugin schemas, and every manifest version against the tag.
+5. Publish the GitHub release from the validated tag.
 
 ## Style Guide
 

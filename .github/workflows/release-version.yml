@@ -1,53 +1,45 @@
-name: Update marketplace version on release
+name: Validate release version
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - "v*"
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  bump-version:
+  validate-version:
     runs-on: ubuntu-latest
+    env:
+      DISABLE_AUTOUPDATER: "1"
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-          token: ${{ secrets.PAT_TOKEN }}
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
-      - name: Extract version from tag
-        id: version
-        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
-
-      - name: Update marketplace.json version
+      - name: Match manifests to tag
+        env:
+          TAG: ${{ github.ref_name }}
         run: |
-          jq --arg v "${{ steps.version.outputs.version }}" \
-            '.metadata.version = $v | .plugins[].version = $v' \
-            .claude-plugin/marketplace.json > tmp.json && mv tmp.json .claude-plugin/marketplace.json
-
-      - name: Update plugin.json versions
-        run: |
-          jq --arg v "${{ steps.version.outputs.version }}" \
-            '.version = $v' \
-            .claude-plugin/plugin.json > tmp.json && mv tmp.json .claude-plugin/plugin.json
-          jq --arg v "${{ steps.version.outputs.version }}" \
-            '.version = $v' \
-            .codex-plugin/plugin.json > tmp.json && mv tmp.json .codex-plugin/plugin.json
+          version="${TAG#v}"
+          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          test "$version" = "$(jq -r .metadata.version .claude-plugin/marketplace.json)"
+          test "$(jq -r '.plugins | length' .claude-plugin/marketplace.json)" -gt 0
+          jq -e --arg version "$version" 'all(.plugins[]; .version == $version)' .claude-plugin/marketplace.json
+          test "$version" = "$(jq -r .version .claude-plugin/plugin.json)"
+          test "$version" = "$(jq -r .version .codex-plugin/plugin.json)"
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
           enable-cache: true
+          version: "0.11.29"
 
-      - name: Sync AGENTS.md available skills
-        run: uv run python3 scripts/sync-agents-md.py
+      - name: Install Claude Code
+        run: curl -fsSL https://claude.ai/install.sh | bash -s 2.1.212
 
-      - name: Commit and push
+      - name: Validate release package
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .claude-plugin/marketplace.json .claude-plugin/plugin.json .codex-plugin/plugin.json AGENTS.md
-          git diff --staged --quiet && exit 0
-          git commit -m "Release ${{ steps.version.outputs.version }}"
-          git push
+          uv run --locked python scripts/score-skills.py ./skills --scan_all --validate_only
+          uv run --locked pytest scripts/tests/ -q
+          ~/.local/bin/claude plugin validate .claude-plugin/plugin.json --strict
+          ~/.local/bin/claude plugin validate .claude-plugin/marketplace.json --strict

@@ -62,7 +62,7 @@ description: {Third-person description with trigger keywords}
 
 ## Commands
 
-- `/altertable:ask <query>` -- routes user queries to the best skill (see `skills/ask/SKILL.md`)
+- Codex: `$altertable:ask <query>`; Claude Code: `/altertable:ask <query>` (see `skills/ask/SKILL.md`)
 
 ## Available Skills
 
@@ -85,7 +85,7 @@ description: {Third-person description with trigger keywords}
   </skill>
   <skill>
     <name>build-segments</name>
-    <description>Builds segmentation insights with filters, dimensions, and breakdowns. Use when segmenting users, comparing event metrics by properties, building cohorts, or defining audiences.</description>
+    <description>Builds segmentation insights with filters and breakdowns. Use when comparing aggregate event metrics by properties or user traits.</description>
   </skill>
   <skill>
     <name>configure-tasks</name>
@@ -101,7 +101,7 @@ description: {Third-person description with trigger keywords}
   </skill>
   <skill>
     <name>decide-actions</name>
-    <description>Decision matrices for picking insight types (funnel, retention, semantic, segmentation, SQL), task types, and discovery actions. Use when choosing types or whether to create, update, or skip discoveries.</description>
+    <description>Decision matrices for picking insight types (funnel, retention, semantic, segmentation, SQL), task types, and discovery actions. Use when choosing types or whether to create or skip discoveries.</description>
   </skill>
   <skill>
     <name>evaluate-skills</name>

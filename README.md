@@ -4,7 +4,7 @@
 [![Score Skills](https://github.com/altertable-ai/skills/actions/workflows/score-skills.yml/badge.svg)](https://github.com/altertable-ai/skills/actions/workflows/score-skills.yml)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-8A2BE2)](https://agentskills.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-16-green)](https://github.com/altertable-ai/skills)
+[![Skills](https://img.shields.io/badge/skills-17-green)](https://github.com/altertable-ai/skills)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-3776AB.svg)](https://www.python.org)
 
 A collection of [Agent Skills](https://agentskills.io) for [Altertable](https://altertable.ai) AI agents. Skills are portable, version-controlled packages of instructions, scripts, and references that give agents new capabilities.
@@ -13,15 +13,16 @@ A collection of [Agent Skills](https://agentskills.io) for [Altertable](https://
 
 Agent Skills are an [open standard](https://agentskills.io/specification) for giving AI agents specialized capabilities. Each skill is a self-contained folder with a `SKILL.md` file containing instructions that agents load on demand. Build once, use across any compatible platform.
 
-## Quick Start with `/altertable:ask`
+## Quick Start
 
 Don't know which skill to use? Just type:
 
 ```
-/altertable:ask <your question>
+$altertable:ask <your question>   # Codex
+/altertable:ask <your question>   # Claude Code
 ```
 
-The `/altertable:ask` command routes your query to the best skill automatically. Examples:
+The `ask` skill routes your query to the best skill automatically. Examples for Claude Code:
 
 - `/altertable:ask show me my web traffic` -> `analyze-web-traffic`
 - `/altertable:ask what tables do I have?` -> `explore-data`
@@ -30,14 +31,16 @@ The `/altertable:ask` command routes your query to the best skill automatically.
 
 ## Available Skills
 
+The plugin includes the `ask` router plus 16 domain skills:
+
 | Skill                                                    | Description                                                                            |
 | -------------------------------------------------------- | -------------------------------------------------------------------------------------- |
 | [analyze-funnels](skills/analyze-funnels/)               | Creates and analyzes conversion funnels to understand user journeys                    |
 | [analyze-insights](skills/analyze-insights/)             | Interprets chart data to identify patterns, anomalies, and trends                      |
 | [analyze-web-traffic](skills/analyze-web-traffic/)       | Analyzes web analytics data to identify traffic patterns                               |
-| [build-segments](skills/build-segments/)                 | Creates user segments and cohorts using filters and dimensions                         |
+| [build-segments](skills/build-segments/)                 | Compares event behavior across cohorts using filters and breakdowns                     |
 | [configure-tasks](skills/configure-tasks/)               | Configures autonomous background tasks for AI analysis                                 |
-| [create-insights](skills/create-insights/)               | Creates discoveries with insights through the approval workflow                        |
+| [create-insights](skills/create-insights/)               | Creates, previews, and saves persistent Insight charts                                  |
 | [create-discoveries](skills/create-discoveries/)         | Creates discoveries from meaningful findings that should notify users and enter review |
 | [decide-actions](skills/decide-actions/)                 | Decision matrices for choosing insight types and discovery actions                     |
 | [evaluate-skills](skills/evaluate-skills/)               | Evaluates and creates agent skills following best practices                            |
@@ -81,7 +84,7 @@ uv run pytest scripts/tests/ -v
 ## Creating a New Skill
 
 ```bash
-cp -r skills/SKILL_TEMPLATE skills/my-new-skill
+cp -r templates/skill skills/my-new-skill
 ```
 
 Each skill follows the [Agent Skills Specification](https://agentskills.io/specification):

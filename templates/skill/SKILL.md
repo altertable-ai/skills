@@ -104,4 +104,4 @@ concrete code example
 
 <!-- Links to detailed reference files -->
 
-- [Reference topic](references/topic.md) - Description
+- [Example reference](references/example-reference.md) - Description

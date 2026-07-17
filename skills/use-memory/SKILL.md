@@ -118,16 +118,18 @@ Quick reference for common situations:
 |-----------|------|-------|------------|-------|
 | Discovery approved | Episodic | Workflow | 8 | Weekly |
 | Discovery rejected with feedback | Episodic | Workflow | 9 | Monthly |
-| User stated preference | Semantic | Organization | 9 | Monthly |
-| Data pattern found | Semantic | Organization | 7 | Weekly |
-| Query optimization worked | Procedural | Organization | 8 | Monthly |
-| Workaround for edge case | Procedural | Workflow | 6 | Weekly |
-| Entity-specific behavior | Semantic | Entity | 7 | Weekly |
+| User stated preference | Semantic | User | 9 | Monthly |
+| Data pattern found | Semantic | Organization | 7 | Yearly |
+| Query optimization worked | Procedural | Organization | 8 | Yearly |
+| Workaround for edge case | Procedural | Workflow | 6 | Monthly |
+| Entity-specific behavior | Semantic | Entity | 7 | Monthly |
 | Workflow failed for specific reason | Episodic | Workflow | 8 | Weekly |
-| Business rule confirmed | Semantic | Organization | 9 | Monthly |
-| Technique failed in context | Procedural | Workflow | 7 | Weekly |
+| Business rule confirmed | Semantic | Organization | 9 | Yearly |
+| Technique failed in context | Procedural | Workflow | 7 | Monthly |
 
 ## Memory Scopes
+
+Scopes classify memories for retrieval and default decay. They are not all access-control boundaries. Only `user` scope enforces owner filtering. The `workflow`, `agent`, and `entity` scopes do not isolate records by a workflow, agent, or entity identifier, so do not treat those labels as private storage.
 
 ### Organization
 Knowledge that applies to everyone in the org.
@@ -136,33 +138,45 @@ Knowledge that applies to everyone in the org.
 - Domain terminology
 
 ### Workflow
-Context specific to this workflow type.
+Knowledge labeled as specific to a workflow type.
 - Patterns for this analysis type
 - Workflow-specific learnings
+- Not isolated to one workflow instance
+
+### User
+Context or preferences that should be recalled only for the current user.
+- User-specific preferences
+- Personal working context
+- Available only in user sessions, not agentic workflows
 
 ### Agent
-Knowledge private to a specific agent.
+Knowledge labeled as agent-specific.
 - Agent-specific optimizations
 - Personal learnings
 - Specialized expertise
+- Not isolated to one agent
 
 ### Entity
-Facts about a specific entity (insight, discovery, table).
+Knowledge labeled as specific to an entity (insight, discovery, table).
 - Entity-specific preferences
 - Historical context for that entity
+- Add the entity slug to `entities`, then pass the same slug when searching
 
 ### Scope Decision Tree
 
 1. **Does this apply to the entire organization?**
    → Organization
 
-2. **Is this specific to this workflow type?**
+2. **Is this specific to one user, and is the current author a user?**
+   → User
+
+3. **Is this specific to this workflow type?**
    → Workflow
 
-3. **Is this about a specific entity (INS-*, DSC-*)?**
+4. **Is this about a specific entity (INS-*, DSC-*)?**
    → Entity
 
-4. **Is this my personal learning/optimization?**
+5. **Is this my personal learning/optimization?**
    → Agent
 
 ## Source Linking
@@ -186,7 +200,7 @@ Rate importance honestly - it affects how long memories persist.
 | 5-6 | Moderate | Potentially useful, unconfirmed |
 | 1-4 | Low | Minor detail, easily rediscovered |
 
-**Guideline:** Only save memories with importance >= 7. Lower importance creates noise.
+Save a memory when its expected future value justifies retrieval noise. Scores 5-6 are valid for moderate, context-specific knowledge. Reserve 7 or higher for clearly valuable or critical knowledge.
 
 ## Forgetting Curve
 
@@ -198,15 +212,18 @@ Memories decay over time without reinforcement.
 
 Decay rates:
 - **Daily** - Session context, temporary learnings
-- **Weekly** - Short-term patterns (default)
-- **Monthly** - Core knowledge, stable facts
+- **Weekly** - Short-term patterns
+- **Monthly** - Stable semantic or procedural knowledge, and user-scoped memory
+- **Yearly** - Organization-scoped memory
+
+When omitted, the service derives the decay rate from memory type and scope.
 
 ## Consolidation
 
 Over time, the system automatically:
 
 **Episodic → Semantic**: When multiple similar events occur, they get abstracted into a general pattern.
-- 3+ similar episodic memories → 1 semantic memory
+- The default minimum group is 2 similar memories and can be configured by the service
 - Example: "Revenue drop triggered discovery" (x3) → "Revenue anomalies consistently trigger discoveries"
 
 **Procedural merging**: Similar techniques get consolidated into best practices.
@@ -247,7 +264,6 @@ Good memories are **specific**, **actionable**, and **include context**.
 - Be specific, not vague
 - Include context that makes the memory actionable
 - Set importance honestly
-- Add relevant tags for discoverability
 - Link to entities when applicable
 
 ### Quality Over Quantity
@@ -284,7 +300,7 @@ Good memories are **specific**, **actionable**, and **include context**.
 - Re-create if the knowledge is still valuable
 
 **Too much noise in results:**
-- Be more selective when creating (importance >= 7)
+- Be more selective when creating memories
 - Let low-value memories decay naturally
 - Use more specific search queries
 
