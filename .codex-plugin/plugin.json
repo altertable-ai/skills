@@ -1,7 +1,7 @@
 {
   "name": "altertable",
   "version": "0.4.0",
-  "description": "Skills for AI agents working with Altertable, covering data exploration, querying, analysis, insights, and platform operations.",
+  "description": "Skills for AI agents working with Altertable, covering product analytics instrumentation, data exploration, querying, analysis, insights, and platform operations.",
   "author": {
     "name": "Altertable",
     "url": "https://github.com/altertable-ai"
@@ -20,8 +20,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Altertable Skills",
-    "shortDescription": "Analyze Altertable lakehouse data.",
-    "longDescription": "Skills for AI agents working with Altertable, covering data exploration, querying, analysis, insights, and platform operations.",
+    "shortDescription": "Instrument product analytics and analyze Altertable data.",
+    "longDescription": "Skills for AI agents working with Altertable, covering product analytics instrumentation, data exploration, querying, analysis, insights, and platform operations.",
     "developerName": "Altertable",
     "category": "Data & Analytics",
     "capabilities": [
@@ -29,7 +29,8 @@
     ],
     "defaultPrompt": [
       "Explore my Altertable data sources.",
-      "Write a lakehouse query for my metric."
+      "Write a lakehouse query for my metric.",
+      "Instrument signup tracking in my application."
     ]
   }
 }

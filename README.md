@@ -4,7 +4,7 @@
 [![Score Skills](https://github.com/altertable-ai/skills/actions/workflows/score-skills.yml/badge.svg)](https://github.com/altertable-ai/skills/actions/workflows/score-skills.yml)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-8A2BE2)](https://agentskills.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-16-green)](https://github.com/altertable-ai/skills)
+[![Skills](https://img.shields.io/badge/skills-17-green)](https://github.com/altertable-ai/skills)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-3776AB.svg)](https://www.python.org)
 
 A collection of [Agent Skills](https://agentskills.io) for [Altertable](https://altertable.ai) AI agents. Skills are portable, version-controlled packages of instructions, scripts, and references that give agents new capabilities.
@@ -43,9 +43,10 @@ The `/altertable:ask` command routes your query to the best skill automatically.
 | [evaluate-skills](skills/evaluate-skills/)               | Evaluates and creates agent skills following best practices                            |
 | [explore-data](skills/explore-data/)                     | Explores data connections and schemas                                                  |
 | [forecast-timeseries](skills/forecast-timeseries/)       | Analyzes time series data for trends, anomalies, and forecasts                         |
+| [instrument-product-analytics](skills/instrument-product-analytics/) | Adds product event and identity instrumentation to applications                        |
 | [manage-discoveries](skills/manage-discoveries/)         | Manages the discovery approval workflow and user feedback                              |
+| [query-product-events](skills/query-product-events/)     | Queries product events, identities, traits, and instrumentation delivery               |
 | [query-lakehouse](skills/query-lakehouse/)               | Writes and executes SQL queries against the DuckDB Lakehouse                           |
-| [track-events](skills/track-events/)                     | Works with product analytics events and user identification                            |
 | [understand-platform](skills/understand-platform/)       | Explains platform concepts and architecture                                            |
 | [use-memory](skills/use-memory/)                         | Stores and retrieves agent memories for learning and context                           |
 
