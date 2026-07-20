@@ -1,6 +1,10 @@
 ---
 name: query-product-events
+compatibility: Requires Altertable MCP server
 description: Queries and analyzes Altertable product events and identities. Use for event counts, properties, user activity, identity traits, behavioral trends, or validating incoming instrumentation.
+metadata:
+  author: altertable-ai
+  requires: "altertable-mcp"
 ---
 
 # Query Product Events
