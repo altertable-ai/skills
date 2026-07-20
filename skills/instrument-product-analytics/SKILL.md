@@ -73,7 +73,6 @@ Prefer a small number of durable business events over low-level interaction nois
 - Check that failed or cancelled actions do not emit success events.
 - Check anonymous-to-known identity behavior when authentication is involved.
 - Check logout does not leave the prior user's identity active.
-- Run the repository's focused lint, type, and test commands.
 - If runtime access is available, confirm a non-production event reaches the intended Altertable environment without exposing user data.
 
 ## Safety Rules

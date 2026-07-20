@@ -43,6 +43,8 @@ For data questions, route to `explore-data` when schema is unclear; otherwise ro
 
 When a skill is added, renamed, or removed from this repository, update this table in the same change.
 
+`track-events` remains available as a deprecated compatibility router for existing explicit invocations. Do not route new requests to it; use the two replacement skills above.
+
 ## Routing Rules
 
 1. **Single best match**: pick one skill. Do not fan out.

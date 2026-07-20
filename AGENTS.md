@@ -116,6 +116,10 @@ description: {Third-person description with trigger keywords}
     <description>Analyzes time series for trends, anomalies, and forecasts. Use when detecting spikes or drops, predicting future values, or finding unusual patterns over time.</description>
   </skill>
   <skill>
+    <name>instrument-product-analytics</name>
+    <description>Instruments applications with Altertable Product Analytics. Use when adding event tracking, identifying users, updating traits, resetting sessions, managing consent, or aliasing identifiers.</description>
+  </skill>
+  <skill>
     <name>manage-discoveries</name>
     <description>Manages the discovery approval workflow. Use when handling discovery reviews, approval states, user feedback, or discovery lifecycle.</description>
   </skill>
@@ -124,12 +128,12 @@ description: {Third-person description with trigger keywords}
     <description>Writes, validates, optimizes, and executes DuckDB SQL against the Altertable lakehouse. Use when analyzing data, aggregating metrics, building reports, or querying catalogs and external connections.</description>
   </skill>
   <skill>
-    <name>instrument-product-analytics</name>
-    <description>Instruments applications with Altertable Product Analytics. Use when adding event tracking, identifying users, updating traits, resetting sessions, managing consent, or aliasing identifiers.</description>
-  </skill>
-  <skill>
     <name>query-product-events</name>
     <description>Queries and analyzes Altertable product events and identities. Use for event counts, properties, user activity, identity traits, behavioral trends, or validating incoming instrumentation.</description>
+  </skill>
+  <skill>
+    <name>track-events</name>
+    <description>Routes legacy track-events requests to current Altertable Product Analytics skills. Use when an existing invocation references track-events and must migrate to instrumentation or event querying.</description>
   </skill>
   <skill>
     <name>understand-platform</name>
