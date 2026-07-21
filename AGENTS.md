@@ -132,10 +132,6 @@ description: {Third-person description with trigger keywords}
     <description>Queries and analyzes Altertable product events and identities. Use for event counts, properties, user activity, identity traits, behavioral trends, or validating incoming instrumentation.</description>
   </skill>
   <skill>
-    <name>track-events</name>
-    <description>Routes legacy track-events requests to current Altertable Product Analytics skills. Use when an existing invocation references track-events and must migrate to instrumentation or event querying.</description>
-  </skill>
-  <skill>
     <name>understand-platform</name>
     <description>Explains Altertable platform concepts and architecture. Use when asking what Altertable is or how agents, discoveries, memories, insights, and dashboards fit together.</description>
   </skill>
