@@ -84,10 +84,13 @@ uv run python scripts/score-skills.py ./skills/skill-name --verbose
 
 ## Releasing
 
-1. Tag the tip of `main` as `vMAJOR.MINOR.PATCH` and push the tag. No manual version bump is needed.
-2. Wait for the `Release version` workflow to pass. It updates every manifest version from the tag, syncs `AGENTS.md`, validates every packaged skill, the repository tests, and strict Claude plugin schemas, then commits the release to `main` and moves the tag onto that commit.
-3. Run `git fetch --tags --force` locally to pick up the moved tag.
-4. Publish the GitHub release from the validated tag.
+Release Please derives the next version from Conventional Commit PR titles and keeps a release PR current as changes land on `main`.
+
+1. Review the generated release PR and wait for its checks to pass.
+2. Merge the release PR when the release is ready.
+3. Release Please updates every manifest version, creates the `vMAJOR.MINOR.PATCH` tag, and publishes the GitHub release.
+
+Use `fix:` for patch releases, `feat:` for minor releases, and `!` for major releases. Squash PRs so their Conventional Commit titles become the commits on `main`.
 
 ## Style Guide
 

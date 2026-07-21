@@ -18,6 +18,20 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
+  conventional-title:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR title
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          pattern='^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([^)]+\))?!?: .+'
+          if [[ ! "$TITLE" =~ $pattern ]]; then
+            echo "PR title must use Conventional Commit syntax"
+            exit 1
+          fi
+
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -30,6 +44,30 @@ jobs:
 
       - name: Run pre-commit
         run: uv run pre-commit run --all-files
+
+  validate-plugins:
+    runs-on: ubuntu-latest
+    env:
+      DISABLE_AUTOUPDATER: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@d1c1ffe0248fe513906c8e24db8ea791d46f8590 # v3.0.3
+        id: changes
+        with:
+          filters: |
+            plugins:
+              - '.claude-plugin/**'
+
+      - name: Install Claude Code
+        if: steps.changes.outputs.plugins == 'true'
+        run: curl -fsSL https://claude.ai/install.sh | bash -s 2.1.212
+
+      - name: Validate Claude plugin manifests
+        if: steps.changes.outputs.plugins == 'true'
+        run: |
+          ~/.local/bin/claude plugin validate .claude-plugin/plugin.json --strict
+          ~/.local/bin/claude plugin validate .claude-plugin/marketplace.json --strict
 
   test:
     runs-on: ubuntu-latest
