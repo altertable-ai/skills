@@ -11,13 +11,13 @@ metadata:
 
 ## Quick Start
 
-A task is a scheduled AI agent that runs on a cron, analyzes an Insight or Dashboard, and creates a discovery when the analysis produces a finding. Your `instructions` string is the prompt the AI follows on each run.
+A task is a scheduled AI agent that runs on a cron and creates a discovery when the analysis produces a finding. Your `instructions` string is the prompt the AI follows on each run.
 
 To create a task:
 
 1. Call `initialize`, then identify what the user wants the AI to watch for (anomalies, a forecast, or open-ended analysis)
-2. Choose the task type and target slug
-3. Write clear natural-language instructions -- these are the AI's prompt every run
+2. Choose the task type and target slugs
+3. Write clear natural-language instructions. These are the AI's prompt every run
 4. Pick a cron schedule that fits the task instructions
 5. Call `create_task` on the Altertable MCP server
 
@@ -32,28 +32,27 @@ To create a task:
 
 All three types run AI analysis driven by your `instructions`. They differ in what the AI is asked to focus on.
 
-| Type                 | Target               | AI focus                                                    |
-| -------------------- | -------------------- | ----------------------------------------------------------- |
-| `anomaly_detection`  | Insight slug           | Find outliers and unusual values in the Insight's data        |
-| `forecast`           | Insight slug           | Project future values and flag divergence from expectations |
-| `monitor`            | Insight/Dashboard slug | Open-ended analysis -- whatever the instructions describe   |
+| Type                | Target                         | AI focus                                                    |
+| ------------------- | ------------------------------ | ----------------------------------------------------------- |
+| `anomaly_detection` | Exactly one Insight slug       | Find outliers and unusual values in the Insight's data      |
+| `forecast`          | Exactly one Insight slug       | Project future values and flag divergence from expectations |
+| `ask`               | Zero or more entity slugs      | Run the open-ended analysis described by the instructions   |
 
 ## Core Workflow
 
 ### Step 1: Identify the Target
 
-The user needs an existing resource to target. If they don't have one yet:
+`anomaly_detection` and `forecast` require an existing Insight. Help the user create or find one with create-insights or `list_insights`, then pass its slug as `target_slugs: [slug]`.
 
-1. Help them create or find the Insight or Dashboard first (see create-insights, explore-data, or `list_insights`/`view_dashboard`)
-2. Use the resulting slug as the `target_slug`
+`ask` accepts `target_slugs: []` for ambient analysis or multiple entity slugs for contextual analysis. Use `search_entities` when the requested entities are unclear.
 
 ### Step 2: Choose Task Type
 
 Match the user's goal to a task type:
 
-- "Alert me if signups drop unexpectedly" -> `anomaly_detection` on the signup Insight
-- "Forecast next month's revenue" -> `forecast` on the revenue Insight
-- "Analyze my dashboard for anything unusual" -> `monitor` on the dashboard
+- "Alert me if signups drop unexpectedly" -> `anomaly_detection` with the signup Insight slug
+- "Forecast next month's revenue" -> `forecast` with the revenue Insight slug
+- "Analyze my dashboard for anything unusual" -> `ask` with the dashboard slug
 
 ### Step 3: Write Instructions
 
@@ -76,22 +75,20 @@ Monitor weekly revenue trends. Create a discovery if:
 
 Use the Altertable MCP task-creation tool. Supply:
 
-- the task type -- one of `anomaly_detection`, `forecast`, or `monitor`
-- the target Insight or Dashboard slug the AI will analyze
+- `type`: one of `anomaly_detection`, `forecast`, or `ask`
+- `target_slugs`: an array following the target rules above
 - a cron schedule (standard 5-field, UTC)
-- the natural-language instructions -- the prompt the AI follows on each run
-- the author (the user creating the task)
+- the natural-language instructions, which become the prompt for each run
 
-Refer to the MCP tool description for the exact parameter names and any additional required fields -- the MCP schema is the source of truth.
+Refer to the MCP tool description for the exact parameter names and any additional required fields. The MCP schema is the source of truth.
 
 ## Common Pitfalls
 
-- **Wrong task type** -- `anomaly_detection` detects outliers; `forecast` projects future values; `monitor` does open-ended analysis. Don't mix them up
-- **Vague instructions** -- "watch this Insight" produces noisy discoveries; be specific about thresholds and patterns
-- **Creating duplicate tasks** -- check if a task already exists on the target before creating a new one
-- **Missing the target** -- the user needs an existing Insight or Dashboard slug; help them create one first if needed
-- **Using `monitor` when `anomaly_detection` suffices** -- `monitor` is more general but less focused; prefer `anomaly_detection` for pure outlier detection
+- **Wrong task type**: `anomaly_detection` detects outliers, `forecast` projects future values, and `ask` runs open-ended analysis
+- **Wrong target count**: anomaly detection and forecast require exactly one Insight slug; ask accepts zero or more entity slugs
+- **Vague instructions**: "watch this Insight" produces noisy discoveries; be specific about thresholds and patterns
+- **Creating duplicate tasks**: check if a task already exists on the target before creating a new one
 
 ## Reference Files
 
-- [Task types](references/task-types.md) - Read when choosing between anomaly_detection, forecast, and monitor
+- [Task types](references/task-types.md) - Read when choosing between anomaly_detection, forecast, and ask

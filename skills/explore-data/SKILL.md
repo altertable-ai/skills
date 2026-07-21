@@ -36,7 +36,7 @@ Call `initialize` first. It returns the current organization, environment, and r
 
 Call `list_catalogs`. Each entry includes:
 
-- `catalog_name` to pass into `get_catalog`
+- `catalog_name` to pass inside the `get_catalog` `catalog_names` array
 - display name and engine
 - optional description
 
@@ -44,11 +44,11 @@ Catalogs can be Altertable-managed databases or external data sources such as Sn
 
 ### Step 3: Get Catalog Schema
 
-Call `get_catalog` for the catalog of interest:
+Call `get_catalog` with `catalog_names: [catalog_name]` for the catalog of interest:
 
 - Schemas and tables
-- Column names, data types, and nullability
-- Semantic endorsement labels (`draft`, `verified`, `excluded`)
+- Column names and data types
+- Semantic endorsement labels (`draft`, `verified`, or `NONE` when no persisted model exists); excluded tables are omitted
 - Semantic dimensions, measures, and relations when available
 - Note the catalog and schema names for query qualification (`catalog.schema.table`)
 
@@ -78,7 +78,6 @@ Semantic model details are included in `get_catalog`. Use them to discover pre-d
 |--------|-------------|
 | PostgreSQL | Open-source relational database |
 | MySQL / MariaDB | Popular relational databases |
-| Clickhouse | Column-oriented OLAP database |
 
 ### Built-in Catalogs
 
@@ -121,9 +120,8 @@ The `product_analytics` catalog can include pre-defined semantic sources:
 |--------|-------------|
 | `events` | Product analytics events with properties |
 | `identities` | User identity information |
-| `pageviews` | Web page view events |
-| `sessions` | Web session aggregations |
-| `identity-overrides` | Identity resolution rules |
+| `web_pageviews` | Web page view events |
+| `web_sessions` | Web session aggregations |
 
 ## Common Patterns
 
@@ -152,7 +150,7 @@ Look for foreign key patterns:
 - Assuming table names without checking the schema first
 - Forgetting to qualify tables with catalog.schema
 - Missing that some tables may be views or materialized views
-- Querying tables marked `excluded` from the semantic model
+- Expecting tables marked `excluded` to appear in `get_catalog`
 - Not checking semantic measures and dimensions that may already define the metrics needed
 
 ## Reference Files

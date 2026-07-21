@@ -1,44 +1,38 @@
 # Task Types Reference
 
-The MCP task-creation tool accepts three type values. All three run AI analysis driven by your natural-language `instructions` and create a discovery when the analysis produces a finding.
+`create_task` accepts three task types. Every call requires `type`, `target_slugs`, and `cron_expression`. `instructions` is optional.
 
-## anomaly_detection
+## `anomaly_detection`
 
-AI detects outliers and unusual values in an Insight's data.
+Detects outliers and unusual values in an Insight. Pass exactly one Insight slug.
 
-**Target**: Insight slug
+```yaml
+type: anomaly_detection
+target_slugs: [INSIGHT-SLUG]
+cron_expression: "0 * * * *"
+instructions: Detect unusual spikes or drops in signup conversion.
+```
 
-**Good for**: flagging sudden spikes, drops, or anomalies that break from the metric's recent pattern.
+## `forecast`
 
-**Instructions example**:
-> "Detect unusual spikes or drops in signup conversion rates."
+Projects future values from an Insight. Pass exactly one Insight slug.
 
-## forecast
+```yaml
+type: forecast
+target_slugs: [INSIGHT-SLUG]
+cron_expression: "0 0 * * 1"
+instructions: Forecast next month's revenue and flag material divergence.
+```
 
-AI projects future values from an Insight's data and flags divergence from expectations.
+## `ask`
 
-**Target**: Insight slug
+Runs open-ended scheduled analysis. Pass zero or more entity slugs, including Insights or Dashboards.
 
-**Good for**: projecting future values, setting expectations, and alerting when actuals diverge from the projection.
+```yaml
+type: ask
+target_slugs: [DASHBOARD-SLUG]
+cron_expression: "0 9 * * 1"
+instructions: Analyze weekly trends and highlight correlations or anomalies.
+```
 
-**Instructions example**:
-> "Forecast next month's revenue. Flag if actuals diverge more than 15% from the forecast."
-
-## monitor
-
-Open-ended AI analysis of an Insight or Dashboard.
-
-**Target**: Insight or Dashboard slug
-
-**Good for**: cross-metric analysis, narrative insights, or any analysis not captured by the other types.
-
-**Instructions example**:
-> "Analyze weekly trends across all metrics on this dashboard. Highlight correlations and anomalies."
-
-## Choosing the Right Type
-
-| Goal | Type |
-|------|------|
-| Find unexpected patterns in a metric | `anomaly_detection` |
-| Project future values | `forecast` |
-| Open-ended AI analysis of Insights or Dashboards | `monitor` |
+Use `target_slugs: []` when the instructions do not need entity context.

@@ -19,8 +19,7 @@ repos:
         name: validate skills
         entry: bash -c 'for f in "$@"; do dir=$(dirname "$f"); uv run skills validate "$dir" || exit 1; done' --
         language: system
-        files: 'SKILL\.md$'
-        exclude: 'SKILL_TEMPLATE/'
+        files: '^skills/[^/]+/SKILL\.md$'
         pass_filenames: true
 
   - repo: https://github.com/rohaquinlop/complexipy-pre-commit
@@ -55,6 +54,5 @@ repos:
         name: sync AGENTS.md available skills
         entry: uv run python scripts/sync-agents-md.py
         language: system
-        files: 'SKILL\.md$'
-        exclude: 'SKILL_TEMPLATE/'
+        files: '^skills/[^/]+/SKILL\.md$'
         pass_filenames: false

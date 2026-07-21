@@ -28,15 +28,15 @@ For data questions, route to `explore-data` when schema is unclear; otherwise ro
 | `analyze-funnels` | Build or analyze a step-by-step conversion flow (drop-off between ordered events) |
 | `analyze-web-traffic` | Web analytics: pageviews, sessions, traffic sources, UTM, device, country breakdowns |
 | `analyze-insights` | Interpret an existing Insight or visualization the user is looking at |
-| `build-segments` | Define or compare user cohorts by properties (not step-based) |
+| `build-segments` | Compare aggregate event behavior by properties or traits (not step-based) |
 | `forecast-timeseries` | Project future metric values or detect whether a change is within normal range |
 | `instrument-product-analytics` | Add or change event tracking, identification, traits, consent, session reset, or identity aliasing in an application |
 | `query-product-events` | Query or analyze existing product events, properties, identities, traits, or instrumentation delivery |
 | `create-insights` | Create a new Insight that will be saved and visible to users |
 | `create-discoveries` | Create a discovery from a meaningful finding that should notify users and enter review |
-| `decide-actions` | Decide which insight or task type to use, or whether to create / update / skip a discovery |
+| `decide-actions` | Decide which insight or task type to use, or whether to create or skip a discovery |
 | `manage-discoveries` | Review, approve, or reject existing discoveries and process user feedback on them |
-| `configure-tasks` | Set up a scheduled AI task (anomaly detection, forecast, monitor) that runs on a cron |
+| `configure-tasks` | Set up a scheduled AI task (anomaly detection, forecast, or open-ended ask) that runs on a cron |
 | `use-memory` | Search or create agent memories; create organization knowledge only when the user explicitly asks |
 | `evaluate-skills` | Review or author agent skills themselves (skill structure, spec, quality) |
 | `understand-platform` | Explain Altertable concepts, architecture, or how agents work |

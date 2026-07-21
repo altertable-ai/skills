@@ -9,8 +9,8 @@ Detailed guide for choosing the right insight type.
 | Funnel | Conversion analysis | Events | Step-by-step flows |
 | Retention | Return behavior | Events | Churn/repeat analysis |
 | Semantic | Metric analysis | Semantic model | Standard analytics |
-| SQL | Custom queries | Raw tables | Complex/custom needs |
-| Segmentation | User grouping | Events + traits | Targeting/cohorts |
+| SQL | Custom queries | Raw tables | Identity rows and custom/unmodeled needs |
+| Segmentation | Event comparison | Events + traits | Aggregate behavior by properties or traits |
 
 ## Funnel Insight Deep Dive
 
@@ -55,12 +55,13 @@ Detailed guide for choosing the right insight type.
 ✓ Period comparisons
 ✓ Standard KPIs
 ✓ Aggregations (sum, count, avg)
+✓ Inline measure calculations on modeled tables
 
 ### When NOT to Use
 
 ✗ Data not in semantic model
-✗ Complex multi-table joins
-✗ Custom calculations
+✗ Joins not covered by modeled relations
+✗ Calculations that need an unsupported grain or window
 ✗ Raw data exploration
 
 ### Signal Words
@@ -84,12 +85,12 @@ Detailed guide for choosing the right insight type.
 
 ### When to Use
 
-✓ Complex joins required
-✓ Custom calculations
+✓ Unmodeled or custom joins required
+✓ Calculations that need an unsupported grain or window
 ✓ Data not in semantic model
 ✓ One-off analysis
 ✓ Raw data exploration
-✓ Advanced aggregations
+✓ Aggregations not expressible as an inline measure on a modeled table
 
 ### When NOT to Use
 
@@ -109,7 +110,7 @@ Detailed guide for choosing the right insight type.
 
 ### Example Questions → SQL
 
-- "Join orders with inventory" → SQL
+- "Join orders with inventory when no modeled relation exists" → SQL
 - "Custom LTV calculation" → SQL
 - "Query the raw events table" → SQL
 - "Calculate 90-day rolling average" → SQL
@@ -118,32 +119,31 @@ Detailed guide for choosing the right insight type.
 
 ### When to Use
 
-✓ Defining user groups
-✓ Building audiences
-✓ Cohort creation
-✓ Behavioral targeting
-✓ User filtering
+✓ Comparing aggregate event metrics across properties or traits
+✓ Breaking down an event series by an event property or user trait
+✓ Comparing behavior for existing cohorts or segments
+✓ Filtering aggregate event series
 
 ### When NOT to Use
 
-✗ Counting metrics (use semantic)
+✗ Non-event metrics already defined in the semantic layer (use semantic)
 ✗ Flow analysis (use funnel)
 ✗ Custom queries (use SQL)
+✗ Returning individual users or membership lists (use SQL)
 
 ### Signal Words
 
 | Strong Signal | Moderate Signal |
 |---------------|-----------------|
-| users who | segment |
-| cohort | group of |
-| audience | target |
-| filter users | people that |
+| event behavior by | segment |
+| compare cohorts | group comparison |
+| breakdown | property or trait |
 
 ### Example Questions → Segmentation
 
-- "Users who purchased twice" → Segmentation
-- "Create a cohort of churned users" → Segmentation
-- "Segment by engagement level" → Segmentation
+- "Compare purchase activity for free and paid plans" → Segmentation
+- "Compare churned users with active users by feature usage" → Segmentation
+- "Break down signup events by engagement level" → Segmentation
 
 ## Non-Analysis Responses
 
@@ -186,7 +186,12 @@ Is it about user steps/journey?
   ├─YES──► FUNNEL INSIGHT
   │
   ▼ NO
-Is it about defining user groups?
+Does it require individual rows or a membership list?
+  │
+  ├─YES──► SQL INSIGHT
+  │
+  ▼ NO
+Is it about comparing aggregate event behavior across groups?
   │
   ├─YES──► SEGMENTATION INSIGHT
   │
@@ -206,7 +211,7 @@ Sometimes questions need multiple approaches:
 
 | Question | Approach |
 |----------|----------|
-| "Conversion by country" | Funnel + Semantic dimension |
-| "Revenue from high-value segment" | Segmentation + Semantic |
-| "Custom metric trend" | SQL for metric, visualize as trend |
-| "Users who converted + their LTV" | Funnel + SQL join |
+| "Conversion by country" | Funnel with an event property or user trait breakdown |
+| "Revenue from high-value segment" | Semantic with an existing segment filter |
+| "Custom metric trend" | Semantic with an inline measure on a modeled table; SQL when the calculation is unsupported |
+| "LTV for users who converted" | SQL unless the converter group is already modeled as a segment |

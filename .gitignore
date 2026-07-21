@@ -72,5 +72,8 @@ dmypy.json
 # Ruff
 .ruff_cache/
 
+# Complexipy
+.complexipy_cache/
+
 # Node.js
 node_modules/

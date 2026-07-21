@@ -25,7 +25,8 @@
     "developerName": "Altertable",
     "category": "Data & Analytics",
     "capabilities": [
-      "Read"
+      "Read",
+      "Write"
     ],
     "defaultPrompt": [
       "Explore my Altertable data sources.",

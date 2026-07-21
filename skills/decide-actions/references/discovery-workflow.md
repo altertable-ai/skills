@@ -14,7 +14,7 @@ What initiates a potential discovery:
 
 | Trigger Type | Example |
 |--------------|---------|
-| User question | "How is revenue doing?" |
+| User analysis | A verified, notable finding emerges while answering a question |
 | Task alert | Threshold exceeded |
 | Scheduled analysis | Daily summary |
 | Pattern detection | Anomaly found |
@@ -30,7 +30,7 @@ Assess the situation:
 | Novelty | Is this new information? |
 | Accuracy | Is the data correct? |
 | Timing | Is now appropriate? |
-| Format | What type of discovery? |
+| Format | Is this a response, a saved Insight, or a discovery? |
 
 ### 3. Decide
 
@@ -39,7 +39,10 @@ Make the create/skip decision:
 ```
 Should I create a discovery?
 │
-├─ User explicitly asked? → YES, create
+├─ User asked only for analysis? → Answer directly
+│   └─ User wants a persistent chart? → Create an Insight, not a discovery
+│
+├─ Verified finding worth review or notification? → Continue
 │
 ├─ Task triggered? → Check threshold, likely YES
 │
@@ -54,21 +57,20 @@ Should I create a discovery?
 
 | Decision | Action |
 |----------|--------|
-| CREATE | Build discovery with proper type |
+| CREATE | Create a finding backed by verified evidence |
 | SKIP | Respond without discovery |
 | DEFER | Save for later (batching) |
 | ESCALATE | Needs human review |
 
 ### 5. Deliver
 
-How discovery reaches user:
+`create_discovery` always creates an inbox notification record. Its `notify` argument defaults to `true`, which also fans out through enabled delivery channels.
 
-| Channel | Use When |
-|---------|----------|
-| In-conversation | Direct response |
-| Slack | Alert/notification |
-| Email | Summary/digest |
-| Dashboard | Persistent display |
+| Delivery | Use When |
+|----------|----------|
+| Inbox notification | Every discovery |
+| Enabled external channels | The finding warrants attention and `notify` remains `true` |
+| Inbox only | The finding is worth review but not interruption, so set `notify: false` |
 
 ### 6. Learn
 
@@ -89,18 +91,16 @@ After delivery:
 User asks question
 │
 ├─ Needs analysis?
-│   ├─ YES → Select insight type → CREATE
+│   ├─ YES → Select analysis type → Run and answer
 │   └─ NO → Acknowledge without discovery
 │
-├─ Asked before recently?
-│   ├─ YES → Check if data changed
-│   │   ├─ Changed → CREATE with update
-│   │   └─ Same → Brief response, no discovery
-│   └─ NO → CREATE
+├─ Wants the analysis saved as a chart?
+│   ├─ YES → Create an Insight after previewing it
+│   └─ NO → Keep the result in the response
 │
-└─ Clear what they want?
-    ├─ YES → Proceed with analysis
-    └─ NO → Ask clarifying question
+└─ Did analysis reveal a verified, notable finding worth review or notification?
+    ├─ YES → Check duplicates, then create a discovery if it passes the gates
+    └─ NO → Do not create a discovery
 ```
 
 ### Task Trigger
@@ -112,8 +112,8 @@ Task fires
 │   ├─ YES → CREATE alert discovery
 │   └─ NO → Log but don't alert
 │
-├─ Already alerted today?
-│   ├─ YES → Skip unless escalation
+├─ Same finding already reported with no new value?
+│   ├─ YES → Skip
 │   └─ NO → CREATE
 │
 └─ User acknowledged previous?
@@ -145,7 +145,7 @@ Schedule fires
 Pattern detected
 │
 ├─ Significant anomaly?
-│   ├─ YES → CREATE insight
+│   ├─ YES → CREATE discovery
 │   └─ NO → Log for context
 │
 ├─ Seen this pattern before?
@@ -157,7 +157,7 @@ Pattern detected
     └─ NO → Consider skipping
 ```
 
-## Create vs Update vs New
+## Create vs Skip
 
 ### When to CREATE NEW
 
@@ -165,17 +165,9 @@ Pattern detected
 |----------|--------|
 | First time finding | Create new |
 | Significantly different data | Create new |
-| Different time period | Create new |
-| User explicitly asked | Create new |
+| Different period with a materially different finding | Create new |
+| User explicitly asked to notify or review a verified finding | Create new |
 | Contradicts previous | Create new with reference |
-
-### When to UPDATE (if supported)
-
-| Scenario | Action |
-|----------|--------|
-| Minor data refresh | Update existing |
-| Same finding, newer data | Update existing |
-| Correction to previous | Update with note |
 
 ### When to SKIP
 
@@ -184,7 +176,7 @@ Pattern detected
 | Exact duplicate | Skip entirely |
 | Near duplicate | Skip, maybe acknowledge |
 | No new value | Skip |
-| Too soon after previous | Skip |
+| Recent and unchanged, with no new value | Skip |
 | User indicated not interested | Skip |
 
 ## Quality Gates
@@ -198,11 +190,11 @@ Pattern detected
 | Relevance | Matches user interest |
 | Actionable | User can act on it |
 | Timing | Appropriate moment |
-| Format | Right discovery type |
+| Format | A discovery is more appropriate than a response or saved Insight |
 
 ### Red Flags (Don't Create)
 
-- Same finding in last hour
+- Same finding with no material new context
 - User marked similar as not useful
 - Data looks suspicious
 - No clear value add
@@ -210,24 +202,24 @@ Pattern detected
 
 ### Green Flags (Do Create)
 
-- User explicitly asked
+- User explicitly asked to notify or review a verified finding
 - Significant anomaly detected
 - New insight discovered
 - Scheduled delivery time
 - Follows up on user interest
 
-## Workflow by Discovery Type
+## Workflow by Trigger
 
-### Insight Discovery Flow
+### Analysis Finding Flow
 
 ```
 1. Receive trigger (question/detection)
-2. Determine insight type (funnel/semantic/SQL)
+2. Determine analysis type (funnel/semantic/SQL)
 3. Run analysis
 4. Verify results
-5. Check for duplicates
-6. Create if passes gates
-7. Deliver appropriately
+5. Answer the question
+6. Save an Insight only when persistence is requested
+7. If a notable finding warrants review or notification, check duplicates and create a discovery
 ```
 
 ### Alert Discovery Flow
@@ -238,7 +230,7 @@ Pattern detected
 3. Check if already alerted
 4. Assess severity
 5. Create if passes gates
-6. Deliver via appropriate channel
+6. Choose whether `notify` should fan out through enabled channels
 7. Track acknowledgment
 ```
 
@@ -267,16 +259,16 @@ Pattern detected
 
 ```
 Message 1: User asks about revenue
-→ Create insight discovery
+→ Analyze and answer
 
 Message 2: User says "break it down by region"
-→ Create follow-up insight (not duplicate)
+→ Analyze and answer; save an Insight only if persistence is requested
 
 Message 3: User says "thanks"
 → Respond without discovery (don't over-acknowledge)
 
 Message 4: User asks "what about orders?"
-→ Create new insight (different topic)
+→ Analyze and answer the different question
 ```
 
 ### Across Conversations
@@ -285,6 +277,6 @@ Message 4: User asks "what about orders?"
 Yesterday: Created revenue insight
 Today: User asks about revenue again
 → Check if data changed
-→ If changed: Create with comparison
-→ If same: Brief response, maybe skip discovery
+→ Answer with the comparison
+→ Create a discovery only if the changed result is a verified, notable finding worth review or notification
 ```

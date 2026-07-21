@@ -63,13 +63,13 @@ Over time, memories can transition:
 
 **Episodic → Semantic:**
 ```
-3x "User rejected discovery for being under threshold"
+Repeated: "User rejected discovery for being under threshold"
 → "Organization ignores changes under 20%"
 ```
 
 **Episodic → Procedural:**
 ```
-3x "Fixed by adjusting time window"
+Repeated: "Fixed by adjusting time window"
 → "Always verify time window when results look wrong"
 ```
 

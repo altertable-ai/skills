@@ -7,7 +7,7 @@ Guidelines for creating and modifying skills following the [Agent Skills Specifi
 ### 1. Directory Structure
 
 ```bash
-cp -r skills/SKILL_TEMPLATE skills/my-new-skill
+cp -r templates/skill skills/my-new-skill
 ```
 
 ### 2. Naming Convention
