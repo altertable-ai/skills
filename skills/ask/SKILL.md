@@ -30,7 +30,8 @@ For data questions, route to `explore-data` when schema is unclear; otherwise ro
 | `analyze-insights` | Interpret an existing Insight or visualization the user is looking at |
 | `build-segments` | Define or compare user cohorts by properties (not step-based) |
 | `forecast-timeseries` | Project future metric values or detect whether a change is within normal range |
-| `track-events` | Work with tracked product analytics events, identities, or traits (querying or advising on instrumentation) |
+| `instrument-product-analytics` | Add or change event tracking, identification, traits, consent, session reset, or identity aliasing in an application |
+| `query-product-events` | Query or analyze existing product events, properties, identities, traits, or instrumentation delivery |
 | `create-insights` | Create a new Insight that will be saved and visible to users |
 | `create-discoveries` | Create a discovery from a meaningful finding that should notify users and enter review |
 | `decide-actions` | Decide which insight or task type to use, or whether to create / update / skip a discovery |
@@ -51,3 +52,4 @@ When a skill is added, renamed, or removed from this repository, update this tab
 5. **Pass context through**: hand the original query to the matched skill.
 6. **Never invent a skill**: only invoke skills that are actually installed.
 7. **Clarify before routing**: if the query could reasonably mean different things, propose the most likely directions and let the user choose.
+8. **Separate writes from analysis**: route application or ingestion changes to `instrument-product-analytics`; route questions about stored event data to `query-product-events`.
