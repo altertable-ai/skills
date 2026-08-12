@@ -1,6 +1,6 @@
 ---
 name: instrument-product-analytics
-description: Instruments applications with Altertable Product Analytics. Use when adding event tracking, identifying users, updating traits, resetting sessions, managing consent, or aliasing identifiers.
+description: "Adds Altertable product analytics to an application (event tracking, user identification, traits, consent, session reset, aliasing). Use when writing instrumentation code."
 ---
 
 # Instrument Product Analytics

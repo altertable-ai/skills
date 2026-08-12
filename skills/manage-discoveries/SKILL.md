@@ -1,7 +1,7 @@
 ---
 name: manage-discoveries
 compatibility: Requires Altertable MCP server
-description: Manages the discovery approval workflow. Use when handling discovery reviews, approval states, user feedback, or discovery lifecycle.
+description: "Reviews, approves, and rejects existing discoveries. Use for the approval queue, discovery states, or user feedback on a discovery."
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"

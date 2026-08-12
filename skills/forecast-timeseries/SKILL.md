@@ -1,6 +1,6 @@
 ---
 name: forecast-timeseries
-description: Analyzes time series for trends, anomalies, and forecasts. Use when detecting spikes or drops, predicting future values, or finding unusual patterns over time.
+description: "Runs on-demand statistics over a time series to spot outliers and project values. Use for whether a spike is normal, or what a metric reaches next week."
 compatibility: Requires Altertable MCP server and Python 3 environment
 metadata:
   author: altertable-ai

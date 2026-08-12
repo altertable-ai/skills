@@ -1,7 +1,7 @@
 ---
 name: create-insights
 compatibility: Requires Altertable MCP server
-description: Creates, drafts, renders, and saves Altertable insights. Use when generating findings, creating visualizations, or saving and sharing analysis results.
+description: "Drafts, renders, and saves insights of every type (SQL, semantic, segmentation, funnel, retention). Use to build, preview, or share a visualization. Returns a saved insight."
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"
