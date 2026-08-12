@@ -3,12 +3,14 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Final, Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 SKILL_FILENAME: Final[str] = "SKILL.md"
 SKILLS_DIR: Final[str] = "skills"
 DEFAULT_MIN_SCORE: Final[int] = 70
-DEFAULT_MODEL: Final[str] = "gemini/gemini-pro-latest"
+# Tracks the newest Flash release, so scores can shift without a commit here.
+# Gemini 3.x is optimized for default sampling, so judges.py sends no temperature.
+DEFAULT_MODEL: Final[str] = "gemini/gemini-flash-latest"
 MAX_RETRIES: Final[int] = 3
 RETRY_DELAY: Final[float] = 1.0
 
@@ -26,11 +28,11 @@ SeverityLevel = Literal["critical", "major", "minor"]
 
 
 class ScoreBreakdown(BaseModel):
-    frontmatter: int = 0
-    structure: int = 0
-    content_quality: int = 0
-    pitfalls: int = 0
-    references: int = 0
+    frontmatter: int = Field(default=0, ge=0, le=20)
+    structure: int = Field(default=0, ge=0, le=25)
+    content_quality: int = Field(default=0, ge=0, le=35)
+    pitfalls: int = Field(default=0, ge=0, le=10)
+    references: int = Field(default=0, ge=0, le=10)
 
     @property
     def total(self) -> int:

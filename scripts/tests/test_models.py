@@ -2,6 +2,7 @@ import tempfile
 from pathlib import Path
 
 import pytest
+from pydantic import ValidationError
 from scorer.models import Issue, ScoreBreakdown, ScoreResult, SkillContent
 
 
@@ -48,6 +49,29 @@ def test_score_breakdown_total_sums_every_dimension():
 
     # then
     assert total == 100
+
+
+def test_score_breakdown_maxima_sum_to_one_hundred():
+    # given
+    properties = ScoreBreakdown.model_json_schema()["properties"]
+
+    # when
+    maxima = [field["maximum"] for field in properties.values()]
+
+    # then
+    assert sum(maxima) == 100
+
+
+def test_score_breakdown_rejects_dimension_above_its_maximum():
+    # given / when / then
+    with pytest.raises(ValidationError):
+        ScoreBreakdown(frontmatter=21)
+
+
+def test_score_breakdown_rejects_negative_dimension():
+    # given / when / then
+    with pytest.raises(ValidationError):
+        ScoreBreakdown(references=-1)
 
 
 def test_score_breakdown_total_is_zero_by_default():
