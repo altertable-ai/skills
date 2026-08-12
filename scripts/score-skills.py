@@ -16,11 +16,7 @@ def _resolve_skill_paths(paths: tuple[str, ...], scan_all: bool) -> list[Path]:
         skill_path = Path(path_str)
         if scan_all and skill_path.is_dir():
             for subdir in sorted(skill_path.iterdir()):
-                is_valid = (
-                    subdir.is_dir()
-                    and (subdir / SKILL_FILENAME).exists()
-                    and subdir.name != "SKILL_TEMPLATE"
-                )
+                is_valid = subdir.is_dir() and (subdir / SKILL_FILENAME).exists()
                 if is_valid:
                     skill_paths.append(subdir)
         elif skill_path.is_dir() and (skill_path / SKILL_FILENAME).exists():
