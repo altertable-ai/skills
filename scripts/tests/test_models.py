@@ -37,6 +37,27 @@ def test_score_breakdown_model_dump_includes_all_fields():
     assert result["structure"] == 0
 
 
+def test_score_breakdown_total_sums_every_dimension():
+    # given
+    breakdown = ScoreBreakdown(
+        frontmatter=20, structure=25, content_quality=35, pitfalls=10, references=10
+    )
+
+    # when
+    total = breakdown.total
+
+    # then
+    assert total == 100
+
+
+def test_score_breakdown_total_is_zero_by_default():
+    # given
+    breakdown = ScoreBreakdown()
+
+    # when / then
+    assert breakdown.total == 0
+
+
 def test_score_result_model_dump_includes_all_fields():
     # given
     result = ScoreResult(

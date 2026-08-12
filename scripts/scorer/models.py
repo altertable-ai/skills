@@ -32,6 +32,17 @@ class ScoreBreakdown(BaseModel):
     pitfalls: int = 0
     references: int = 0
 
+    @property
+    def total(self) -> int:
+        """The dimension maxima sum to 100, so the breakdown defines the score."""
+        return (
+            self.frontmatter
+            + self.structure
+            + self.content_quality
+            + self.pitfalls
+            + self.references
+        )
+
 
 class Issue(BaseModel):
     severity: SeverityLevel
