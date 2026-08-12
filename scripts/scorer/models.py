@@ -34,7 +34,6 @@ class ScoreBreakdown(BaseModel):
 
     @property
     def total(self) -> int:
-        """The dimension maxima sum to 100, so the breakdown defines the score."""
         return (
             self.frontmatter
             + self.structure

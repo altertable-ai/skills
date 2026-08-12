@@ -22,12 +22,7 @@ def _fetch_url(url: str, timeout: float = FETCH_TIMEOUT) -> str:
 
 
 def fetch_spec_context() -> str:
-    """Fetch the Agent Skills spec, keeping whatever documents are reachable.
-
-    Each document is fetched independently so one unreachable URL cannot discard the
-    others. Scoring against a missing rubric would silently change what the gate means,
-    so a total failure raises instead of degrading to a placeholder.
-    """
+    """Fetch the Agent Skills spec, keeping whatever documents are reachable."""
     if "spec_context" in _cache:
         return _cache["spec_context"]
 
