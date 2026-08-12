@@ -4,7 +4,7 @@ from urllib.error import URLError
 import pytest
 from scorer.spec import (
     AGENT_SKILLS_SPEC_URLS,
-    SPEC_FALLBACK,
+    SpecUnavailableError,
     _cache,
     _fetch_url,
     fetch_spec_context,
@@ -58,9 +58,19 @@ def test_fetch_spec_context_uses_cache_on_second_call(mock_urlopen):
     assert mock_urlopen.call_count == len(AGENT_SKILLS_SPEC_URLS)
 
 
-def test_fetch_spec_context_falls_back_on_network_error(mock_urlopen):
+def test_fetch_spec_context_raises_when_every_document_fails(mock_urlopen):
     mock_urlopen.side_effect = URLError("connection failed")
+
+    with pytest.raises(SpecUnavailableError):
+        fetch_spec_context()
+
+
+def test_fetch_spec_context_keeps_documents_that_succeed(mock_urlopen):
+    titles = list(AGENT_SKILLS_SPEC_URLS)
+    mock_urlopen.side_effect = [URLError("connection failed"), *[_mock_response(b"doc body")] * 2]
 
     result = fetch_spec_context()
 
-    assert result == SPEC_FALLBACK
+    assert f"## {titles[0]}" not in result
+    assert f"## {titles[1]}" in result
+    assert result.count("doc body") == len(AGENT_SKILLS_SPEC_URLS) - 1
