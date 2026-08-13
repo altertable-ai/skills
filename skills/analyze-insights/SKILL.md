@@ -1,7 +1,7 @@
 ---
 name: analyze-insights
 compatibility: Requires Altertable MCP server
-description: Interprets Insight data to identify patterns, anomalies, and trends. Use when analyzing visualizations, extracting findings, or explaining patterns in graphs.
+description: "Explains what an existing insight or chart shows. Use when asked what a visualization or graph means, or to read out its outliers. Does not run a query."
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"

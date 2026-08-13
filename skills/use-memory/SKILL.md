@@ -1,7 +1,7 @@
 ---
 name: use-memory
 compatibility: Requires Altertable MCP server
-description: Stores and retrieves agent memories for context persistence. Use when saving findings, recalling past analysis, or searching for relevant context.
+description: "Stores and recalls agent memories and org knowledge between sessions. Use to remember a definition, threshold, or convention, or recall earlier context. Not user-facing."
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"

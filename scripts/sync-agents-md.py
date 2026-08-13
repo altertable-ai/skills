@@ -11,6 +11,7 @@ from scorer.models import VALID_REQUIRES
 ROOT = Path(__file__).resolve().parent.parent
 SKILLS_DIR = ROOT / _SKILLS_DIR_NAME
 AGENTS_FILE = ROOT / "AGENTS.md"
+README_FILE = ROOT / "README.md"
 FRONTMATTER_RE = re.compile(r"^---\s*\n(.+?)\n---", re.DOTALL)
 AVAILABLE_SKILLS_SECTION_RE = re.compile(r"(## Available Skills\n)\n.*?(?=\n## |\Z)", re.DOTALL)
 
@@ -24,7 +25,7 @@ def parse_frontmatter(skill_file: Path) -> dict[str, Any]:
     return parsed if isinstance(parsed, dict) else {}
 
 
-def build_skills_xml(skills_dir: Path) -> str:
+def collect_skills(skills_dir: Path) -> list[tuple[str, str]]:
     skills: list[tuple[str, str]] = []
     seen_names: set[str] = set()
     for skill_file in sorted(skills_dir.glob("*/SKILL.md")):
@@ -47,6 +48,10 @@ def build_skills_xml(skills_dir: Path) -> str:
                 )
             skills.append((name, description))
 
+    return skills
+
+
+def build_skills_xml(skills: list[tuple[str, str]]) -> str:
     lines = ["<available_skills>"]
     for name, description in skills:
         lines.append("  <skill>")
@@ -57,22 +62,29 @@ def build_skills_xml(skills_dir: Path) -> str:
     return "\n".join(lines)
 
 
-def update_agents_md(agents_file: Path, skills_xml: str) -> None:
-    content = agents_file.read_text(encoding="utf-8")
+def build_skills_table(skills: list[tuple[str, str]]) -> str:
+    lines = ["| Skill | Description |", "| ----- | ----------- |"]
+    for name, description in skills:
+        summary = description.split(". ")[0].rstrip(".").replace("|", r"\|")
+        lines.append(f"| [{name}](skills/{name}/) | {summary} |")
+    return "\n".join(lines)
+
+
+def update_available_skills(target: Path, block: str) -> None:
+    content = target.read_text(encoding="utf-8")
     # Replace from "## Available Skills" up to the next "## " heading
-    replacement = rf"\1\n{skills_xml}\n"
     if not AVAILABLE_SKILLS_SECTION_RE.search(content):
-        raise RuntimeError("AGENTS.md has no '## Available Skills' section — cannot update")
-    new_content = AVAILABLE_SKILLS_SECTION_RE.sub(replacement, content)
+        raise RuntimeError(f"{target.name} has no '## Available Skills' section — cannot update")
+    new_content = AVAILABLE_SKILLS_SECTION_RE.sub(rf"\1\n{block}\n", content)
     if new_content != content:
-        agents_file.write_text(new_content, encoding="utf-8")
+        target.write_text(new_content, encoding="utf-8")
 
 
 def main() -> None:
-    skills_xml = build_skills_xml(SKILLS_DIR)
-    update_agents_md(AGENTS_FILE, skills_xml)
-    count = skills_xml.count("<skill>")
-    print(f"Updated AGENTS.md with {count} skills")
+    skills = collect_skills(SKILLS_DIR)
+    update_available_skills(AGENTS_FILE, build_skills_xml(skills))
+    update_available_skills(README_FILE, build_skills_table(skills))
+    print(f"Updated AGENTS.md and README.md with {len(skills)} skills")
 
 
 if __name__ == "__main__":

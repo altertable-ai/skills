@@ -30,25 +30,26 @@ The `/altertable:ask` command routes your query to the best skill automatically.
 
 ## Available Skills
 
-| Skill                                                    | Description                                                                            |
-| -------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| [analyze-funnels](skills/analyze-funnels/)               | Creates and analyzes conversion funnels to understand user journeys                    |
-| [analyze-insights](skills/analyze-insights/)             | Interprets chart data to identify patterns, anomalies, and trends                      |
-| [analyze-web-traffic](skills/analyze-web-traffic/)       | Analyzes web analytics data to identify traffic patterns                               |
-| [build-segments](skills/build-segments/)                 | Creates user segments and cohorts using filters and dimensions                         |
-| [configure-tasks](skills/configure-tasks/)               | Configures autonomous background tasks for AI analysis                                 |
-| [create-insights](skills/create-insights/)               | Creates discoveries with insights through the approval workflow                        |
-| [create-discoveries](skills/create-discoveries/)         | Creates discoveries from meaningful findings that should notify users and enter review |
-| [decide-actions](skills/decide-actions/)                 | Decision matrices for choosing insight types and discovery actions                     |
-| [evaluate-skills](skills/evaluate-skills/)               | Evaluates and creates agent skills following best practices                            |
-| [explore-data](skills/explore-data/)                     | Explores data connections and schemas                                                  |
-| [forecast-timeseries](skills/forecast-timeseries/)       | Analyzes time series data for trends, anomalies, and forecasts                         |
-| [instrument-product-analytics](skills/instrument-product-analytics/) | Adds product event and identity instrumentation to applications                        |
-| [manage-discoveries](skills/manage-discoveries/)         | Manages the discovery approval workflow and user feedback                              |
-| [query-lakehouse](skills/query-lakehouse/)               | Writes and executes SQL queries against the DuckDB Lakehouse                           |
-| [query-product-events](skills/query-product-events/)     | Queries product events, identities, traits, and instrumentation delivery               |
-| [understand-platform](skills/understand-platform/)       | Explains platform concepts and architecture                                            |
-| [use-memory](skills/use-memory/)                         | Stores and retrieves agent memories for learning and context                           |
+| Skill | Description |
+| ----- | ----------- |
+| [analyze-funnels](skills/analyze-funnels/) | Builds conversion funnels over ordered steps |
+| [analyze-insights](skills/analyze-insights/) | Explains what an existing insight or chart shows |
+| [analyze-web-traffic](skills/analyze-web-traffic/) | Analyzes website traffic (pageviews, sessions, referrers, landing pages) |
+| [ask](skills/ask/) | Routes user queries to the best-fit Altertable skill |
+| [build-segments](skills/build-segments/) | Compares event metrics across cohorts using filters, breakdowns, and dimensions |
+| [configure-tasks](skills/configure-tasks/) | Schedules recurring AI tasks over insights and dashboards |
+| [create-discoveries](skills/create-discoveries/) | Reports a change, anomaly, root cause, recommendation, or warning to users |
+| [create-insights](skills/create-insights/) | Drafts, renders, and saves insights of every type (SQL, semantic, segmentation, funnel, retention) |
+| [decide-actions](skills/decide-actions/) | Decision matrices for picking insight types (funnel, retention, semantic, segmentation, SQL), task types, and discovery actions |
+| [evaluate-skills](skills/evaluate-skills/) | Evaluates and authors agent skills against the Agent Skills spec |
+| [explore-data](skills/explore-data/) | Inspects catalogs, schemas, tables, columns, semantic models, measures, and dimensions |
+| [forecast-timeseries](skills/forecast-timeseries/) | Runs on-demand statistics over a time series to spot outliers and project values |
+| [instrument-product-analytics](skills/instrument-product-analytics/) | Adds Altertable product analytics to an application (event tracking, user identification, traits, consent, session reset, aliasing) |
+| [manage-discoveries](skills/manage-discoveries/) | Reviews, approves, and rejects existing discoveries |
+| [query-lakehouse](skills/query-lakehouse/) | Writes, validates, optimizes, and runs DuckDB SQL against the Altertable lakehouse |
+| [query-product-events](skills/query-product-events/) | Queries product events and identities with SQL (event counts, properties, user activity, traits) |
+| [understand-platform](skills/understand-platform/) | Explains Altertable concepts and architecture |
+| [use-memory](skills/use-memory/) | Stores and recalls agent memories and org knowledge between sessions |
 
 ## Getting Started
 

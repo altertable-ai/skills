@@ -1,7 +1,7 @@
 ---
 name: query-lakehouse
 compatibility: Requires Altertable MCP server
-description: Writes, validates, optimizes, and executes DuckDB SQL against the Altertable lakehouse. Use when analyzing data, aggregating metrics, building reports, or querying catalogs and external connections.
+description: "Writes, validates, optimizes, and runs DuckDB SQL against the Altertable lakehouse. Use when answering a question requires executing a query, joining tables, or aggregating metrics."
 metadata:
   author: altertable-ai
   requires: "altertable-mcp"
