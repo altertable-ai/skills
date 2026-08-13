@@ -28,8 +28,6 @@ def build_skills_xml(skills_dir: Path) -> str:
     skills: list[tuple[str, str]] = []
     seen_names: set[str] = set()
     for skill_file in sorted(skills_dir.glob("*/SKILL.md")):
-        if skill_file.parent.name == "SKILL_TEMPLATE":
-            continue
         fm = parse_frontmatter(skill_file)
         name = fm.get("name", "")
         description = fm.get("description", "")

@@ -82,7 +82,7 @@ uv run pytest scripts/tests/ -v
 ## Creating a New Skill
 
 ```bash
-cp -r skills/SKILL_TEMPLATE skills/my-new-skill
+cp -r templates/SKILL_TEMPLATE skills/my-new-skill
 ```
 
 Each skill follows the [Agent Skills Specification](https://agentskills.io/specification):

@@ -36,9 +36,10 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           CHANGED_FILES: ${{ steps.changes.outputs.skills_files }}
         run: |
-          skills=$(echo "$CHANGED_FILES" | tr ' ' '\n' | awk -F/ 'NF>=2 {print $1"/"$2}' | sort -u | grep -v 'SKILL_TEMPLATE' | tr '\n' ' ' | xargs)
+          skills=$(echo "$CHANGED_FILES" | tr ' ' '\n' | awk -F/ 'NF>=2 {print $1"/"$2}' | sort -u | grep -v 'SKILL_TEMPLATE' \
+            | while read -r dir; do if [ -f "$dir/SKILL.md" ]; then printf '%s ' "$dir"; fi; done)
           if [ -z "$skills" ]; then
-            echo "No skills to score (only SKILL_TEMPLATE changed)"
+            echo "No skills to score (changed skills were deleted, moved, or excluded)"
             echo "skipped=1" >> $GITHUB_OUTPUT
             exit 0
           fi
@@ -49,7 +50,7 @@ jobs:
           echo "failed=${failed:-0}" >> $GITHUB_OUTPUT
 
       - name: Comment PR
-        if: steps.changes.outputs.skills == 'true' && steps.score.outputs.skipped != '1'
+        if: steps.changes.outputs.skills == 'true' && steps.score.outputs.skipped != '1' && steps.score.outputs.comment != ''
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: skill-score
