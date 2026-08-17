@@ -74,3 +74,6 @@ dmypy.json
 
 # Node.js
 node_modules/
+
+# Plugin eval results
+evals/results/

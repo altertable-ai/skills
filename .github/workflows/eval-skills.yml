@@ -1,0 +1,41 @@
+name: Eval Skills
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'skills/ask/**'
+      - 'evals/**'
+      - '.github/workflows/eval-skills.yml'
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    environment: ci
+    env:
+      DISABLE_AUTOUPDATER: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Claude Code
+        run: curl -fsSL https://claude.ai/install.sh | bash -s 2.1.233
+
+      - name: Run ask router evals
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Enablement variable for the early access plugin eval command on
+          # machines that cannot receive the per-organization rollout, such as
+          # CI runners.
+          CLAUDE_CODE_WALNUT_SPIRE: "1"
+        run: |
+          ~/.local/bin/claude plugin eval . --tag ask \
+            --runs 3 --threshold 0.8 --max-cost-usd 5 \
+            --model claude-sonnet-5 --judge-model claude-haiku-4-5 \
+            --no-publish --json eval-result.json
+
+      - name: Upload eval result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-result
+          path: eval-result.json
