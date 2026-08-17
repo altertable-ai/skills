@@ -5,14 +5,14 @@
   },
   "metadata": {
     "description": "Skills for Altertable AI agents covering product analytics instrumentation, data exploration, querying, analysis, insights, and platform operations.",
-    "version": "0.5.0"
+    "version": "0.6.0"
   },
   "plugins": [
     {
       "name": "altertable",
       "description": "Skills for Altertable AI agents covering product analytics instrumentation, data exploration, querying, analysis, insights, and platform operations.",
       "source": "./",
-      "version": "0.5.0"
+      "version": "0.6.0"
     }
   ]
 }

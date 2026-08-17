@@ -1,6 +1,6 @@
 {
   "name": "altertable",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Skills for AI agents working with Altertable, covering product analytics instrumentation, data exploration, querying, analysis, insights, and platform operations.",
   "author": {
     "name": "Altertable",
