@@ -43,12 +43,13 @@ Evaluate the skill below against the specification and best practices above. Sco
 ## References ({ref_count})
 {reference_files}
 
+Award each dimension a score up to its maximum. The total is their sum.
+
 Respond with JSON only:
-{{"score": N, "breakdown": {{"frontmatter": N, "structure": N, "content_quality": N, "pitfalls": N, "references": N}}, "issues": [{{"severity": "critical|major|minor", "message": "..."}}], "suggestions": ["..."]}}"""  # noqa: E501
+{{"breakdown": {{"frontmatter": N, "structure": N, "content_quality": N, "pitfalls": N, "references": N}}, "issues": [{{"severity": "critical|major|minor", "message": "..."}}], "suggestions": ["..."]}}"""  # noqa: E501
 
 
 class EvaluationResponse(BaseModel):
-    score: int
     breakdown: ScoreBreakdown
     issues: list[Issue]
     suggestions: list[str]
@@ -61,7 +62,7 @@ async def score_skill(skill_path: Path, spec_context: str, model: str | None = N
 
     return ScoreResult(
         skill_name=skill.name,
-        score=response.score,
+        score=response.breakdown.total,
         breakdown=response.breakdown,
         issues=response.issues,
         suggestions=response.suggestions,
