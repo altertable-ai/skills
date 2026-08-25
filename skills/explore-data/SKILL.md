@@ -7,7 +7,7 @@ metadata:
   requires: "altertable-mcp"
 ---
 
-# Exploring Data
+# Explore Data
 
 ## Quick Start
 

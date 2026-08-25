@@ -7,7 +7,7 @@ metadata:
   requires: "altertable-mcp"
 ---
 
-# Creating Discoveries
+# Create Discoveries
 
 ## Quick Start
 

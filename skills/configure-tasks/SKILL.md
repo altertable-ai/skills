@@ -7,7 +7,7 @@ metadata:
   requires: "altertable-mcp"
 ---
 
-# Configuring Tasks
+# Configure Tasks
 
 ## Quick Start
 

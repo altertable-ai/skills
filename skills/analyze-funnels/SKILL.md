@@ -7,7 +7,7 @@ metadata:
   requires: "altertable-mcp"
 ---
 
-# Analyzing Funnels
+# Analyze Funnels
 
 ## Quick Start
 

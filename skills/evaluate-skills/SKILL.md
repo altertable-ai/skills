@@ -5,7 +5,7 @@ metadata:
   author: altertable-ai
 ---
 
-# Evaluating & Creating Skills
+# Evaluate Skills
 
 ## Quick Start
 

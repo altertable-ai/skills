@@ -7,7 +7,7 @@ metadata:
   requires: "altertable-mcp"
 ---
 
-# Analyzing Insights
+# Analyze Insights
 
 ## Quick Start
 
