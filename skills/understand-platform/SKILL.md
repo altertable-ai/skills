@@ -7,7 +7,7 @@ metadata:
   requires: "altertable-mcp"
 ---
 
-# Understanding Platform
+# Understand Platform
 
 ## Quick Start
 

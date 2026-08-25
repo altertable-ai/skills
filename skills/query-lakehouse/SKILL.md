@@ -7,7 +7,7 @@ metadata:
   requires: "altertable-mcp"
 ---
 
-# Querying the Lakehouse
+# Query the Lakehouse
 
 Altertable uses the DuckDB SQL dialect. Under the hood, queries run on hosted DuckDB workers over Parquet files stored in distributed object storage.
 

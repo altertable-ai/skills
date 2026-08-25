@@ -7,7 +7,7 @@ metadata:
   requires: "altertable-mcp"
 ---
 
-# Deciding Actions
+# Decide Actions
 
 ## Quick Start
 

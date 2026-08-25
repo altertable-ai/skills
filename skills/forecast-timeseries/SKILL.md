@@ -7,7 +7,7 @@ metadata:
   requires: "altertable-mcp, python, chronos, statsforecast, statsmodels"
 ---
 
-# Forecasting Time Series
+# Forecast Time Series
 
 ## Quick Start
 

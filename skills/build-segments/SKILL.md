@@ -7,7 +7,7 @@ metadata:
   requires: "altertable-mcp"
 ---
 
-# Building Segments
+# Build Segments
 
 ## Quick Start
 

@@ -7,7 +7,7 @@ metadata:
   requires: "altertable-mcp"
 ---
 
-# Using Memory
+# Use Memory
 
 ## Purpose
 

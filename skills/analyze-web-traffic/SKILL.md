@@ -7,7 +7,7 @@ metadata:
   requires: "altertable-mcp"
 ---
 
-# Analyzing Web Traffic
+# Analyze Web Traffic
 
 ## Quick Start
 
