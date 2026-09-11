@@ -2,7 +2,7 @@
   "name": "altertable",
   "displayName": "Altertable",
   "description": "Give Claude governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": {
     "name": "Altertable",
     "url": "https://github.com/altertable-ai"
