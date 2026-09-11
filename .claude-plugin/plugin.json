@@ -1,6 +1,6 @@
 {
   "name": "altertable",
-  "description": "Give Claude Code governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
+  "description": "Give Claude governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
   "version": "0.6.1",
   "author": {
     "name": "Altertable",
