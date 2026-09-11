@@ -9,6 +9,7 @@
   "homepage": "https://altertable.ai",
   "repository": "https://github.com/altertable-ai/skills",
   "license": "MIT",
+  "logo": "assets/logo.png",
   "keywords": [
     "altertable",
     "analytics",
