@@ -3,7 +3,7 @@ name: use-memory
 compatibility: Requires Altertable MCP server
 description: "Stores and recalls agent memories and org knowledge between sessions. Use to remember a definition, threshold, or convention, or recall earlier context. Not user-facing."
 metadata:
-  author: altertable-ai
+  author: Altertable
   requires: "altertable-mcp"
 ---
 

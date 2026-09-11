@@ -3,7 +3,7 @@ name: analyze-web-traffic
 compatibility: Requires Altertable MCP server
 description: "Analyzes website traffic (pageviews, sessions, referrers, landing pages). Use for site visits, traffic sources, bounce, or visitor behavior."
 metadata:
-  author: altertable-ai
+  author: Altertable
   requires: "altertable-mcp"
 ---
 

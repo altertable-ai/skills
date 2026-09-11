@@ -1,7 +1,7 @@
 {
   "name": "altertable",
   "version": "0.6.1",
-  "description": "Connects Cursor to Altertable's governed lakehouse for catalog discovery, semantic context, DuckDB SQL, and analytics workflows.",
+  "description": "Give Cursor governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
   "author": {
     "name": "Altertable"
   },

@@ -3,7 +3,7 @@ name: query-product-events
 compatibility: Requires Altertable MCP server
 description: "Queries product events and identities with SQL (event counts, properties, user activity, traits). Use to answer a question about tracked behavior or confirm new tracking arrives."
 metadata:
-  author: altertable-ai
+  author: Altertable
   requires: "altertable-mcp"
 ---
 

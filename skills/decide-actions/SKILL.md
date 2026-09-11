@@ -3,7 +3,7 @@ name: decide-actions
 compatibility: Requires Altertable MCP server
 description: Decision matrices for picking insight types (funnel, retention, semantic, segmentation, SQL), task types, and discovery actions. Use when choosing types or whether to create, update, or skip discoveries.
 metadata:
-  author: altertable-ai
+  author: Altertable
   requires: "altertable-mcp"
 ---
 

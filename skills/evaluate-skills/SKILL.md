@@ -2,7 +2,7 @@
 name: evaluate-skills
 description: "Evaluates and authors agent skills against the Agent Skills spec. Use when reviewing, writing, or refactoring a SKILL.md, or asking about structure, frontmatter, or naming."
 metadata:
-  author: altertable-ai
+  author: Altertable
 ---
 
 # Evaluate Skills

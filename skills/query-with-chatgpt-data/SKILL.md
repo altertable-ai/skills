@@ -3,7 +3,7 @@ name: query-with-chatgpt-data
 compatibility: Requires the Altertable MCP server
 description: "Use when ChatGPT Work's @Data agent, the ChatGPT Data agent, or a Codex workflow coordinating with @Data needs to inspect or query Altertable. Do not use for ordinary Altertable analysis that does not involve ChatGPT Data."
 metadata:
-  author: altertable-ai
+  author: Altertable
   requires: "altertable-mcp"
 ---
 

@@ -1,7 +1,7 @@
 {
   "name": "altertable",
   "version": "0.6.1",
-  "description": "Connects ChatGPT and Codex to Altertable's governed lakehouse for catalog discovery, semantic context, DuckDB SQL, and analytics workflows.",
+  "description": "Give ChatGPT and Codex governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
   "author": {
     "name": "Altertable",
     "url": "https://github.com/altertable-ai"
@@ -24,8 +24,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Altertable",
-    "shortDescription": "Query Altertable catalogs and governed lakehouse data.",
-    "longDescription": "Use Altertable as a governed data source in ChatGPT and Codex. Discover catalogs, inspect schemas and semantic definitions, run read-only DuckDB SQL, and provide evidence for analysis and dashboards.",
+    "shortDescription": "Query Altertable and run analytics skills from ChatGPT and Codex.",
+    "longDescription": "Connect ChatGPT and Codex to Altertable. Agents get skills plus MCP access to explore catalogs, run SQL, and work with insights, dashboards, and product analytics on the same governed data your team uses.",
     "developerName": "Altertable",
     "category": "Data & Analytics",
     "capabilities": [

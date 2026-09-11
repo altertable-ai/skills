@@ -2,7 +2,7 @@
 name: ask
 description: Routes user queries to the best-fit Altertable skill. Use when unsure which Altertable skill applies to a request.
 metadata:
-  author: altertable-ai
+  author: Altertable
 ---
 
 # Altertable Ask

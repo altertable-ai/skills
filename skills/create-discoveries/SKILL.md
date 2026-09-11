@@ -3,7 +3,7 @@ name: create-discoveries
 compatibility: Requires Altertable MCP server
 description: "Reports a change, anomaly, root cause, recommendation, or warning to users. Use when analysis produces something worth telling someone. Returns a discovery that enters review."
 metadata:
-  author: altertable-ai
+  author: Altertable
   requires: "altertable-mcp"
 ---
 

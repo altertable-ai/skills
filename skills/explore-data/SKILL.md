@@ -3,7 +3,7 @@ name: explore-data
 compatibility: Requires Altertable MCP server
 description: "Inspects catalogs, schemas, tables, columns, semantic models, measures, and dimensions. Use to find what data exists or a table's columns. Reads metadata, runs no query."
 metadata:
-  author: altertable-ai
+  author: Altertable
   requires: "altertable-mcp"
 ---
 

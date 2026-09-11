@@ -24,7 +24,7 @@ With optional fields:
   description: Analyzes time series data for trends, anomalies, and forecasts. Use when detecting spikes or drops, predicting future values, or identifying anomalies in metrics over time.
   compatibility: Requires Python 3.12+, altertable-mcp, chronos, statsforecast, and statsmodels
   metadata:
-    author: altertable-ai
+    author: Altertable
     version: "1.0"
 -->
 

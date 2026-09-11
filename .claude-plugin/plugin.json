@@ -1,9 +1,9 @@
 {
   "name": "altertable",
-  "description": "Connects AI agents to Altertable's governed lakehouse for catalog discovery, semantic context, DuckDB SQL, and analytics workflows.",
+  "description": "Give Claude Code governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
   "version": "0.6.1",
   "author": {
-    "name": "altertable-ai",
+    "name": "Altertable",
     "url": "https://github.com/altertable-ai"
   },
   "repository": "https://github.com/altertable-ai/skills",
