@@ -1,5 +1,6 @@
 {
   "name": "altertable",
+  "displayName": "Altertable",
   "description": "Give Claude governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
   "version": "1.0.0",
   "author": {

@@ -71,6 +71,7 @@ def test_cursor_plugin_uses_shared_mcp_endpoint():
     mcp = yaml.safe_load((ROOT / ".mcp.json").read_text(encoding="utf-8"))
 
     assert plugin["name"] == "altertable"
+    assert plugin["displayName"] == "Altertable"
     assert plugin["mcpServers"] == "./.mcp.json"
     assert marketplace["name"] == "altertable-ai"
     assert marketplace["plugins"][0]["name"] == "altertable"
