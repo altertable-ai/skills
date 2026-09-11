@@ -1,155 +1,111 @@
 # AGENTS.md
 
-Guidance for AI coding agents working with this repository.
+Guidance for agents maintaining Altertable's portable Agent Skills and marketplace plugin metadata.
 
-## Repository Overview
+## Sources of Truth
 
-A collection of skills for AI agents following the [Agent Skills Specification](https://agentskills.io/specification).
+- Use [Altertable's complete agent documentation](https://altertable.ai/docs/llms-full.txt) for current product concepts and public behavior.
+- For MCP arguments and enums, prefer the live tool schema and `search_docs` over copied parameter lists.
+- Treat explicit product corrections from the maintainers as authoritative when published documentation is lagging a release.
+- Follow the [Agent Skills Specification](https://agentskills.io/specification) for package structure and frontmatter.
 
-## Structure
+Do not preserve an obsolete product concept merely because an older skill or documentation page still mentions it.
 
-```
-skills/
-  {skill-name}/
-    SKILL.md
-    references/
-      {topic}.md
+## Repository Map
 
-scripts/
-  score-skills.py
-  scorer/
-  tests/
-```
-
-## Creating a New Skill
-
-### Naming Convention
-
-Use an imperative verb, lowercase, and hyphens only:
-- `analyze-data` ✓
-- `analyzing-data` ✗
-
-### SKILL.md Format
-
-```markdown
----
-name: {skill-name}
-description: {Third-person description with trigger keywords}
----
-
-# {Skill Title}
-
-## Quick Start
-{Immediate actionable example}
-
-## When to Use This Skill
-{Bullet points with trigger conditions}
-
-## Common Pitfalls
-{5-10 mistakes to avoid}
-
-## References
-{Links to references/ files}
+```text
+skills/{skill-name}/SKILL.md       Shipped skill entry points
+skills/{skill-name}/references/   Optional conditional detail
+templates/SKILL_TEMPLATE/         Starting point for a new skill
+.claude-plugin/                   Claude plugin metadata
+.codex-plugin/plugin.json         Codex plugin metadata
+.cursor-plugin/                   Cursor plugin metadata
+scripts/sync-agents-md.py         Regenerates skill inventories
+scripts/scorer/                   LLM quality scorer
+scripts/tests/                    Repository and portfolio checks
 ```
 
-### Best Practices
+## Portfolio Principles
 
-- Keep SKILL.md under 500 lines
-- Move details to references/
-- Third-person descriptions ("Analyzes..." not "I help you...")
-- Include trigger keywords
-- References one level deep only
+- Assume the agent already understands analytics, SQL, APIs, and software engineering. Teach the non-obvious Altertable behavior that changes execution.
+- Organize skills around durable platform workflows, not generic analytical techniques or a catalog of every tool.
+- Keep `SKILL.md` concise; target fewer than 180 lines. Add a focused reference only when conditional detail warrants loading it separately.
+- Distinguish read-only analysis, UI drafts, and persistent writes. Authentication never implies permission for an unrequested mutation.
+- Use imperative lowercase names with hyphens. Write third-person descriptions with discriminating trigger language.
+- Treat [use-altertable](skills/use-altertable/SKILL.md) as the shared platform brief and [ask](skills/ask/SKILL.md) as the fast path for delegated analytical questions.
+- Tasks produce Findings delivered through Notifications. Do not reintroduce retired feature terminology or workflows.
 
-## Commands
+There is no mandatory body outline. Start from [the template](templates/SKILL_TEMPLATE/SKILL.md), then retain only the sections useful to that workflow.
 
-- `/altertable:ask <query>` -- routes user queries to the best skill (see `skills/ask/SKILL.md`)
+## Updating the Repository
+
+1. Read the affected skill, nearby tests, and current Altertable documentation.
+2. Add or update a behavior-level portfolio test and observe it fail before changing shipped content.
+3. Make the smallest coherent skill and metadata changes.
+4. When skill names or descriptions change, run `uv run python scripts/sync-agents-md.py`. The Available Skills sections below and in `README.md` are generated from skill frontmatter; do not edit those inventories manually.
+5. If the portfolio's advertised scope changes, keep `.claude-plugin`, `.codex-plugin/plugin.json`, and `.cursor-plugin` descriptions aligned.
+6. Run the complete validation commands before committing.
+
+The marketplace plugin provides skills and hosted MCP access; it does not install the Altertable CLI. The CLI is optional and installed separately for terminal, CI, ingestion, or structured-output workflows. Link to the [CLI guide](https://altertable.ai/docs/developer-tooling/cli) for setup and the [CLI repository](https://github.com/altertable-ai/altertable-cli) for releases and its command contract. Do not run an installer unless the user explicitly asks.
+
+## Useful Commands
+
+- `/altertable:ask <query>` delegates questions to the Altertable Agent.
+
+```bash
+uv sync
+uv run python scripts/sync-agents-md.py
+uv run pytest scripts/tests/
+uv run skills validate ./skills/skill-name
+uv run python scripts/score-skills.py skills --scan_all --validate_only
+uv run pre-commit run --all-files
+```
 
 ## Available Skills
 
 <available_skills>
   <skill>
-    <name>analyze-funnels</name>
-    <description>Builds conversion funnels over ordered steps. Use for user journeys, drop-off, onboarding, checkout, or multi-step flows. Returns a funnel insight.</description>
-  </skill>
-  <skill>
-    <name>analyze-insights</name>
-    <description>Explains what an existing insight or chart shows. Use when asked what a visualization or graph means, or to read out its outliers. Does not run a query.</description>
-  </skill>
-  <skill>
-    <name>analyze-web-traffic</name>
-    <description>Analyzes website traffic (pageviews, sessions, referrers, landing pages). Use for site visits, traffic sources, bounce, or visitor behavior.</description>
+    <name>analyze-product-behavior</name>
+    <description>Analyzes Altertable Product Analytics events, identities, web sessions, funnels, retention, segmentation, and saved segments. Use for product behavior, conversion, cohorts, event delivery, or identity-aware analysis.</description>
   </skill>
   <skill>
     <name>ask</name>
-    <description>Routes user queries to the best-fit Altertable skill. Use when unsure which Altertable skill applies to a request.</description>
+    <description>Delegates analytical questions and follow-up investigations to the Altertable Agent. Use as the default fast path for questions about connected data, metrics, changes, causes, or recommendations when exact SQL control is unnecessary.</description>
   </skill>
   <skill>
-    <name>build-segments</name>
-    <description>Compares event metrics across cohorts using filters, breakdowns, and dimensions. Use to define an audience or compare groups such as free versus paid. Returns a segmentation insight.</description>
+    <name>build-dashboards</name>
+    <description>Drafts, creates, and updates Altertable Dashboards composed of Insights, text, sections, variables, and grid positions. Use for reusable KPI views, monitoring layouts, or shared analytical reports.</description>
+  </skill>
+  <skill>
+    <name>build-insights</name>
+    <description>Renders, drafts, creates, and updates Altertable Insights. Use when the user wants a reusable SQL, semantic, funnel, retention, or segmentation analysis rather than a one-off answer.</description>
   </skill>
   <skill>
     <name>configure-tasks</name>
-    <description>Schedules recurring AI tasks over insights and dashboards. Use for alerts, cron-style monitoring, or anomaly and forecast checks that run on their own.</description>
+    <description>Drafts, creates, and updates Altertable Tasks that run SQL, code, or AI work on a schedule. Use for recurring analysis, anomaly checks, forecasts, monitoring, or Findings delivered through Notifications.</description>
   </skill>
   <skill>
-    <name>create-discoveries</name>
-    <description>Reports a change, anomaly, root cause, recommendation, or warning to users. Use when analysis produces something worth telling someone. Returns a discovery that enters review.</description>
-  </skill>
-  <skill>
-    <name>create-insights</name>
-    <description>Drafts, renders, and saves insights of every type (SQL, semantic, segmentation, funnel, retention). Use to build, preview, or share a visualization. Returns a saved insight.</description>
-  </skill>
-  <skill>
-    <name>decide-actions</name>
-    <description>Decision matrices for picking insight types (funnel, retention, semantic, segmentation, SQL), task types, and discovery actions. Use when choosing types or whether to create, update, or skip discoveries.</description>
-  </skill>
-  <skill>
-    <name>evaluate-skills</name>
-    <description>Evaluates and authors agent skills against the Agent Skills spec. Use when reviewing, writing, or refactoring a SKILL.md, or asking about structure, frontmatter, or naming.</description>
-  </skill>
-  <skill>
-    <name>explore-data</name>
-    <description>Inspects catalogs, schemas, tables, columns, semantic models, measures, and dimensions. Use to find what data exists or a table&#x27;s columns. Reads metadata, runs no query.</description>
-  </skill>
-  <skill>
-    <name>forecast-timeseries</name>
-    <description>Runs on-demand statistics over a time series to spot outliers and project values. Use for whether a spike is normal, or what a metric reaches next week.</description>
+    <name>ingest-data</name>
+    <description>Loads data into Altertable through the CLI, HTTP API, DataFrame tooling, object storage, or generated pipelines. Use for file upload, append, upsert, overwrite, bucket synchronization, or deciding between ingestion and an external catalog.</description>
   </skill>
   <skill>
     <name>instrument-product-analytics</name>
-    <description>Adds Altertable product analytics to an application (event tracking, user identification, traits, consent, session reset, aliasing). Use when writing instrumentation code.</description>
+    <description>Adds or changes Altertable Product Analytics instrumentation in application code. Use for SDK setup, event tracking, user identification, traits, consent, session reset, page or screen tracking, and identity aliasing.</description>
   </skill>
   <skill>
-    <name>manage-discoveries</name>
-    <description>Reviews, approves, and rejects existing discoveries. Use for the approval queue, discovery states, or user feedback on a discovery.</description>
+    <name>manage-knowledge</name>
+    <description>Searches and maintains Altertable memories, knowledge entries, repository context, and semantic-model descriptions. Use when reusable business context, definitions, preferences, or model documentation should guide future agent work.</description>
   </skill>
   <skill>
     <name>query-lakehouse</name>
-    <description>Writes, validates, optimizes, and runs DuckDB SQL against the Altertable lakehouse. Use when answering a question requires executing a query, joining tables, or aggregating metrics.</description>
-  </skill>
-  <skill>
-    <name>query-product-events</name>
-    <description>Queries product events and identities with SQL (event counts, properties, user activity, traits). Use to answer a question about tracked behavior or confirm new tracking arrives.</description>
+    <description>Inspects Altertable catalogs and runs controlled DuckDB SQL across managed and external data. Use for exact queries, raw results, schema inspection, federated joins, query validation, plans, or optimization.</description>
   </skill>
   <skill>
     <name>query-with-chatgpt-data</name>
-    <description>Use when ChatGPT Work&#x27;s @Data agent, the ChatGPT Data agent, or a Codex workflow coordinating with @Data needs to inspect or query Altertable. Do not use for ordinary Altertable analysis that does not involve ChatGPT Data.</description>
+    <description>Use when ChatGPT Work&#x27;s @Data agent, the ChatGPT Data agent, or a Codex workflow coordinating with @Data needs Altertable as a governed read-only source. Do not use for ordinary Altertable analysis.</description>
   </skill>
   <skill>
-    <name>understand-platform</name>
-    <description>Explains Altertable concepts and architecture. Use for what Altertable is, or how agents, discoveries, insights, memories, and dashboards relate. Concepts only.</description>
-  </skill>
-  <skill>
-    <name>use-memory</name>
-    <description>Stores and recalls agent memories and org knowledge between sessions. Use to remember a definition, threshold, or convention, or recall earlier context. Not user-facing.</description>
+    <name>use-altertable</name>
+    <description>Provides Altertable&#x27;s foundational operating model, environment and catalog concepts, DuckDB conventions, and MCP-versus-CLI choices. Use for platform orientation, setup, tool selection, or any Altertable workflow needing shared context.</description>
   </skill>
 </available_skills>
-
-## Scoring development
-
-```bash
-uv sync
-uv run pre-commit install
-uv run pytest scripts/tests/
-uv run skills validate ./skills/skill-name
-```

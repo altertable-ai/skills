@@ -35,17 +35,14 @@ description: Third-person description with trigger keywords
 
 ### 4. Body Content
 
-| Constraint | Limit |
-|------------|-------|
-| SKILL.md body | <500 lines |
-| Reference depth | 1 level only |
+Assume a capable agent already understands general analytics, SQL, APIs, and software engineering. A skill earns its context budget by explaining the non-obvious Altertable details that change execution: object boundaries, required call order, permissions, defaults, side effects, and product-specific choices.
 
-#### Recommended Sections
-
-1. **Quick Start** - Immediate, actionable example
-2. **When to Use This Skill** - Trigger conditions
-3. **Common Pitfalls** - 5-10 mistakes to avoid
-4. **References** - Links to `references/` files
+- Start with the outcome and the smallest platform-specific workflow.
+- Prefer the live tool schema or `search_docs` for evolving arguments and behavior.
+- Distinguish read-only operations, previews or drafts, and persistent writes.
+- Keep the entry point concise; target fewer than 180 lines.
+- Add sections only when they help the workflow. There is no mandatory body outline.
+- Avoid generic tutorials, exhaustive parameter copies, and taxonomies a capable model can infer.
 
 ### 5. Reference Files
 
@@ -56,7 +53,7 @@ Place detailed content in `references/`:
 - [Topic details](references/topic.md)
 ```
 
-Keep references **one level deep** (no nested directories).
+References are optional. Use them only for focused, conditional detail, state when the agent should read them, and keep them **one level deep** (no nested directories).
 
 ## Setup
 

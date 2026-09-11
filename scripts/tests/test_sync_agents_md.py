@@ -29,7 +29,7 @@ def test_build_skills_table_uses_the_first_sentence(sync):
 
 def test_build_skills_table_escapes_pipes_so_rows_stay_intact(sync):
     # given
-    skills = [("explore-data", "Inspects tables | views. Use to find data.")]
+    skills = [("query-lakehouse", "Inspects tables | views. Use to find data.")]
 
     # when
     table = sync.build_skills_table(skills)

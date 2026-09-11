@@ -29,11 +29,15 @@ Evaluate the skill below against the specification and best practices above. Sco
 
 ### Scoring Breakdown (100 points)
 
-- Frontmatter (20): Compliance with spec field constraints, naming, description quality
-- Structure (25): Step-by-step instructions, examples, edge cases, under 500 lines
-- Content Quality (35): Clarity, actionable instructions, progressive disclosure
-- Pitfalls (10): Common pitfalls, troubleshooting guidance, edge cases
-- References (10): Documentation quality, focused files, one level deep
+- Frontmatter (20): Compliance with spec field constraints, naming, and precise activation triggers
+- Structure (25): Concise, executable workflow with ordering only where it affects correctness
+- Content Quality (35): Accurate, actionable, non-obvious platform context and clear operation boundaries
+- Pitfalls (10): Operational safeguards, permissions, side effects, and easy-to-miss platform behavior
+- References (10): Progressive disclosure used well when conditional detail is necessary
+
+Do not reward generic tutorials, arbitrary section checklists, or exhaustive copies of tool parameters. Assume the agent already knows common analytics, SQL, API, and software-engineering concepts. Reward details that are specific to the product and materially change execution. Prefer instructions that defer evolving contracts to live tool schemas or current documentation.
+
+References are optional. Award full reference credit when the entry point is self-contained and no conditional detail warrants a separate file; do not reward references merely for existing.
 
 ## Skill: {skill_name} ({line_count} lines)
 ```markdown

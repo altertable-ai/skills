@@ -4,7 +4,7 @@
 [![Score Skills](https://github.com/altertable-ai/skills/actions/workflows/score-skills.yml/badge.svg)](https://github.com/altertable-ai/skills/actions/workflows/score-skills.yml)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-8A2BE2)](https://agentskills.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-19-green)](https://github.com/altertable-ai/skills)
+[![Skills](https://img.shields.io/badge/skills-11-green)](https://github.com/altertable-ai/skills)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-3776AB.svg)](https://www.python.org)
 
 This repository is the source of truth for [Altertable](https://altertable.ai) [Agent Skills](https://agentskills.io): portable, version-controlled packages of instructions, scripts, and references.
@@ -15,44 +15,21 @@ It is also the marketplace Claude Code, Codex, and Cursor install from. Those pl
 
 Agent Skills are an [open standard](https://agentskills.io/specification) for giving AI agents specialized capabilities. Each skill is a self-contained folder with a `SKILL.md` file containing instructions that agents load on demand. Build once, use across any compatible platform.
 
-## Quick Start with `/altertable:ask`
-
-Don't know which skill to use? Just type:
-
-```
-/altertable:ask <your question>
-```
-
-The `/altertable:ask` command routes your query to the best skill automatically. Examples:
-
-- `/altertable:ask show me my web traffic` -> `analyze-web-traffic`
-- `/altertable:ask what tables do I have?` -> `explore-data`
-- `/altertable:ask analyze my signup funnel` -> `analyze-funnels`
-- `/altertable:ask what is Altertable?` -> `understand-platform`
-
 ## Available Skills
 
 | Skill | Description |
 | ----- | ----------- |
-| [analyze-funnels](skills/analyze-funnels/) | Builds conversion funnels over ordered steps |
-| [analyze-insights](skills/analyze-insights/) | Explains what an existing insight or chart shows |
-| [analyze-web-traffic](skills/analyze-web-traffic/) | Analyzes website traffic (pageviews, sessions, referrers, landing pages) |
-| [ask](skills/ask/) | Routes user queries to the best-fit Altertable skill |
-| [build-segments](skills/build-segments/) | Compares event metrics across cohorts using filters, breakdowns, and dimensions |
-| [configure-tasks](skills/configure-tasks/) | Schedules recurring AI tasks over insights and dashboards |
-| [create-discoveries](skills/create-discoveries/) | Reports a change, anomaly, root cause, recommendation, or warning to users |
-| [create-insights](skills/create-insights/) | Drafts, renders, and saves insights of every type (SQL, semantic, segmentation, funnel, retention) |
-| [decide-actions](skills/decide-actions/) | Decision matrices for picking insight types (funnel, retention, semantic, segmentation, SQL), task types, and discovery actions |
-| [evaluate-skills](skills/evaluate-skills/) | Evaluates and authors agent skills against the Agent Skills spec |
-| [explore-data](skills/explore-data/) | Inspects catalogs, schemas, tables, columns, semantic models, measures, and dimensions |
-| [forecast-timeseries](skills/forecast-timeseries/) | Runs on-demand statistics over a time series to spot outliers and project values |
-| [instrument-product-analytics](skills/instrument-product-analytics/) | Adds Altertable product analytics to an application (event tracking, user identification, traits, consent, session reset, aliasing) |
-| [manage-discoveries](skills/manage-discoveries/) | Reviews, approves, and rejects existing discoveries |
-| [query-lakehouse](skills/query-lakehouse/) | Writes, validates, optimizes, and runs DuckDB SQL against the Altertable lakehouse |
-| [query-product-events](skills/query-product-events/) | Queries product events and identities with SQL (event counts, properties, user activity, traits) |
-| [query-with-chatgpt-data](skills/query-with-chatgpt-data/) | Use when ChatGPT Work's @Data agent, the ChatGPT Data agent, or a Codex workflow coordinating with @Data needs to inspect or query Altertable |
-| [understand-platform](skills/understand-platform/) | Explains Altertable concepts and architecture |
-| [use-memory](skills/use-memory/) | Stores and recalls agent memories and org knowledge between sessions |
+| [analyze-product-behavior](skills/analyze-product-behavior/) | Analyzes Altertable Product Analytics events, identities, web sessions, funnels, retention, segmentation, and saved segments |
+| [ask](skills/ask/) | Delegates analytical questions and follow-up investigations to the Altertable Agent |
+| [build-dashboards](skills/build-dashboards/) | Drafts, creates, and updates Altertable Dashboards composed of Insights, text, sections, variables, and grid positions |
+| [build-insights](skills/build-insights/) | Renders, drafts, creates, and updates Altertable Insights |
+| [configure-tasks](skills/configure-tasks/) | Drafts, creates, and updates Altertable Tasks that run SQL, code, or AI work on a schedule |
+| [ingest-data](skills/ingest-data/) | Loads data into Altertable through the CLI, HTTP API, DataFrame tooling, object storage, or generated pipelines |
+| [instrument-product-analytics](skills/instrument-product-analytics/) | Adds or changes Altertable Product Analytics instrumentation in application code |
+| [manage-knowledge](skills/manage-knowledge/) | Searches and maintains Altertable memories, knowledge entries, repository context, and semantic-model descriptions |
+| [query-lakehouse](skills/query-lakehouse/) | Inspects Altertable catalogs and runs controlled DuckDB SQL across managed and external data |
+| [query-with-chatgpt-data](skills/query-with-chatgpt-data/) | Use when ChatGPT Work's @Data agent, the ChatGPT Data agent, or a Codex workflow coordinating with @Data needs Altertable as a governed read-only source |
+| [use-altertable](skills/use-altertable/) | Provides Altertable's foundational operating model, environment and catalog concepts, DuckDB conventions, and MCP-versus-CLI choices |
 
 ## Install the marketplace plugin
 
@@ -92,6 +69,16 @@ Other compatible agents can install the portable skills without a native plugin:
 ```bash
 npx skills add altertable-ai/skills
 ```
+
+## Optional Altertable CLI
+
+The marketplace plugin provides the skills and hosted MCP connection; it does not install the CLI. Install the CLI separately when you need terminal queries, ingestion, CI, or script-friendly output:
+
+```bash
+curl -fsSL https://install.altertable.ai | sh
+```
+
+See the [CLI guide](https://altertable.ai/docs/developer-tooling/cli) for setup and authentication, or the [CLI repository](https://github.com/altertable-ai/altertable-cli) for releases and the complete command reference.
 
 ## Getting Started
 

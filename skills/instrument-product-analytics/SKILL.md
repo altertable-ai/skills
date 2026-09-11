@@ -1,96 +1,39 @@
 ---
 name: instrument-product-analytics
-description: "Adds Altertable product analytics to an application (event tracking, user identification, traits, consent, session reset, aliasing). Use when writing instrumentation code."
+description: "Adds or changes Altertable Product Analytics instrumentation in application code. Use for SDK setup, event tracking, user identification, traits, consent, session reset, page or screen tracking, and identity aliasing."
 ---
 
 # Instrument Product Analytics
 
-## Quick Start
+Implement the smallest durable instrumentation change using the project's installed Altertable SDK and types as the API authority.
 
-1. Inspect the application stack, installed Altertable packages, existing client initialization, and current tracking conventions.
-2. Read the canonical [ingestion guide](https://altertable.ai/docs/product-analytics/ingest-data.md) and the page for the operation being implemented:
-   - [Track events](https://altertable.ai/docs/product-analytics/ingest-data/track.md)
-   - [Identify users](https://altertable.ai/docs/product-analytics/ingest-data/identify.md)
-   - [Alias identifiers](https://altertable.ai/docs/product-analytics/ingest-data/alias.md)
-   - [Authenticate clients](https://altertable.ai/docs/product-analytics/ingest-data/authentication.md)
-3. Use the project's installed SDK and types as the exact API reference. Reuse its existing Altertable client rather than creating another instance.
-4. Add the smallest instrumentation change at the source of truth for the action.
-5. Verify the success path, identity lifecycle, consent behavior, and the project's targeted checks.
+## Workflow
 
-Use the [Product Analytics API reference](https://altertable.ai/docs/api-references/product-analytics.md) only when an SDK is unavailable or a direct HTTP integration is intentional.
+1. Inspect the application stack, installed package and version, shared client initialization, authentication lifecycle, consent model, and existing event conventions.
+2. Read the current Product Analytics ingestion guide with `search_docs` or at [Product Analytics ingestion](https://altertable.ai/docs/ingest-data/product-analytics).
+3. Define the stable event name, identity context, and only the properties needed for filtering, grouping, or decisions.
+4. Instrument the successful business outcome at its source of truth.
+5. Exercise success, failure, anonymous-to-known, logout, and consent paths relevant to the change.
+6. When runtime access is available, verify a non-production event in the intended environment.
 
-## When to Use This Skill
+Use the direct Product Analytics HTTP API only when an SDK is unavailable or intentionally unsuitable. Direct requests must include the target environment; use SDK batching and retry behavior rather than rebuilding it when available.
 
-- Adding or changing product event instrumentation in an application
-- Initializing an Altertable SDK
-- Identifying users after signup, login, or restored authentication
-- Updating user or account traits
-- Resetting client identity on logout
-- Managing tracking consent, page views, or screen views
-- Aliasing IDs during an identity migration or external-system integration
+## Identity Rules
 
-For questions about events already stored in Altertable, use `query-product-events`. For ordered conversion journeys, use `analyze-funnels`.
+- Track server-owned outcomes such as completed billing changes from the backend.
+- Identify a known user when authenticated state is established or restored.
+- Use a stable identifier rather than mutable profile data such as email.
+- Reset client identity on logout so the next person's events are not joined to the prior user.
+- Use aliasing only for an explicit identifier merge or migration; ordinary login and signup use identification.
+- Preserve established anonymous-ID behavior across page reloads and sessions.
 
-## Implementation Workflow
+## Safety
 
-### 1. Inspect Before Editing
+- Never send secrets, payment details, passwords, or regulated sensitive data as properties or traits.
+- Do not hardcode environment credentials.
+- Do not broaden tracking beyond the requested behavior or bypass consent.
+- Do not initialize a second client when the application already has one.
+- Do not rename an established event or property without checking downstream consumers.
+- Confirm successful actions emit once and failed or cancelled actions do not emit success events.
 
-Determine:
-
-- whether the application is browser, React, mobile, server, or a mixed architecture
-- which Altertable SDK and version are installed
-- where the shared client is initialized
-- how configuration and environment-specific API keys are supplied
-- whether event names or properties already have project-owned types
-- how authentication, logout, and consent are represented
-
-Follow the repository's local conventions and the installed package types. Do not infer a signature from a skill example or from another SDK.
-
-### 2. Define the Event Contract
-
-Before adding a call, establish:
-
-- the user action or business outcome the event represents
-- the stable event name
-- only the properties needed for filtering, grouping, or decisions
-- the correct identity context
-- whether the browser or backend is the source of truth
-
-Prefer a small number of durable business events over low-level interaction noise. Track server-owned outcomes such as successful billing changes or completed background jobs from the backend.
-
-### 3. Place Calls at Durable Boundaries
-
-- Track an outcome after it succeeds, not when the user merely attempts it.
-- Identify as soon as authenticated state is established or restored.
-- Reset client identity on logout.
-- Update traits when analytically relevant account state changes.
-- Use aliasing only for explicit ID merges or migrations; normal signup and login flows use identification.
-- Preserve existing consent gates and privacy behavior.
-
-### 4. Verify
-
-- Exercise the relevant success path and confirm the call occurs once.
-- Check that failed or cancelled actions do not emit success events.
-- Check anonymous-to-known identity behavior when authentication is involved.
-- Check logout does not leave the prior user's identity active.
-- If runtime access is available, confirm a non-production event reaches the intended Altertable environment without exposing user data.
-
-## Safety Rules
-
-- Never send passwords, tokens, secrets, payment details, or regulated sensitive data as properties or traits.
-- Do not hardcode environment-specific credentials in source files.
-- Do not silently broaden tracking beyond the user's requested behavior.
-- Do not initialize multiple competing clients.
-- Do not replace established event names or property shapes without checking downstream dashboards, queries, and consumers.
-- Do not bypass consent, privacy, or data-residency requirements to make an event appear.
-
-## Common Pitfalls
-
-1. Tracking before an operation succeeds, which inflates conversion metrics
-2. Adding duplicate initialization or duplicate listeners
-3. Using mutable data such as email as the stable user ID
-4. Forgetting to identify an already-authenticated user after a full reload
-5. Forgetting to reset identity on logout
-6. Using aliasing for routine authentication instead of an explicit ID merge
-7. Copying an API signature without checking the installed SDK version
-8. Sending properties that have no planned analytical use
+Use the `analyze-product-behavior` skill to inspect events already stored in Altertable.

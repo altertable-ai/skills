@@ -1,7 +1,7 @@
 ---
 name: configure-tasks
-compatibility: Requires Altertable MCP server
-description: "Schedules recurring AI tasks over insights and dashboards. Use for alerts, cron-style monitoring, or anomaly and forecast checks that run on their own."
+compatibility: Requires Altertable MCP server with read-write access
+description: "Drafts, creates, and updates Altertable Tasks that run SQL, code, or AI work on a schedule. Use for recurring analysis, anomaly checks, forecasts, monitoring, or Findings delivered through Notifications."
 metadata:
   author: Altertable
   requires: "altertable-mcp"
@@ -9,89 +9,43 @@ metadata:
 
 # Configure Tasks
 
-## Quick Start
+Altertable Tasks run scheduled work and produce a Finding only when something is worth the user's attention. Findings are delivered as Notifications through the channels configured for the current environment.
 
-A task is a scheduled AI agent that runs on a cron, analyzes an Insight or Dashboard, and creates a discovery when the analysis produces a finding. Your `instructions` string is the prompt the AI follows on each run.
+## Workflow
 
-To create a task:
+1. Call `initialize` and confirm the environment.
+2. Use `list_tasks` to avoid duplicating an existing task on the same context.
+3. Resolve the target and read its current definition. A task can run on an insight, dashboard, connection, database, segment, or semantic model.
+4. Inspect the current `create_task` or `draft_task` schema for supported task types and target fields. Do not copy enum values from memory.
+5. Write instructions that define what to examine, what is noteworthy, relevant thresholds, comparison periods, and when silence is correct.
+6. Use `draft_task` while the user is iterating. Use `create_task` only after the schedule, target, and instructions are settled and persistence is requested.
+7. Use `update_task` for an existing task; omitted fields remain unchanged.
 
-1. Call `initialize`, then identify what the user wants the AI to watch for (anomalies, a forecast, or open-ended analysis)
-2. Choose the task type and target slug
-3. Write clear natural-language instructions -- these are the AI's prompt every run
-4. Pick a cron schedule that fits the task instructions
-5. Call `create_task` on the Altertable MCP server
+## Task Instructions
 
-## When to Use This Skill
+Write instructions as a durable prompt that will run without the current conversation. Include:
 
-- User wants an Insight monitored for anomalies on a schedule
-- User wants a metric forecast recurring on a cadence
-- User wants ongoing AI analysis of an Insight or Dashboard
-- User asks for automated alerts when something changes
+- the metric, behavior, or condition to evaluate;
+- the comparison or baseline to use;
+- thresholds or qualitative criteria for a noteworthy change;
+- relevant segments, exclusions, and business context;
+- the expected Finding content and useful next action;
+- an instruction to remain quiet when nothing meaningful changed.
 
-## Task Types
+Do not tell a task to report on every run unless the user explicitly wants a scheduled report. Avoid generic instructions such as “monitor this” because they create noisy Notifications.
 
-All three types run AI analysis driven by your `instructions`. They differ in what the AI is asked to focus on.
+## Scheduling and Scope
 
-| Type                 | Target               | AI focus                                                    |
-| -------------------- | -------------------- | ----------------------------------------------------------- |
-| `anomaly_detection`  | Insight slug           | Find outliers and unusual values in the Insight's data        |
-| `forecast`           | Insight slug           | Project future values and flag divergence from expectations |
-| `monitor`            | Insight/Dashboard slug | Open-ended analysis -- whatever the instructions describe   |
+- Match cadence to data freshness and the decision window.
+- Confirm the timezone represented by the schedule; do not silently assume local time or UTC.
+- Keep the task in the same environment as its target and notification preferences.
+- Check the live tool schema for CRON syntax and supported target combinations.
+- If the connection is read-only, provide a proposed task definition instead of attempting persistence.
 
-## Core Workflow
+## Updates
 
-### Step 1: Identify the Target
+Before updating, retrieve the existing task and preserve fields the user did not ask to change. Deactivate rather than delete when the intent is to pause recurring work. Reuse the task's slug and verify the returned schedule, active state, targets, and instructions.
 
-The user needs an existing resource to target. If they don't have one yet:
+## Documentation
 
-1. Help them create or find the Insight or Dashboard first (see create-insights, explore-data, or `list_insights`/`view_dashboard`)
-2. Use the resulting slug as the `target_slug`
-
-### Step 2: Choose Task Type
-
-Match the user's goal to a task type:
-
-- "Alert me if signups drop unexpectedly" -> `anomaly_detection` on the signup Insight
-- "Forecast next month's revenue" -> `forecast` on the revenue Insight
-- "Analyze my dashboard for anything unusual" -> `monitor` on the dashboard
-
-### Step 3: Write Instructions
-
-Instructions tell the task what to focus on. Be specific about:
-
-- What patterns to look for
-- What thresholds matter
-- When to create a discovery
-
-Example:
-
-```
-Monitor weekly revenue trends. Create a discovery if:
-- Revenue drops more than 10% week-over-week
-- Revenue exceeds forecast by 20%
-- Unusual patterns in regional breakdown
-```
-
-### Step 4: Create the Task
-
-Use the Altertable MCP task-creation tool. Supply:
-
-- the task type -- one of `anomaly_detection`, `forecast`, or `monitor`
-- the target Insight or Dashboard slug the AI will analyze
-- a cron schedule (standard 5-field, UTC)
-- the natural-language instructions -- the prompt the AI follows on each run
-- the author (the user creating the task)
-
-Refer to the MCP tool description for the exact parameter names and any additional required fields -- the MCP schema is the source of truth.
-
-## Common Pitfalls
-
-- **Wrong task type** -- `anomaly_detection` detects outliers; `forecast` projects future values; `monitor` does open-ended analysis. Don't mix them up
-- **Vague instructions** -- "watch this Insight" produces noisy discoveries; be specific about thresholds and patterns
-- **Creating duplicate tasks** -- check if a task already exists on the target before creating a new one
-- **Missing the target** -- the user needs an existing Insight or Dashboard slug; help them create one first if needed
-- **Using `monitor` when `anomaly_detection` suffices** -- `monitor` is more general but less focused; prefer `anomaly_detection` for pure outlier detection
-
-## Reference Files
-
-- [Task types](references/task-types.md) - Read when choosing between anomaly_detection, forecast, and monitor
+Use `search_docs` for current task types, scheduling behavior, and Notification delivery. The live MCP schema is authoritative for arguments.

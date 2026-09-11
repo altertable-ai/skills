@@ -55,12 +55,12 @@ def test_openai_metadata_exposes_skill_in_chat_and_codex():
     ]
 
 
-def test_ask_routes_chatgpt_data_requests_to_adapter():
+def test_ask_delegates_to_the_altertable_agent_instead_of_routing_skills():
     ask = (ROOT / "skills" / "ask" / "SKILL.md").read_text(encoding="utf-8")
 
-    assert "| `query-with-chatgpt-data` |" in ask
-    assert "ChatGPT Work" in ask
-    assert "@Data" in ask
+    assert "`ask`" in ask
+    assert "`chat_id`" in ask
+    assert "Routing Table" not in ask
 
 
 def test_cursor_plugin_uses_shared_mcp_endpoint():
