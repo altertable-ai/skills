@@ -4,13 +4,13 @@
     "name": "Altertable"
   },
   "metadata": {
-    "description": "Give Claude governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
+    "description": "Give Claude governed access to Altertable for querying, ingestion, product analytics, insights, automation, and findings.",
     "version": "1.0.2"
   },
   "plugins": [
     {
       "name": "altertable",
-      "description": "Give Claude governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
+      "description": "Give Claude governed access to Altertable for querying, ingestion, product analytics, insights, automation, and findings.",
       "source": "./",
       "version": "1.0.2"
     }

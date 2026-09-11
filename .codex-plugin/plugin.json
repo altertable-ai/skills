@@ -1,7 +1,7 @@
 {
   "name": "altertable",
   "version": "1.0.2",
-  "description": "Give ChatGPT and Codex governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
+  "description": "Give ChatGPT and Codex governed access to Altertable for querying, ingestion, product analytics, insights, automation, and findings.",
   "author": {
     "name": "Altertable",
     "url": "https://github.com/altertable-ai"
@@ -18,14 +18,18 @@
     "lakehouse",
     "data-warehouse",
     "semantic-layer",
+    "ingestion",
+    "automation",
+    "product-analytics",
+    "findings",
     "sql"
   ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Altertable",
-    "shortDescription": "Query Altertable and run analytics skills from ChatGPT and Codex.",
-    "longDescription": "Connect ChatGPT and Codex to Altertable. Agents get skills plus MCP access to explore catalogs, run SQL, and work with insights, dashboards, and product analytics on the same governed data your team uses.",
+    "shortDescription": "Use Altertable data, analytics, ingestion, and automation from ChatGPT and Codex.",
+    "longDescription": "Connect ChatGPT and Codex to Altertable. Agents get skills plus MCP access to explore catalogs, run SQL, ingest data, and work with insights, dashboards, product analytics, automation, and findings on the same governed data your team uses.",
     "developerName": "Altertable",
     "category": "Data & Analytics",
     "capabilities": [

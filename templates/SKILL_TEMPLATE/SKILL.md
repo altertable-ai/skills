@@ -1,107 +1,37 @@
 ---
-# Required fields
-name: <lowercase-hyphenated-name>              # 1-64 chars, lowercase alphanumeric and hyphens, must match directory name
-description: "<what it does and when to use it>" # 1-1024 chars, third-person, include trigger keywords
-
-# Optional fields
-license: <license-name>                        # e.g. "Apache-2.0" or "Proprietary. LICENSE.txt has complete terms"
-compatibility: <environment requirements>      # 1-500 chars, only if skill has specific requirements
-metadata:                                      # string keys to string values
-  author: <author-name>
-  version: "<semver>"
-allowed-tools: <space-delimited tool list>     # e.g. "Bash(git:*) Bash(jq:*) Read" (experimental)
+name: <lowercase-hyphenated-name>
+description: "<what specialized capability this provides and when it should activate>"
+# Add compatibility only when the workflow has concrete environment requirements.
+# compatibility: Requires Altertable MCP server
+metadata:
+  author: Altertable
+# Add metadata.requires only when the skill depends on a packaged runtime.
+#   requires: "altertable-mcp"
 ---
-
-<!--
-Frontmatter examples:
-
-Minimal:
-  name: explore-data
-  description: Explores data connections and schemas. Use when asked about tables, columns, or data types.
-
-With optional fields:
-  name: forecast-timeseries
-  description: Analyzes time series data for trends, anomalies, and forecasts. Use when detecting spikes or drops, predicting future values, or identifying anomalies in metrics over time.
-  compatibility: Requires Python 3.12+, altertable-mcp, chronos, statsforecast, and statsmodels
-  metadata:
-    author: Altertable
-    version: "1.0"
--->
 
 # Your Skill Title
 
-## Quick Start
-
-<!-- 2-5 actionable lines showing immediate value -->
-
-1. Step one
-2. Step two
-3. Step three
-
-## When to Use This Skill
-
-<!-- Bullet points with trigger conditions and keywords -->
-
-- User wants to...
-- User asks about...
-- Keywords: "keyword1", "keyword2", "keyword3"
-
-## Core Concepts
-
-<!-- Build mental models, explain fundamentals -->
-
-### Concept One
-
-Description of the concept.
-
-### Concept Two
-
-Description of the concept.
+State the outcome and the non-obvious Altertable context that changes how an agent should perform this workflow. Do not explain generic analytics, SQL, charts, HTTP, or other concepts a capable model already knows.
 
 ## Workflow
 
-<!-- Step-by-step procedures, progressive complexity -->
+1. Start with the smallest platform-specific action that establishes the required context.
+2. Use the live tool schema or `search_docs` for evolving arguments and product behavior.
+3. Validate the observable result before reporting completion.
 
-### Step 1: First Action
+Keep fixed sequences only where order affects correctness, permissions, or side effects.
 
-Explanation and example.
+## Altertable Rules
 
-```language
-code example
-```
+- Record platform invariants, object boundaries, defaults, and gotchas that are easy to infer incorrectly.
+- Distinguish read-only analysis, drafts, and persistent writes.
+- Require explicit user intent before creating or updating persistent resources.
+- Prefer live schemas and documentation over copied parameter catalogs.
 
-### Step 2: Second Action
+## Boundaries
 
-Explanation and example.
-
-## Examples
-
-<!-- Concrete, real-world scenarios with code -->
-
-### Example 1: Basic Usage
-
-```language
-concrete code example
-```
-
-### Example 2: Advanced Usage
-
-```language
-concrete code example
-```
-
-## Common Pitfalls
-
-<!-- 5-10 specific mistakes with explanations -->
-
-1. **Pitfall one** - Why it's wrong and how to avoid
-2. **Pitfall two** - Why it's wrong and how to avoid
-3. **Pitfall three** - Why it's wrong and how to avoid
-4. **Pitfall four** - Why it's wrong and how to avoid
-5. **Pitfall five** - Why it's wrong and how to avoid
+Explain the nearest workflows this skill does not own so its description and instructions do not attract unrelated requests.
 
 ## References
 
-<!-- Links to detailed reference files -->
-
-- [Reference topic](references/topic.md) - Description
+Add a focused reference only when it is needed conditionally. State exactly when the agent should read it; otherwise omit this section and the `references/` directory.
