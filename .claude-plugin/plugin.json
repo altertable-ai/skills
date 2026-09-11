@@ -1,9 +1,9 @@
 {
   "name": "altertable",
-  "description": "Skills for Altertable AI agents covering product analytics instrumentation, data exploration, querying, analysis, insights, and platform operations.",
+  "description": "Give Claude governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
   "version": "0.6.1",
   "author": {
-    "name": "altertable-ai",
+    "name": "Altertable",
     "url": "https://github.com/altertable-ai"
   },
   "repository": "https://github.com/altertable-ai/skills",
@@ -12,6 +12,9 @@
   "keywords": [
     "altertable",
     "analytics",
+    "catalogs",
+    "chatgpt-data",
+    "data-agent",
     "data-exploration",
     "funnels",
     "web-traffic",
@@ -20,6 +23,7 @@
     "discoveries",
     "duckdb",
     "lakehouse",
+    "semantic-layer",
     "forecasting",
     "events",
     "instrumentation"

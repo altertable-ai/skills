@@ -1,7 +1,7 @@
 {
-  "name": "altertable-skills",
+  "name": "altertable-ai",
   "interface": {
-    "displayName": "Altertable Skills"
+    "displayName": "Altertable"
   },
   "plugins": [
     {

@@ -3,7 +3,7 @@ name: analyze-insights
 compatibility: Requires Altertable MCP server
 description: "Explains what an existing insight or chart shows. Use when asked what a visualization or graph means, or to read out its outliers. Does not run a query."
 metadata:
-  author: altertable-ai
+  author: Altertable
   requires: "altertable-mcp"
 ---
 

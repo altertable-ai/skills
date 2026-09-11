@@ -2,7 +2,7 @@
 name: ask
 description: Routes user queries to the best-fit Altertable skill. Use when unsure which Altertable skill applies to a request.
 metadata:
-  author: altertable-ai
+  author: Altertable
 ---
 
 # Altertable Ask
@@ -23,6 +23,7 @@ For data questions, route to `explore-data` when schema is unclear; otherwise ro
 
 | Skill | When to route |
 |-------|---------------|
+| `query-with-chatgpt-data` | ChatGPT Work, `@Data`, or the ChatGPT Data agent uses Altertable as a read-only data source |
 | `explore-data` | Discover what data exists: catalogs, schemas, tables, columns, semantic models |
 | `query-lakehouse` | Answer questions that require querying lakehouse data using SQL |
 | `analyze-funnels` | Build or analyze a step-by-step conversion flow (drop-off between ordered events) |
@@ -53,3 +54,4 @@ When a skill is added, renamed, or removed from this repository, update this tab
 6. **Never invent a skill**: only invoke skills that are actually installed.
 7. **Clarify before routing**: if the query could reasonably mean different things, propose the most likely directions and let the user choose.
 8. **Separate writes from analysis**: route application or ingestion changes to `instrument-product-analytics`; route questions about stored event data to `query-product-events`.
+9. **Keep ChatGPT Data read-only**: route requests involving ChatGPT Work's `@Data` agent to `query-with-chatgpt-data`; do not switch that adapter into an Altertable write workflow.

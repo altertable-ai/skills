@@ -1,0 +1,18 @@
+{
+  "name": "altertable-ai",
+  "owner": {
+    "name": "Altertable"
+  },
+  "metadata": {
+    "description": "Give Cursor governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
+    "version": "0.6.1"
+  },
+  "plugins": [
+    {
+      "name": "altertable",
+      "source": "./",
+      "description": "Give Cursor governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
+      "version": "0.6.1"
+    }
+  ]
+}

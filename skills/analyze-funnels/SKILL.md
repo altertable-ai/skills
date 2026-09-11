@@ -3,7 +3,7 @@ name: analyze-funnels
 compatibility: Requires Altertable MCP server
 description: "Builds conversion funnels over ordered steps. Use for user journeys, drop-off, onboarding, checkout, or multi-step flows. Returns a funnel insight."
 metadata:
-  author: altertable-ai
+  author: Altertable
   requires: "altertable-mcp"
 ---
 

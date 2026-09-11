@@ -3,7 +3,7 @@ name: manage-discoveries
 compatibility: Requires Altertable MCP server
 description: "Reviews, approves, and rejects existing discoveries. Use for the approval queue, discovery states, or user feedback on a discovery."
 metadata:
-  author: altertable-ai
+  author: Altertable
   requires: "altertable-mcp"
 ---
 

@@ -26,6 +26,21 @@
           "type": "json",
           "path": ".codex-plugin/plugin.json",
           "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": ".cursor-plugin/plugin.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": ".cursor-plugin/marketplace.json",
+          "jsonpath": "$.metadata.version"
+        },
+        {
+          "type": "json",
+          "path": ".cursor-plugin/marketplace.json",
+          "jsonpath": "$.plugins[*].version"
         }
       ]
     }

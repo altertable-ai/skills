@@ -1,16 +1,16 @@
 {
-  "name": "altertable-skills",
+  "name": "altertable-ai",
   "owner": {
     "name": "Altertable"
   },
   "metadata": {
-    "description": "Skills for Altertable AI agents covering product analytics instrumentation, data exploration, querying, analysis, insights, and platform operations.",
+    "description": "Give Claude governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
     "version": "0.6.1"
   },
   "plugins": [
     {
       "name": "altertable",
-      "description": "Skills for Altertable AI agents covering product analytics instrumentation, data exploration, querying, analysis, insights, and platform operations.",
+      "description": "Give Claude governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
       "source": "./",
       "version": "0.6.1"
     }

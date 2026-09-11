@@ -1,0 +1,22 @@
+{
+  "name": "altertable",
+  "version": "0.6.1",
+  "description": "Give Cursor governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
+  "author": {
+    "name": "Altertable"
+  },
+  "homepage": "https://altertable.ai",
+  "repository": "https://github.com/altertable-ai/skills",
+  "license": "MIT",
+  "keywords": [
+    "altertable",
+    "analytics",
+    "catalogs",
+    "lakehouse",
+    "data-warehouse",
+    "semantic-layer",
+    "sql"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

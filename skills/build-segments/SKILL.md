@@ -3,7 +3,7 @@ name: build-segments
 compatibility: Requires Altertable MCP server
 description: "Compares event metrics across cohorts using filters, breakdowns, and dimensions. Use to define an audience or compare groups such as free versus paid. Returns a segmentation insight."
 metadata:
-  author: altertable-ai
+  author: Altertable
   requires: "altertable-mcp"
 ---
 

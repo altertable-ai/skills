@@ -3,7 +3,7 @@ name: configure-tasks
 compatibility: Requires Altertable MCP server
 description: "Schedules recurring AI tasks over insights and dashboards. Use for alerts, cron-style monitoring, or anomaly and forecast checks that run on their own."
 metadata:
-  author: altertable-ai
+  author: Altertable
   requires: "altertable-mcp"
 ---
 

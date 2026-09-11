@@ -3,7 +3,7 @@ name: forecast-timeseries
 description: "Runs on-demand statistics over a time series to spot outliers and project values. Use for whether a spike is normal, or what a metric reaches next week."
 compatibility: Requires Altertable MCP server and Python 3 environment
 metadata:
-  author: altertable-ai
+  author: Altertable
   requires: "altertable-mcp, python, chronos, statsforecast, statsmodels"
 ---
 

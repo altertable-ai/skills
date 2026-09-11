@@ -1,7 +1,7 @@
 {
   "name": "altertable",
   "version": "0.6.1",
-  "description": "Skills for AI agents working with Altertable, covering product analytics instrumentation, data exploration, querying, analysis, insights, and platform operations.",
+  "description": "Give ChatGPT and Codex governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
   "author": {
     "name": "Altertable",
     "url": "https://github.com/altertable-ai"
@@ -12,25 +12,29 @@
   "keywords": [
     "altertable",
     "analytics",
+    "catalogs",
+    "chatgpt-data",
+    "data-agent",
     "lakehouse",
     "data-warehouse",
+    "semantic-layer",
     "sql"
   ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
-    "displayName": "Altertable Skills",
-    "shortDescription": "Instrument product analytics and analyze Altertable data.",
-    "longDescription": "Skills for AI agents working with Altertable, covering product analytics instrumentation, data exploration, querying, analysis, insights, and platform operations.",
+    "displayName": "Altertable",
+    "shortDescription": "Query Altertable and run analytics skills from ChatGPT and Codex.",
+    "longDescription": "Connect ChatGPT and Codex to Altertable. Agents get skills plus MCP access to explore catalogs, run SQL, and work with insights, dashboards, and product analytics on the same governed data your team uses.",
     "developerName": "Altertable",
     "category": "Data & Analytics",
     "capabilities": [
       "Read"
     ],
     "defaultPrompt": [
-      "Explore my Altertable data sources.",
-      "Write a lakehouse query for my metric.",
-      "Instrument signup tracking in my application."
+      "Use Altertable to list available catalogs, tables, and semantic definitions.",
+      "Use Altertable to explain this month's metrics with read-only DuckDB SQL.",
+      "Use Altertable as the data source for an adoption and retention dashboard."
     ]
   }
 }
