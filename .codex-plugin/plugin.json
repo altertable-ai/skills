@@ -1,6 +1,6 @@
 {
   "name": "altertable",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Give ChatGPT and Codex governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
   "author": {
     "name": "Altertable",
