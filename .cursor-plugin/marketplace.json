@@ -12,7 +12,8 @@
       "name": "altertable",
       "source": "./",
       "description": "Give Cursor governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
-      "version": "1.0.1"
+      "version": "1.0.1",
+      "logo": "assets/logo.png"
     }
   ]
 }
