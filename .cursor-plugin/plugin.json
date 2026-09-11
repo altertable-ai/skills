@@ -1,6 +1,6 @@
 {
   "name": "altertable",
-  "version": "0.6.1",
+  "version": "1.0.0",
   "description": "Give Cursor governed access to Altertable, plus skills for querying, exploring, and analyzing your data.",
   "author": {
     "name": "Altertable"
