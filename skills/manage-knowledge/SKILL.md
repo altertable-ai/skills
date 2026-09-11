@@ -22,6 +22,8 @@ Altertable has distinct context layers. Put information in the layer whose owner
 
 Call `initialize` first and apply the returned knowledge context. Use `search_memory` when prior preferences, metric caveats, entity history, or successful techniques are likely to matter. Each returned memory has its access count incremented, so do not search reflexively when past context cannot affect the task.
 
+Memories are scoped by environment. Their usefulness is driven by importance, recency, and retrieval frequency; related memories may consolidate and stale memories may fade. Treat that as relevance behavior, not as a promise of a particular decay schedule.
+
 Use `list_knowledge_repositories` and `search_entities` when maintained documentation or repository material may contain the source of truth. Read the selected entity resource rather than relying on a search snippet.
 
 ## Create Memories

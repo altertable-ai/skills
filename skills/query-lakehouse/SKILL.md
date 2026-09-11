@@ -21,6 +21,8 @@ Altertable exposes managed tables and external sources through one governed Duck
 
 Never infer a table or column from a plausible name. Fully qualify data as `catalog.schema.table` so environment defaults cannot redirect a query.
 
+`list_catalogs` may return Altertable databases and external connections such as warehouses or databases. Pass the returned `catalog_name` to `get_catalog`; do not substitute the display name. Built-in catalogs such as Product Analytics or OpenTelemetry exist only when enabled for the environment.
+
 ## Execute Deliberately
 
 1. Write DuckDB SQL using only inspected identifiers.

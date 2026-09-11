@@ -34,6 +34,10 @@ Write instructions as a durable prompt that will run without the current convers
 
 Do not tell a task to report on every run unless the user explicitly wants a scheduled report. Avoid generic instructions such as “monitor this” because they create noisy Notifications.
 
+## Task Modes
+
+The current task schema may expose these common modes: `ask` for scheduled natural-language analysis, `anomaly_detection` for unusual values in an Insight or Dashboard, and `forecast` for projected values and divergence from the projection. Treat these as examples from the live schema, not a frozen enum. Use the direct `ask` tool or a query for a one-off forecast or anomaly investigation; use a Task only when the user wants recurring work.
+
 ## Scheduling and Scope
 
 - Match cadence to data freshness and the decision window.

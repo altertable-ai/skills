@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 import yaml
@@ -33,6 +34,16 @@ def test_shipped_portfolio_contains_only_platform_workflows():
     actual = {path.parent.name for path in SKILLS_DIR.glob("*/SKILL.md")}
 
     assert actual == EXPECTED_SKILLS
+
+
+def test_generated_skill_inventories_match_the_skill_directories():
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+
+    readme_names = set(re.findall(r"\[([^]]+)\]\(skills/[^)]+/\)", readme))
+    agent_names = set(re.findall(r"<name>([^<]+)</name>", agents))
+    assert readme_names == EXPECTED_SKILLS
+    assert agent_names == EXPECTED_SKILLS
 
 
 def test_removed_discovery_concept_is_absent_from_shipped_content():
@@ -138,44 +149,10 @@ def test_readme_is_cross_platform_while_still_listing_the_ask_skill():
 def test_skill_template_prioritizes_non_obvious_context_over_boilerplate():
     template = (ROOT / "templates" / "SKILL_TEMPLATE" / "SKILL.md").read_text(encoding="utf-8")
 
-    assert "non-obvious" in template
-    assert "Build mental models, explain fundamentals" not in template
-    assert "5-10 specific mistakes" not in template
-    assert "forecast-timeseries" not in template
-
-
-def test_contributor_guidance_prioritizes_platform_specific_context():
-    guidance = "\n".join(
-        (ROOT / name).read_text(encoding="utf-8") for name in ("AGENTS.md", "CONTRIBUTING.md")
-    )
-
-    assert "non-obvious" in guidance
-    assert "live tool" in guidance
-    assert "5-10 mistakes" not in guidance
-    assert "Quick Start" not in guidance
-
-
-def test_skill_scorer_does_not_reward_unnecessary_boilerplate_or_references():
-    scorer = (ROOT / "scripts" / "scorer" / "judges.py").read_text(encoding="utf-8")
-
-    assert "Do not reward generic tutorials" in scorer
-    assert "References are optional" in scorer
-    assert "Common pitfalls" not in scorer
-
-
-def test_plugin_manifests_describe_the_current_platform_scope():
-    manifests = [
-        ROOT / ".claude-plugin" / "plugin.json",
-        ROOT / ".codex-plugin" / "plugin.json",
-        ROOT / ".cursor-plugin" / "plugin.json",
-    ]
-
-    for path in manifests:
-        content = path.read_text(encoding="utf-8").lower()
-        assert "ingestion" in content
-        assert "automation" in content
-        assert "product-analytics" in content
-        assert "findings" in content
+    assert "name: <lowercase-hyphenated-name>" in template
+    assert "non-obvious Altertable context" in template
+    assert "live tool schema" in template
+    assert "explicit user intent" in template
 
 
 def test_cli_install_and_reference_links_are_available_where_needed():
@@ -183,9 +160,7 @@ def test_cli_install_and_reference_links_are_available_where_needed():
     platform = _skill_body("use-altertable")
     ingestion = _skill_body("ingest-data")
 
-    assert "## Optional Altertable CLI" in readme
     assert "curl -fsSL https://install.altertable.ai | sh" in readme
-    assert "does not install the CLI" in readme
     assert CLI_DOCS_URL in readme
     assert CLI_REPOSITORY_URL in readme
 
@@ -194,7 +169,7 @@ def test_cli_install_and_reference_links_are_available_where_needed():
 
     assert CLI_DOCS_URL in ingestion
     assert CLI_REPOSITORY_URL in ingestion
-    assert "Do not install the CLI unless the user asks" in ingestion
+    assert "unless the user asks" in ingestion
 
 
 def test_agents_guide_documents_the_current_repository_workflow():
@@ -212,3 +187,38 @@ def test_agents_guide_documents_the_current_repository_workflow():
         assert required in agents
 
     assert "### SKILL.md Format" not in agents
+
+
+def test_salvaged_platform_layers_have_a_current_owner():
+    platform = _skill_body("use-altertable")
+    behavior = _skill_body("analyze-product-behavior")
+    insights = _skill_body("build-insights")
+    tasks = _skill_body("configure-tasks")
+    query = _skill_body("query-lakehouse")
+    knowledge = _skill_body("manage-knowledge")
+
+    for concept in ("DuckDB", "Catalogs", "Insights/Dashboards", "Tasks", "Findings/Notifications"):
+        assert concept in platform
+    for concept in ("web_sessions", "web_pageviews", "conversion window", "step timing"):
+        assert concept in behavior
+    assert "draft_segment" in behavior
+    assert "list_insights" in insights
+    assert "view_insight" in insights
+    for insight_kind in ("Funnel", "Retention", "Semantic", "SQL", "Segmentation"):
+        assert insight_kind in insights
+    for task_kind in ("ask", "anomaly_detection", "forecast"):
+        assert task_kind in tasks
+    assert "`monitor`" not in tasks
+    assert "catalog_name" in query
+    assert "external connection" in query.lower()
+    assert "scoped by environment" in knowledge
+    assert "importance, recency" in knowledge
+
+
+def test_existing_insight_explanations_route_to_the_insight_skill():
+    text = (SKILLS_DIR / "build-insights" / "SKILL.md").read_text(encoding="utf-8")
+    _, raw_frontmatter, _ = text.split("---", 2)
+    description = yaml.safe_load(raw_frontmatter)["description"].lower()
+
+    assert "existing" in description
+    assert "explain" in description

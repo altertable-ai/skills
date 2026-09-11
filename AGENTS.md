@@ -78,7 +78,7 @@ uv run pre-commit run --all-files
   </skill>
   <skill>
     <name>build-insights</name>
-    <description>Renders, drafts, creates, and updates Altertable Insights. Use when the user wants a reusable SQL, semantic, funnel, retention, or segmentation analysis rather than a one-off answer.</description>
+    <description>Renders, drafts, creates, updates, and explains existing Altertable Insights. Use when the user wants a reusable SQL, semantic, funnel, retention, or segmentation analysis, or needs to understand a saved chart rather than run an unrelated one-off query.</description>
   </skill>
   <skill>
     <name>configure-tasks</name>

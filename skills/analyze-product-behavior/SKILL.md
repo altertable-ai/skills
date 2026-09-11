@@ -30,6 +30,12 @@ The built-in catalog commonly contains:
 
 Inspect the environment because enabled views and columns can evolve. Use raw tables to verify ingestion and resolved views for person-level analysis unless the question explicitly needs raw identity semantics.
 
+## Web, Funnel, and Segment Semantics
+
+- Use `web_sessions` for session-level volume and engagement, and `web_pageviews` for page-level paths, landing or exit pages, referrers, UTM attribution, and device or geography breakdowns. Inspect the current columns instead of assuming a session timeout or attribution rule.
+- A funnel needs at least two sequential events. Make its conversion window, user filters, ordering, counting entity, and date range explicit; report step counts, conversion, drop-off, and step timing without importing industry benchmarks. Disclose sampled or approximate results.
+- A reusable Segment is an audience definition; a Segmentation Insight compares event metrics over time and is not the same object. Use `draft_segment` for a segment the user is iterating on, and use the Insight builders for a chart or saved analysis. Read the live schema for filter operators and property paths.
+
 ## Choose the Altertable Analysis
 
 - Use a funnel insight for ordered event progression and drop-off.

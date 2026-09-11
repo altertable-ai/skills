@@ -11,6 +11,17 @@ metadata:
 
 Altertable is one governed data runtime for managed lakehouse tables, live external catalogs, applications, analytics, and agents. The same organization, environment, permissions, semantic context, and data layer are available through the app, MCP, CLI, APIs, SDKs, and SQL adapters.
 
+## What Altertable Is
+
+Altertable is an AI-native data platform: DuckDB compute and lakehouse storage sit behind a governed SQL layer that humans, applications, analytics, and agents can share. The useful conceptual flow is:
+
+```text
+Data → Catalogs → Semantic models + knowledge → Insights/Dashboards
+    → Tasks → Findings/Notifications → Memories and better future analysis
+```
+
+The conversational Altertable Agent handles an open-ended question or investigation. Insights and Dashboards are persistent analysis artifacts. Tasks are scheduled work attached to a context such as an Insight, Dashboard, connection, database, segment, or semantic model; when scheduled work finds something worth attention, it produces a Finding delivered through Notifications.
+
 ## Operating Model
 
 - An organization owns membership, billing, service accounts, and environments.
