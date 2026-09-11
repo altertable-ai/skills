@@ -1,0 +1,18 @@
+interface:
+  display_name: "Query Altertable with ChatGPT Data"
+  short_description: "Use Altertable as a governed data source for ChatGPT Data"
+  default_prompt: "Use Altertable to answer this data question with read-only evidence."
+
+policy:
+  products:
+    - CHAT
+    - CODEX
+  allow_implicit_invocation: true
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "altertable-mcp"
+      description: "Inspect and query the governed Altertable lakehouse"
+      transport: "streamable_http"
+      url: "https://mcp.altertable.ai/mcp"

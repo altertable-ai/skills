@@ -74,3 +74,5 @@ dmypy.json
 
 # Node.js
 node_modules/
+
+.complexipy_cache/

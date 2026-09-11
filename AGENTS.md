@@ -132,6 +132,10 @@ description: {Third-person description with trigger keywords}
     <description>Queries product events and identities with SQL (event counts, properties, user activity, traits). Use to answer a question about tracked behavior or confirm new tracking arrives.</description>
   </skill>
   <skill>
+    <name>query-with-chatgpt-data</name>
+    <description>Use when ChatGPT Work&#x27;s @Data agent, the ChatGPT Data agent, or a Codex workflow coordinating with @Data needs to inspect or query Altertable. Do not use for ordinary Altertable analysis that does not involve ChatGPT Data.</description>
+  </skill>
+  <skill>
     <name>understand-platform</name>
     <description>Explains Altertable concepts and architecture. Use for what Altertable is, or how agents, discoveries, insights, memories, and dashboards relate. Concepts only.</description>
   </skill>

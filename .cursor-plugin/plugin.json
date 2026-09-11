@@ -1,0 +1,22 @@
+{
+  "name": "altertable",
+  "version": "0.6.1",
+  "description": "Connects Cursor to Altertable's governed lakehouse for catalog discovery, semantic context, DuckDB SQL, and analytics workflows.",
+  "author": {
+    "name": "Altertable"
+  },
+  "homepage": "https://altertable.ai",
+  "repository": "https://github.com/altertable-ai/skills",
+  "license": "MIT",
+  "keywords": [
+    "altertable",
+    "analytics",
+    "catalogs",
+    "lakehouse",
+    "data-warehouse",
+    "semantic-layer",
+    "sql"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

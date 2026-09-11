@@ -1,16 +1,16 @@
 {
-  "name": "altertable-skills",
+  "name": "altertable-ai",
   "owner": {
     "name": "Altertable"
   },
   "metadata": {
-    "description": "Skills for Altertable AI agents covering product analytics instrumentation, data exploration, querying, analysis, insights, and platform operations.",
+    "description": "Connects AI agents to Altertable's governed lakehouse for catalog discovery, semantic context, DuckDB SQL, and analytics workflows.",
     "version": "0.6.1"
   },
   "plugins": [
     {
       "name": "altertable",
-      "description": "Skills for Altertable AI agents covering product analytics instrumentation, data exploration, querying, analysis, insights, and platform operations.",
+      "description": "Connects AI agents to Altertable's governed lakehouse for catalog discovery, semantic context, DuckDB SQL, and analytics workflows.",
       "source": "./",
       "version": "0.6.1"
     }
