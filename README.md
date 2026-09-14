@@ -21,9 +21,9 @@ Agent Skills are an [open standard](https://agentskills.io/specification) for gi
 | ----- | ----------- |
 | [analyze-product-behavior](skills/analyze-product-behavior/) | Analyzes Altertable Product Analytics events, identities, web sessions, funnels, retention, segmentation, and saved segments |
 | [ask-altertable](skills/ask-altertable/) | Delegates analytical questions and follow-up investigations to the Altertable Agent |
-| [build-dashboards](skills/build-dashboards/) | Drafts, creates, and updates Altertable Dashboards composed of Insights, text, sections, variables, and grid positions |
-| [build-insights](skills/build-insights/) | Renders, drafts, creates, updates, and explains existing Altertable Insights |
-| [configure-tasks](skills/configure-tasks/) | Drafts, creates, and updates Altertable Tasks that run SQL, code, or AI work on a schedule |
+| [build-dashboards](skills/build-dashboards/) | Creates and updates Altertable Dashboards composed of Insights, text, sections, variables, and grid positions |
+| [build-insights](skills/build-insights/) | Renders, creates, updates, and explains existing Altertable Insights |
+| [configure-tasks](skills/configure-tasks/) | Creates and updates Altertable Tasks that run SQL, code, or AI work on a schedule |
 | [ingest-data](skills/ingest-data/) | Loads data into Altertable through the CLI, HTTP API, DataFrame tooling, object storage, or generated pipelines |
 | [instrument-product-analytics](skills/instrument-product-analytics/) | Adds or changes Altertable Product Analytics instrumentation in application code |
 | [manage-knowledge](skills/manage-knowledge/) | Searches and maintains Altertable memories, knowledge entries, repository context, and semantic-model descriptions |

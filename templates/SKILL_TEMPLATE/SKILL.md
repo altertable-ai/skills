@@ -26,7 +26,7 @@ Keep fixed sequences only where order affects correctness, permissions, or side 
 ## Altertable Rules
 
 - Record platform invariants, object boundaries, defaults, and gotchas that are easy to infer incorrectly.
-- Distinguish read-only analysis, drafts, and persistent writes.
+- Distinguish read-only analysis, previews, and persistent writes.
 - Require explicit user intent before creating or updating persistent resources.
 - Prefer live schemas and documentation over copied parameter catalogs.
 

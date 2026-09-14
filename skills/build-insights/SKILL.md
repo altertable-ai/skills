@@ -1,7 +1,7 @@
 ---
 name: build-insights
 compatibility: Requires Altertable MCP server; saving or updating requires read-write access
-description: "Renders, drafts, creates, updates, and explains existing Altertable Insights. Use when the user wants a reusable SQL, semantic, funnel, retention, or segmentation analysis, or needs to understand a saved chart rather than run an unrelated one-off query."
+description: "Renders, creates, updates, and explains existing Altertable Insights. Use when the user wants a reusable SQL, semantic, funnel, retention, or segmentation analysis, or needs to understand a saved chart rather than run an unrelated one-off query."
 metadata:
   author: Altertable
   requires: "altertable-mcp"
@@ -23,17 +23,16 @@ Choose the kind from the question: ordered progression and drop-off → Funnel; 
 
 Inspect catalogs, semantic models, events, and traits before constructing the definition. Use the live MCP schema for exact fields and enums.
 
-## Render, Draft, or Persist
+## Render or Persist
 
 | Intent | Tool |
 | --- | --- |
 | Show a non-persisted result in conversation | `render_insight` |
-| Iterate in the Altertable UI | `draft_insight` |
 | Save a new Insight | `create_insight` |
 | Change an existing Insight | `update_insight` |
 | Execute and inspect a saved Insight | `view_insight` |
 
-Default to rendering or drafting while the definition is unsettled. Create or update only when the user requests persistence and the MCP connection has read-write access.
+Default to rendering while the definition is unsettled. Create or update only when the user requests persistence and the MCP connection has read-write access.
 
 ## Existing Insights
 
@@ -51,7 +50,7 @@ For semantic, funnel, retention, and segmentation Insights, use the matching def
 
 1. Inspect the source objects and use `list_insights` to find reusable or conflicting existing work.
 2. Build the smallest definition that answers the intended reusable question.
-3. Render or draft it and verify values, labels, axes, filters, variables, and empty states.
+3. Render it and verify values, labels, axes, filters, variables, and empty states.
 4. Create or update only after intent and permissions are clear.
 5. Execute the saved Insight with `view_insight` and verify the returned definition and results.
 

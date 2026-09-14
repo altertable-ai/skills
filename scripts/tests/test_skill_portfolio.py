@@ -58,6 +58,24 @@ def test_removed_discovery_concept_is_absent_from_shipped_content():
     assert occurrences == []
 
 
+def test_internal_draft_workflows_are_absent_from_portable_content():
+    checked_paths = [
+        *SKILLS_DIR.rglob("*.md"),
+        ROOT / "README.md",
+        ROOT / "AGENTS.md",
+        ROOT / "CONTRIBUTING.md",
+        ROOT / "templates" / "SKILL_TEMPLATE" / "SKILL.md",
+    ]
+
+    occurrences = [
+        path.relative_to(ROOT)
+        for path in checked_paths
+        if "draft" in path.read_text(encoding="utf-8").lower()
+    ]
+
+    assert occurrences == []
+
+
 def test_skill_entrypoints_stay_within_a_small_context_budget():
     oversized = {
         path.parent.name: len(path.read_text(encoding="utf-8").splitlines())
@@ -144,7 +162,7 @@ def test_task_skill_models_findings_as_automation_output():
     assert "Notification" in body
     for target in ("insight", "dashboard", "connection", "database", "segment", "semantic model"):
         assert target in body.lower()
-    for tool in ("list_tasks", "draft_task", "create_task", "update_task"):
+    for tool in ("list_tasks", "create_task", "update_task"):
         assert f"`{tool}`" in body
 
 
@@ -238,7 +256,6 @@ def test_salvaged_platform_layers_have_a_current_owner():
         assert concept in platform
     for concept in ("web_sessions", "web_pageviews", "conversion window", "step timing"):
         assert concept in behavior
-    assert "draft_segment" in behavior
     assert "list_insights" in insights
     assert "view_insight" in insights
     for insight_kind in ("Funnel", "Retention", "Semantic", "SQL", "Segmentation"):

@@ -1,7 +1,7 @@
 ---
 name: configure-tasks
 compatibility: Requires Altertable MCP server with read-write access
-description: "Drafts, creates, and updates Altertable Tasks that run SQL, code, or AI work on a schedule. Use for recurring analysis, anomaly checks, forecasts, monitoring, or Findings delivered through Notifications."
+description: "Creates and updates Altertable Tasks that run SQL, code, or AI work on a schedule. Use for recurring analysis, anomaly checks, forecasts, monitoring, or Findings delivered through Notifications."
 metadata:
   author: Altertable
   requires: "altertable-mcp"
@@ -15,9 +15,9 @@ Altertable Tasks run scheduled work and produce a Finding only when something is
 
 1. Confirm the intended environment and use `list_tasks` to avoid duplicating an existing task on the same context.
 2. Resolve the target and read its current definition. A task can run on an insight, dashboard, connection, database, segment, or semantic model.
-3. Inspect the current creation or draft schema for supported task types and targets. Do not copy enum values from memory.
+3. Inspect the current creation schema for supported task types and targets. Do not copy enum values from memory.
 4. Write instructions that define what to examine, what is noteworthy, relevant thresholds, comparison periods, and when silence is correct.
-5. Use `draft_task` while the user is iterating. Use `create_task` only after the schedule, target, and instructions are settled and persistence is requested.
+5. Use `create_task` only after the schedule, target, and instructions are settled and persistence is requested.
 6. Use `update_task` for an existing task; omitted fields remain unchanged.
 
 ## Task Instructions

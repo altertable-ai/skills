@@ -23,6 +23,6 @@ Do not interpret `@Data` as a catalog name. Do not claim causation from a single
 
 ## Boundary
 
-This adapter is read-only. Do not call write or persistence tools, including Altertable draft, create, update, scheduling, ingestion, or table-mutation tools. ChatGPT owns the dashboard; do not create an Altertable dashboard merely because the requested output is a ChatGPT dashboard.
+This adapter is read-only. Do not call write or persistence tools, including Altertable create, update, scheduling, ingestion, or table-mutation tools. ChatGPT owns the dashboard; do not create an Altertable dashboard merely because the requested output is a ChatGPT dashboard.
 
 If the user requests an Altertable write, explain the boundary and let the host route that request to the appropriate Altertable workflow rather than silently changing this adapter's permissions.

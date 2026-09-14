@@ -22,7 +22,7 @@ Do not inspect catalogs or pre-write SQL before `ask` merely to help it. Delegat
 ## Use Direct Tools Instead When
 
 - The user requests exact SQL, raw rows, a query plan, or reproducible query evidence.
-- The task requires a precisely controlled draft, create, or update operation.
+- The task requires a precisely controlled create or update operation.
 - The caller must return Altertable data to another analysis system rather than an interpreted answer.
 - The request concerns ingestion, application instrumentation, or another operation outside analytical Q&A.
 

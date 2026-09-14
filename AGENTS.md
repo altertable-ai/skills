@@ -30,7 +30,7 @@ scripts/tests/                    Repository and portfolio checks
 - Assume the agent already understands analytics, SQL, APIs, and software engineering. Teach the non-obvious Altertable behavior that changes execution.
 - Organize skills around durable platform workflows, not generic analytical techniques or a catalog of every tool.
 - Keep `SKILL.md` concise; target fewer than 180 lines. Add a focused reference only when conditional detail warrants loading it separately.
-- Distinguish read-only analysis, UI drafts, and persistent writes. Authentication never implies permission for an unrequested mutation.
+- Distinguish read-only analysis, previews, and persistent writes. Authentication never implies permission for an unrequested mutation.
 - Use imperative lowercase names with hyphens. Write third-person descriptions with discriminating trigger language.
 - Treat [use-altertable](skills/use-altertable/SKILL.md) as the shared platform brief and [ask-altertable](skills/ask-altertable/SKILL.md) as the fast path for delegated analytical questions.
 - Tasks produce Findings delivered through Notifications. Do not reintroduce retired feature terminology or workflows.
@@ -74,15 +74,15 @@ uv run pre-commit run --all-files
   </skill>
   <skill>
     <name>build-dashboards</name>
-    <description>Drafts, creates, and updates Altertable Dashboards composed of Insights, text, sections, variables, and grid positions. Use for reusable KPI views, monitoring layouts, or shared analytical reports.</description>
+    <description>Creates and updates Altertable Dashboards composed of Insights, text, sections, variables, and grid positions. Use for reusable KPI views, monitoring layouts, or shared analytical reports.</description>
   </skill>
   <skill>
     <name>build-insights</name>
-    <description>Renders, drafts, creates, updates, and explains existing Altertable Insights. Use when the user wants a reusable SQL, semantic, funnel, retention, or segmentation analysis, or needs to understand a saved chart rather than run an unrelated one-off query.</description>
+    <description>Renders, creates, updates, and explains existing Altertable Insights. Use when the user wants a reusable SQL, semantic, funnel, retention, or segmentation analysis, or needs to understand a saved chart rather than run an unrelated one-off query.</description>
   </skill>
   <skill>
     <name>configure-tasks</name>
-    <description>Drafts, creates, and updates Altertable Tasks that run SQL, code, or AI work on a schedule. Use for recurring analysis, anomaly checks, forecasts, monitoring, or Findings delivered through Notifications.</description>
+    <description>Creates and updates Altertable Tasks that run SQL, code, or AI work on a schedule. Use for recurring analysis, anomaly checks, forecasts, monitoring, or Findings delivered through Notifications.</description>
   </skill>
   <skill>
     <name>ingest-data</name>

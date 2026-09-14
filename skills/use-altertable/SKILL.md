@@ -49,7 +49,7 @@ For most Altertable work, start with `ask` for a completed analytical answer or 
 | --- | --- |
 | Fast analytical answer or follow-up | `ask` |
 | Exact SQL, raw evidence, validation, or plans | `query_lakehouse` |
-| Interactive draft or governed platform object | Relevant artifact tool |
+| Governed platform object | Relevant artifact tool |
 | Terminal automation, CI, ingestion, or structured JSON | Altertable CLI |
 | Application integration | HTTP API, SDK, or SQL adapter |
 

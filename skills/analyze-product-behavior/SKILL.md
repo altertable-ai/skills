@@ -41,11 +41,10 @@ Inspect the environment because enabled views and columns can evolve. Use raw ta
 - Use a funnel insight for ordered event progression and drop-off.
 - Use a retention insight for return behavior after a starting event, including its “return on” versus “return on or after” and calendar versus rolling-window choices.
 - Use a segmentation insight for event metrics over time with event, user, or session-property breakdowns.
-- Use `draft_segment` when the user is iterating on a reusable segment object; a segment is not the same object as a segmentation insight.
 - Query `web_sessions` and `web_pageviews` for source, UTM, landing-page, device, and session questions.
 - Use direct DuckDB SQL when the analysis requires cross-catalog joins or logic unavailable in the builders.
 
-For open-ended questions, prefer the `ask-altertable` fast path. For a controlled preview, call `render_insight` with the definition and timeframe required by its live schema. Use `draft_insight` for UI iteration and `build-insights` for persistence.
+For open-ended questions, prefer the `ask-altertable` fast path. For a controlled preview, call `render_insight` with the definition and timeframe required by its live schema. Use `build-insights` when the user requests a reusable persisted analysis.
 
 ## Accuracy Rules
 

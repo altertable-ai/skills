@@ -30,7 +30,7 @@ def test_chatgpt_data_skill_reuses_the_shared_query_procedure():
         assert f"`{duplicated_tool}`" not in body
 
     body_lower = body.lower()
-    required_boundaries = ("draft", "create", "update", "ingestion", "table-mutation")
+    required_boundaries = ("create", "update", "ingestion", "table-mutation")
     assert all(term in body_lower for term in required_boundaries)
     assert "ChatGPT owns the dashboard" in body
     assert "Do not call write or persistence tools" in body
