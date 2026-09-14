@@ -15,7 +15,9 @@ State the outcome and the non-obvious Altertable context that changes how an age
 
 ## Workflow
 
-1. Start with the smallest platform-specific action that establishes the required context.
+Do not repeat shared MCP bootstrap from `use-altertable`. Start with the first decision or action specific to this workflow.
+
+1. Start with the smallest platform-specific action that advances this workflow.
 2. Use the live tool schema or `search_docs` for evolving arguments and product behavior.
 3. Validate the observable result before reporting completion.
 

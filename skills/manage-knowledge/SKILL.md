@@ -20,7 +20,7 @@ Altertable has distinct context layers. Put information in the layer whose owner
 
 ## Recall Context
 
-Call `initialize` first and apply the returned knowledge context. Use `search_memory` when prior preferences, metric caveats, entity history, or successful techniques are likely to matter. Each returned memory has its access count incremented, so do not search reflexively when past context cannot affect the task.
+Use `search_memory` when prior preferences, metric caveats, entity history, or successful techniques are likely to matter. Each returned memory has its access count incremented, so do not search reflexively when past context cannot affect the task.
 
 Memories are scoped by environment. Their usefulness is driven by importance, recency, and retrieval frequency; related memories may consolidate and stale memories may fade. Treat that as relevance behavior, not as a promise of a particular decay schedule.
 
@@ -30,7 +30,7 @@ Use `list_knowledge_repositories` and `search_entities` when maintained document
 
 Use `create_memory` for a high-signal fact, decision, Finding, preference, caveat, or reusable technique that is likely to matter later. Skip routine outcomes and details easily recovered from the schema or data.
 
-Set `source_slug` and related entities when available so the memory can be retrieved in context. Follow the live schema for optional importance or scope fields; do not manufacture a scoring or decay policy in the skill.
+Attach the source and related entities when available so the memory can be retrieved in context. Follow the live schema for optional importance or scope fields; do not manufacture a scoring or decay policy in the skill.
 
 ## Maintain Knowledge Entries
 

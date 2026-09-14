@@ -13,14 +13,14 @@ Dashboards arrange saved or inline Insights with explanatory text, sections, gri
 
 ## Workflow
 
-1. Call `initialize` and confirm the environment and write scope.
+1. Confirm the intended environment and write scope.
 2. Use `list_insights` and `view_insight` to reuse valid existing analyses. Build or repair missing Insights before laying them out.
 3. Use `view_dashboard` when changing an existing dashboard. Preserve widgets and variables the user did not ask to replace.
 4. Define the audience, operating question, refresh cadence, and shared filters.
 5. Arrange the most decision-relevant metrics first, followed by drivers and diagnostic detail.
 6. Call `draft_dashboard` while the user is iterating.
 7. Call `create_dashboard` for an explicitly requested new dashboard, or `update_dashboard` for an existing slug.
-8. Retrieve the result and use `take_screenshot` when visual verification is useful.
+8. Retrieve the result and visually verify it when layout correctness matters.
 
 ## Altertable Objects
 

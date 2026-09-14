@@ -13,13 +13,12 @@ Altertable Tasks run scheduled work and produce a Finding only when something is
 
 ## Workflow
 
-1. Call `initialize` and confirm the environment.
-2. Use `list_tasks` to avoid duplicating an existing task on the same context.
-3. Resolve the target and read its current definition. A task can run on an insight, dashboard, connection, database, segment, or semantic model.
-4. Inspect the current `create_task` or `draft_task` schema for supported task types and target fields. Do not copy enum values from memory.
-5. Write instructions that define what to examine, what is noteworthy, relevant thresholds, comparison periods, and when silence is correct.
-6. Use `draft_task` while the user is iterating. Use `create_task` only after the schedule, target, and instructions are settled and persistence is requested.
-7. Use `update_task` for an existing task; omitted fields remain unchanged.
+1. Confirm the intended environment and use `list_tasks` to avoid duplicating an existing task on the same context.
+2. Resolve the target and read its current definition. A task can run on an insight, dashboard, connection, database, segment, or semantic model.
+3. Inspect the current creation or draft schema for supported task types and targets. Do not copy enum values from memory.
+4. Write instructions that define what to examine, what is noteworthy, relevant thresholds, comparison periods, and when silence is correct.
+5. Use `draft_task` while the user is iterating. Use `create_task` only after the schedule, target, and instructions are settled and persistence is requested.
+6. Use `update_task` for an existing task; omitted fields remain unchanged.
 
 ## Task Instructions
 
@@ -36,7 +35,7 @@ Do not tell a task to report on every run unless the user explicitly wants a sch
 
 ## Task Modes
 
-The current task schema may expose these common modes: `ask` for scheduled natural-language analysis, `anomaly_detection` for unusual values in an Insight or Dashboard, and `forecast` for projected values and divergence from the projection. Treat these as examples from the live schema, not a frozen enum. Use the direct `ask` tool or a query for a one-off forecast or anomaly investigation; use a Task only when the user wants recurring work.
+Choose among general AI analysis, anomaly detection, and forecasting according to the live schema. Use the direct `ask` tool or a query for a one-off forecast or anomaly investigation; use a Task only when the user wants recurring work.
 
 ## Scheduling and Scope
 

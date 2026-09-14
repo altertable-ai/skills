@@ -13,8 +13,8 @@ Altertable stores Product Analytics beside operational, billing, support, and wa
 
 ## Establish the Data Model
 
-1. Call `initialize`, then verify that `product_analytics` exists with `list_catalogs`.
-2. Use `get_catalog` rather than assuming fields or semantic definitions.
+1. Verify that the Product Analytics catalog is enabled in the intended environment.
+2. Inspect its current tables, fields, and semantic definitions rather than assuming them.
 3. Use `list_events` for actual event names and recent volume, and `list_user_traits` for available identity attributes.
 
 The built-in catalog commonly contains:
@@ -34,7 +34,7 @@ Inspect the environment because enabled views and columns can evolve. Use raw ta
 
 - Use `web_sessions` for session-level volume and engagement, and `web_pageviews` for page-level paths, landing or exit pages, referrers, UTM attribution, and device or geography breakdowns. Inspect the current columns instead of assuming a session timeout or attribution rule.
 - A funnel needs at least two sequential events. Make its conversion window, user filters, ordering, counting entity, and date range explicit; report step counts, conversion, drop-off, and step timing without importing industry benchmarks. Disclose sampled or approximate results.
-- A reusable Segment is an audience definition; a Segmentation Insight compares event metrics over time and is not the same object. Use `draft_segment` for a segment the user is iterating on, and use the Insight builders for a chart or saved analysis. Read the live schema for filter operators and property paths.
+- A reusable Segment is an audience definition; a Segmentation Insight compares event metrics over time and is not the same object. Read the live schema for filter operators and property paths.
 
 ## Choose the Altertable Analysis
 
@@ -45,7 +45,7 @@ Inspect the environment because enabled views and columns can evolve. Use raw ta
 - Query `web_sessions` and `web_pageviews` for source, UTM, landing-page, device, and session questions.
 - Use direct DuckDB SQL when the analysis requires cross-catalog joins or logic unavailable in the builders.
 
-For open-ended questions, prefer the `ask` fast path. For a controlled preview, call `render_insight`; funnel, retention, and segmentation rendering requires the current definition plus `from`, `to`, and `interval`. Use `draft_insight` for UI iteration and `build-insights` for persistence.
+For open-ended questions, prefer the `ask` fast path. For a controlled preview, call `render_insight` with the definition and timeframe required by its live schema. Use `draft_insight` for UI iteration and `build-insights` for persistence.
 
 ## Accuracy Rules
 

@@ -71,10 +71,22 @@ def test_skill_entrypoints_stay_within_a_small_context_budget():
 def test_ask_is_the_fast_agent_delegation_path():
     body = _skill_body("ask")
 
-    assert body.index("`initialize`") < body.index("`ask`")
+    assert "`ask`" in body
     assert "`chat_id`" in body
     assert "default fast path" in body.lower()
     assert "Routing Table" not in body
+
+
+def test_shared_mcp_bootstrap_is_owned_by_the_platform_brief():
+    platform = _skill_body("use-altertable")
+    repeated_by = {
+        path.parent.name
+        for path in SKILLS_DIR.glob("*/SKILL.md")
+        if path.parent.name != "use-altertable" and "`initialize`" in _skill_body(path.parent.name)
+    }
+
+    assert "`initialize`" in platform
+    assert repeated_by == set()
 
 
 def test_platform_brief_contains_altertable_operating_invariants():
@@ -93,12 +105,27 @@ def test_platform_brief_contains_altertable_operating_invariants():
         assert required in body
 
 
-def test_insight_skill_uses_current_sql_definition_contract():
-    body = _skill_body("build-insights")
+def test_skills_defer_evolving_argument_contracts_to_live_schemas():
+    copied_arguments = {
+        "analyze-product-behavior": ("`from`", "`to`", "`interval`"),
+        "build-insights": (
+            "`sql_definition`",
+            "`sql_parameters`",
+            "`x_axis_columns`",
+            "`y_axis_columns`",
+        ),
+        "query-lakehouse": ("`catalog_name`", "`level: profile`"),
+    }
+    occurrences = {
+        skill: argument
+        for skill, arguments in copied_arguments.items()
+        for argument in arguments
+        if argument in _skill_body(skill)
+    }
 
-    assert "`sql_definition`" in body
-    assert "`sql_parameters`" in body
-    assert "`sql_statement`" not in body
+    assert occurrences == {}
+    assert "live MCP schema" in _skill_body("build-insights")
+    assert "live tool schema" in _skill_body("query-lakehouse")
 
 
 def test_task_skill_models_findings_as_automation_output():
@@ -151,6 +178,7 @@ def test_skill_template_prioritizes_non_obvious_context_over_boilerplate():
 
     assert "name: <lowercase-hyphenated-name>" in template
     assert "non-obvious Altertable context" in template
+    assert "Do not repeat shared MCP bootstrap" in template
     assert "live tool schema" in template
     assert "explicit user intent" in template
 
@@ -206,10 +234,10 @@ def test_salvaged_platform_layers_have_a_current_owner():
     assert "view_insight" in insights
     for insight_kind in ("Funnel", "Retention", "Semantic", "SQL", "Segmentation"):
         assert insight_kind in insights
-    for task_kind in ("ask", "anomaly_detection", "forecast"):
+    for task_kind in ("AI analysis", "anomaly detection", "forecast"):
         assert task_kind in tasks
     assert "`monitor`" not in tasks
-    assert "catalog_name" in query
+    assert "machine identifier" in query
     assert "external connection" in query.lower()
     assert "scoped by environment" in knowledge
     assert "importance, recency" in knowledge

@@ -22,20 +22,13 @@ def test_chatgpt_data_skill_has_narrow_activation_metadata():
     assert all(term in description for term in ("chatgpt", "@data", "read-only"))
 
 
-def test_chatgpt_data_skill_defines_read_only_tool_sequence():
+def test_chatgpt_data_skill_reuses_the_shared_query_procedure():
     _, body = _frontmatter(SKILL_DIR / "SKILL.md")
 
-    positions = {
-        tool: body.index(f"`{tool}`")
-        for tool in (
-            "initialize",
-            "list_catalogs",
-            "get_catalog",
-            "validate_sql",
-            "query_lakehouse",
-        )
-    }
-    assert list(positions.values()) == sorted(positions.values())
+    assert "`query-lakehouse`" in body
+    for duplicated_tool in ("initialize", "list_catalogs", "get_catalog", "validate_sql"):
+        assert f"`{duplicated_tool}`" not in body
+
     body_lower = body.lower()
     required_boundaries = ("draft", "create", "update", "ingestion", "table-mutation")
     assert all(term in body_lower for term in required_boundaries)

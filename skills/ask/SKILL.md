@@ -13,10 +13,9 @@ Use the Altertable Agent as the default fast path for analytical questions. It c
 
 ## Workflow
 
-1. Call `initialize` to establish the organization, environment, and mandatory context.
-2. Call `ask` with the user's original question and all constraints that affect the answer.
-3. Return the answer, assumptions, and relevant evidence without repeating the investigation through direct tools.
-4. For a follow-up, pass the returned `chat_id` so the Altertable Agent continues the same investigation. Omit it only for a genuinely separate question.
+1. Call `ask` with the user's original question and all constraints that affect the answer.
+2. Return the answer, assumptions, and relevant evidence without repeating the investigation through direct tools.
+3. For a follow-up, pass the returned `chat_id` so the Altertable Agent continues the same investigation. Omit it only for a genuinely separate question.
 
 Do not inspect catalogs or pre-write SQL before `ask` merely to help it. Delegation is valuable because the Altertable Agent performs that work internally.
 
