@@ -9,7 +9,7 @@ metadata:
 
 # Query the Lakehouse
 
-Altertable exposes managed tables and external sources through one governed DuckDB SQL layer. Use this skill when the caller needs direct control over the query or its evidence; use the `ask` skill for the faster conversational path.
+Altertable exposes managed tables and external sources through one governed DuckDB SQL layer. Use this skill when the caller needs direct control over the query or its evidence; use the `ask-altertable` skill for the faster conversational path.
 
 ## Inspect Before Querying
 

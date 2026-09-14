@@ -1,5 +1,5 @@
 ---
-name: ask
+name: ask-altertable
 compatibility: Requires Altertable MCP server
 description: "Delegates analytical questions and follow-up investigations to the Altertable Agent. Use as the default fast path for questions about connected data, metrics, changes, causes, or recommendations when exact SQL control is unnecessary."
 metadata:

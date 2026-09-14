@@ -8,7 +8,7 @@ SKILLS_DIR = ROOT / "skills"
 
 EXPECTED_SKILLS = {
     "analyze-product-behavior",
-    "ask",
+    "ask-altertable",
     "build-dashboards",
     "build-insights",
     "configure-tasks",
@@ -68,8 +68,8 @@ def test_skill_entrypoints_stay_within_a_small_context_budget():
     assert oversized == {}
 
 
-def test_ask_is_the_fast_agent_delegation_path():
-    body = _skill_body("ask")
+def test_ask_altertable_is_the_fast_agent_delegation_path():
+    body = _skill_body("ask-altertable")
 
     assert "`ask`" in body
     assert "`chat_id`" in body
@@ -103,6 +103,15 @@ def test_platform_brief_contains_altertable_operating_invariants():
         "read-write",
     ):
         assert required in body
+
+
+def test_platform_brief_leads_with_the_primary_analysis_tools():
+    surface = _skill_body("use-altertable").split("## Choose the Surface", 1)[1]
+    surface = surface.split("## Current Documentation", 1)[0]
+
+    assert "`ask`" in surface
+    assert "`query_lakehouse`" in surface
+    assert "MCP" not in surface
 
 
 def test_skills_defer_evolving_argument_contracts_to_live_schemas():
@@ -162,12 +171,12 @@ def test_frontmatter_names_match_the_new_portfolio():
         assert frontmatter["name"] == path.parent.name
 
 
-def test_readme_is_cross_platform_while_still_listing_the_ask_skill():
+def test_readme_is_cross_platform_while_still_listing_the_ask_altertable_skill():
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
 
     assert "skills-11-" in readme
-    assert "[ask](skills/ask/)" in readme
+    assert "[ask-altertable](skills/ask-altertable/)" in readme
     assert "/altertable:ask" not in readme
     assert "Quick Start with" not in readme
     assert "delegates questions to the Altertable Agent" in agents
