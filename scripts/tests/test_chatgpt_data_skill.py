@@ -25,7 +25,7 @@ def test_chatgpt_data_skill_has_narrow_activation_metadata():
 def test_chatgpt_data_skill_reuses_the_shared_query_procedure():
     _, body = _frontmatter(SKILL_DIR / "SKILL.md")
 
-    assert "`query-lakehouse`" in body
+    assert "`query-altertable`" in body
     for duplicated_tool in ("initialize", "list_catalogs", "get_catalog", "validate_sql"):
         assert f"`{duplicated_tool}`" not in body
 
