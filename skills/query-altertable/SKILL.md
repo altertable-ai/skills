@@ -1,5 +1,5 @@
 ---
-name: query-lakehouse
+name: query-altertable
 compatibility: Requires Altertable MCP server
 description: "Inspects Altertable catalogs and runs controlled DuckDB SQL across managed and external data. Use for exact queries, raw results, schema inspection, federated joins, query validation, plans, or optimization."
 metadata:

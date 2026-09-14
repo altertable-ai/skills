@@ -17,19 +17,19 @@ def sync():
 
 def test_build_skills_table_uses_the_first_sentence(sync):
     # given
-    skills = [("query-lakehouse", "Runs DuckDB SQL. Use when a question needs a query.")]
+    skills = [("query-altertable", "Runs DuckDB SQL. Use when a question needs a query.")]
 
     # when
     table = sync.build_skills_table(skills)
 
     # then
-    assert "| [query-lakehouse](skills/query-lakehouse/) | Runs DuckDB SQL |" in table
+    assert "| [query-altertable](skills/query-altertable/) | Runs DuckDB SQL |" in table
     assert "Use when" not in table
 
 
 def test_build_skills_table_escapes_pipes_so_rows_stay_intact(sync):
     # given
-    skills = [("query-lakehouse", "Inspects tables | views. Use to find data.")]
+    skills = [("query-altertable", "Inspects tables | views. Use to find data.")]
 
     # when
     table = sync.build_skills_table(skills)

@@ -97,7 +97,7 @@ uv run pre-commit run --all-files
     <description>Searches and maintains Altertable memories, knowledge entries, repository context, and semantic-model descriptions. Use when reusable business context, definitions, preferences, or model documentation should guide future agent work.</description>
   </skill>
   <skill>
-    <name>query-lakehouse</name>
+    <name>query-altertable</name>
     <description>Inspects Altertable catalogs and runs controlled DuckDB SQL across managed and external data. Use for exact queries, raw results, schema inspection, federated joins, query validation, plans, or optimization.</description>
   </skill>
   <skill>

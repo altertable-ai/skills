@@ -15,7 +15,7 @@ EXPECTED_SKILLS = {
     "ingest-data",
     "instrument-product-analytics",
     "manage-knowledge",
-    "query-lakehouse",
+    "query-altertable",
     "query-with-chatgpt-data",
     "use-altertable",
 }
@@ -141,7 +141,7 @@ def test_skills_defer_evolving_argument_contracts_to_live_schemas():
             "`x_axis_columns`",
             "`y_axis_columns`",
         ),
-        "query-lakehouse": ("`catalog_name`", "`level: profile`"),
+        "query-altertable": ("`catalog_name`", "`level: profile`"),
     }
     occurrences = {
         skill: argument
@@ -152,7 +152,7 @@ def test_skills_defer_evolving_argument_contracts_to_live_schemas():
 
     assert occurrences == {}
     assert "live MCP schema" in _skill_body("build-insights")
-    assert "live tool schema" in _skill_body("query-lakehouse")
+    assert "live tool schema" in _skill_body("query-altertable")
 
 
 def test_task_skill_models_findings_as_automation_output():
@@ -176,7 +176,7 @@ def test_ingestion_skill_covers_supported_ingestion_decisions():
 
 
 def test_query_skill_surfaces_altertable_specific_sql_capabilities():
-    body = _skill_body("query-lakehouse")
+    body = _skill_body("query-altertable")
 
     for capability in ("MATCH_RECOGNIZE", "SESSIONIZE", "time travel", "federated"):
         assert capability in body
@@ -249,7 +249,7 @@ def test_salvaged_platform_layers_have_a_current_owner():
     behavior = _skill_body("analyze-product-behavior")
     insights = _skill_body("build-insights")
     tasks = _skill_body("configure-tasks")
-    query = _skill_body("query-lakehouse")
+    query = _skill_body("query-altertable")
     knowledge = _skill_body("manage-knowledge")
 
     for concept in ("DuckDB", "Catalogs", "Insights/Dashboards", "Tasks", "Findings/Notifications"):
