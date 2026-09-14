@@ -1,7 +1,7 @@
 ---
 name: build-dashboards
 compatibility: Requires Altertable MCP server; saving or updating requires read-write access
-description: "Creates and updates Altertable Dashboards composed of Insights, text, sections, variables, and grid positions. Use for reusable KPI views, monitoring layouts, or shared analytical reports."
+description: "Creates and updates persistent Altertable Dashboards composed of Insights, text, sections, variables, and grid positions. Use only when the user requests an Altertable-hosted dashboard or changes to an existing Altertable Dashboard; do not use for generic or client-native dashboards, reports, or visualizations."
 metadata:
   author: Altertable
   requires: "altertable-mcp"
@@ -9,7 +9,15 @@ metadata:
 
 # Build Dashboards
 
-Dashboards arrange saved or inline Insights with explanatory text, sections, grid positions, and shared variables. Build them when several analyses need a reusable coordinated view.
+Dashboards are persistent Altertable objects that arrange saved or inline Insights with explanatory text, sections, grid positions, and shared variables. Build them when several analyses need a reusable coordinated view in Altertable.
+
+## Routing Boundary
+
+Use this skill only when the intended destination is Altertable: the user explicitly asks for an Altertable dashboard, identifies an existing Altertable dashboard, or requests Altertable-specific dashboard capabilities such as Insight widgets or shared variables. A generic request for a dashboard, report, visualization, or interactive artifact does not imply Altertable persistence. Prefer the client's native dashboard or artifact capability unless the user explicitly wants the result created or maintained in Altertable.
+
+Do not call `create_dashboard` as a rendering convenience or merely because Altertable supplied the data. Creating an Altertable Dashboard is a persistent write and requires explicit user intent.
+
+Keep dashboard copy concise. Use text widgets only for context needed to interpret or act on the data.
 
 ## Workflow
 

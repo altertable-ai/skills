@@ -95,6 +95,29 @@ def test_ask_altertable_is_the_fast_agent_delegation_path():
     assert "Routing Table" not in body
 
 
+def test_dashboard_skill_requires_an_explicit_altertable_destination():
+    text = (SKILLS_DIR / "build-dashboards" / "SKILL.md").read_text(encoding="utf-8")
+    _, raw_frontmatter, body = text.split("---", 2)
+    description = yaml.safe_load(raw_frontmatter)["description"].lower()
+    body = body.lower()
+
+    assert "only when" in description
+    assert "altertable" in description
+    assert "generic" in description
+    assert "client-native" in description
+    assert "generic request" in body
+    assert "does not imply altertable persistence" in body
+    assert "client's native" in body
+    assert "rendering convenience" in body
+
+
+def test_dashboard_skill_keeps_copy_concise():
+    body = _skill_body("build-dashboards").lower()
+
+    assert "keep dashboard copy concise" in body
+    assert "text widgets" in body
+
+
 def test_shared_mcp_bootstrap_is_owned_by_the_platform_brief():
     platform = _skill_body("use-altertable")
     repeated_by = {

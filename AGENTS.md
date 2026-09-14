@@ -74,7 +74,7 @@ uv run pre-commit run --all-files
   </skill>
   <skill>
     <name>build-dashboards</name>
-    <description>Creates and updates Altertable Dashboards composed of Insights, text, sections, variables, and grid positions. Use for reusable KPI views, monitoring layouts, or shared analytical reports.</description>
+    <description>Creates and updates persistent Altertable Dashboards composed of Insights, text, sections, variables, and grid positions. Use only when the user requests an Altertable-hosted dashboard or changes to an existing Altertable Dashboard; do not use for generic or client-native dashboards, reports, or visualizations.</description>
   </skill>
   <skill>
     <name>build-insights</name>
