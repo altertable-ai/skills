@@ -8,7 +8,7 @@ SKILLS_DIR = ROOT / "skills"
 
 EXPECTED_SKILLS = {
     "analyze-product-behavior",
-    "ask",
+    "ask-altertable",
     "build-dashboards",
     "build-insights",
     "configure-tasks",
@@ -58,6 +58,24 @@ def test_removed_discovery_concept_is_absent_from_shipped_content():
     assert occurrences == []
 
 
+def test_internal_draft_workflows_are_absent_from_portable_content():
+    checked_paths = [
+        *SKILLS_DIR.rglob("*.md"),
+        ROOT / "README.md",
+        ROOT / "AGENTS.md",
+        ROOT / "CONTRIBUTING.md",
+        ROOT / "templates" / "SKILL_TEMPLATE" / "SKILL.md",
+    ]
+
+    occurrences = [
+        path.relative_to(ROOT)
+        for path in checked_paths
+        if "draft" in path.read_text(encoding="utf-8").lower()
+    ]
+
+    assert occurrences == []
+
+
 def test_skill_entrypoints_stay_within_a_small_context_budget():
     oversized = {
         path.parent.name: len(path.read_text(encoding="utf-8").splitlines())
@@ -68,13 +86,25 @@ def test_skill_entrypoints_stay_within_a_small_context_budget():
     assert oversized == {}
 
 
-def test_ask_is_the_fast_agent_delegation_path():
-    body = _skill_body("ask")
+def test_ask_altertable_is_the_fast_agent_delegation_path():
+    body = _skill_body("ask-altertable")
 
-    assert body.index("`initialize`") < body.index("`ask`")
+    assert "`ask`" in body
     assert "`chat_id`" in body
     assert "default fast path" in body.lower()
     assert "Routing Table" not in body
+
+
+def test_shared_mcp_bootstrap_is_owned_by_the_platform_brief():
+    platform = _skill_body("use-altertable")
+    repeated_by = {
+        path.parent.name
+        for path in SKILLS_DIR.glob("*/SKILL.md")
+        if path.parent.name != "use-altertable" and "`initialize`" in _skill_body(path.parent.name)
+    }
+
+    assert "`initialize`" in platform
+    assert repeated_by == set()
 
 
 def test_platform_brief_contains_altertable_operating_invariants():
@@ -93,12 +123,36 @@ def test_platform_brief_contains_altertable_operating_invariants():
         assert required in body
 
 
-def test_insight_skill_uses_current_sql_definition_contract():
-    body = _skill_body("build-insights")
+def test_platform_brief_leads_with_the_primary_analysis_tools():
+    surface = _skill_body("use-altertable").split("## Choose the Surface", 1)[1]
+    surface = surface.split("## Current Documentation", 1)[0]
 
-    assert "`sql_definition`" in body
-    assert "`sql_parameters`" in body
-    assert "`sql_statement`" not in body
+    assert "`ask`" in surface
+    assert "`query_lakehouse`" in surface
+    assert "MCP" not in surface
+
+
+def test_skills_defer_evolving_argument_contracts_to_live_schemas():
+    copied_arguments = {
+        "analyze-product-behavior": ("`from`", "`to`", "`interval`"),
+        "build-insights": (
+            "`sql_definition`",
+            "`sql_parameters`",
+            "`x_axis_columns`",
+            "`y_axis_columns`",
+        ),
+        "query-lakehouse": ("`catalog_name`", "`level: profile`"),
+    }
+    occurrences = {
+        skill: argument
+        for skill, arguments in copied_arguments.items()
+        for argument in arguments
+        if argument in _skill_body(skill)
+    }
+
+    assert occurrences == {}
+    assert "live MCP schema" in _skill_body("build-insights")
+    assert "live tool schema" in _skill_body("query-lakehouse")
 
 
 def test_task_skill_models_findings_as_automation_output():
@@ -108,7 +162,7 @@ def test_task_skill_models_findings_as_automation_output():
     assert "Notification" in body
     for target in ("insight", "dashboard", "connection", "database", "segment", "semantic model"):
         assert target in body.lower()
-    for tool in ("list_tasks", "draft_task", "create_task", "update_task"):
+    for tool in ("list_tasks", "create_task", "update_task"):
         assert f"`{tool}`" in body
 
 
@@ -135,12 +189,12 @@ def test_frontmatter_names_match_the_new_portfolio():
         assert frontmatter["name"] == path.parent.name
 
 
-def test_readme_is_cross_platform_while_still_listing_the_ask_skill():
+def test_readme_is_cross_platform_while_still_listing_the_ask_altertable_skill():
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
 
     assert "skills-11-" in readme
-    assert "[ask](skills/ask/)" in readme
+    assert "[ask-altertable](skills/ask-altertable/)" in readme
     assert "/altertable:ask" not in readme
     assert "Quick Start with" not in readme
     assert "delegates questions to the Altertable Agent" in agents
@@ -151,6 +205,7 @@ def test_skill_template_prioritizes_non_obvious_context_over_boilerplate():
 
     assert "name: <lowercase-hyphenated-name>" in template
     assert "non-obvious Altertable context" in template
+    assert "Do not repeat shared MCP bootstrap" in template
     assert "live tool schema" in template
     assert "explicit user intent" in template
 
@@ -201,15 +256,14 @@ def test_salvaged_platform_layers_have_a_current_owner():
         assert concept in platform
     for concept in ("web_sessions", "web_pageviews", "conversion window", "step timing"):
         assert concept in behavior
-    assert "draft_segment" in behavior
     assert "list_insights" in insights
     assert "view_insight" in insights
     for insight_kind in ("Funnel", "Retention", "Semantic", "SQL", "Segmentation"):
         assert insight_kind in insights
-    for task_kind in ("ask", "anomaly_detection", "forecast"):
+    for task_kind in ("AI analysis", "anomaly detection", "forecast"):
         assert task_kind in tasks
     assert "`monitor`" not in tasks
-    assert "catalog_name" in query
+    assert "machine identifier" in query
     assert "external connection" in query.lower()
     assert "scoped by environment" in knowledge
     assert "importance, recency" in knowledge

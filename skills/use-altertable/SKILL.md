@@ -43,11 +43,13 @@ The conversational Altertable Agent handles an open-ended question or investigat
 
 ## Choose the Surface
 
+For most Altertable work, start with `ask` for a completed analytical answer or `query_lakehouse` for direct SQL and raw evidence.
+
 | Need | Default |
 | --- | --- |
-| Fast analytical answer or follow-up | Altertable Agent through `ask` |
-| Exact SQL, raw evidence, validation, or plans | Direct MCP query tools |
-| Interactive draft or governed platform object | Direct MCP artifact tools |
+| Fast analytical answer or follow-up | `ask` |
+| Exact SQL, raw evidence, validation, or plans | `query_lakehouse` |
+| Governed platform object | Relevant artifact tool |
 | Terminal automation, CI, ingestion, or structured JSON | Altertable CLI |
 | Application integration | HTTP API, SDK, or SQL adapter |
 

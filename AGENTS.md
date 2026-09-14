@@ -30,9 +30,9 @@ scripts/tests/                    Repository and portfolio checks
 - Assume the agent already understands analytics, SQL, APIs, and software engineering. Teach the non-obvious Altertable behavior that changes execution.
 - Organize skills around durable platform workflows, not generic analytical techniques or a catalog of every tool.
 - Keep `SKILL.md` concise; target fewer than 180 lines. Add a focused reference only when conditional detail warrants loading it separately.
-- Distinguish read-only analysis, UI drafts, and persistent writes. Authentication never implies permission for an unrequested mutation.
+- Distinguish read-only analysis, previews, and persistent writes. Authentication never implies permission for an unrequested mutation.
 - Use imperative lowercase names with hyphens. Write third-person descriptions with discriminating trigger language.
-- Treat [use-altertable](skills/use-altertable/SKILL.md) as the shared platform brief and [ask](skills/ask/SKILL.md) as the fast path for delegated analytical questions.
+- Treat [use-altertable](skills/use-altertable/SKILL.md) as the shared platform brief and [ask-altertable](skills/ask-altertable/SKILL.md) as the fast path for delegated analytical questions.
 - Tasks produce Findings delivered through Notifications. Do not reintroduce retired feature terminology or workflows.
 
 There is no mandatory body outline. Start from [the template](templates/SKILL_TEMPLATE/SKILL.md), then retain only the sections useful to that workflow.
@@ -50,7 +50,7 @@ The marketplace plugin provides skills and hosted MCP access; it does not instal
 
 ## Useful Commands
 
-- `/altertable:ask <query>` delegates questions to the Altertable Agent.
+- `/altertable:ask-altertable <query>` delegates questions to the Altertable Agent.
 
 ```bash
 uv sync
@@ -69,20 +69,20 @@ uv run pre-commit run --all-files
     <description>Analyzes Altertable Product Analytics events, identities, web sessions, funnels, retention, segmentation, and saved segments. Use for product behavior, conversion, cohorts, event delivery, or identity-aware analysis.</description>
   </skill>
   <skill>
-    <name>ask</name>
+    <name>ask-altertable</name>
     <description>Delegates analytical questions and follow-up investigations to the Altertable Agent. Use as the default fast path for questions about connected data, metrics, changes, causes, or recommendations when exact SQL control is unnecessary.</description>
   </skill>
   <skill>
     <name>build-dashboards</name>
-    <description>Drafts, creates, and updates Altertable Dashboards composed of Insights, text, sections, variables, and grid positions. Use for reusable KPI views, monitoring layouts, or shared analytical reports.</description>
+    <description>Creates and updates Altertable Dashboards composed of Insights, text, sections, variables, and grid positions. Use for reusable KPI views, monitoring layouts, or shared analytical reports.</description>
   </skill>
   <skill>
     <name>build-insights</name>
-    <description>Renders, drafts, creates, updates, and explains existing Altertable Insights. Use when the user wants a reusable SQL, semantic, funnel, retention, or segmentation analysis, or needs to understand a saved chart rather than run an unrelated one-off query.</description>
+    <description>Renders, creates, updates, and explains existing Altertable Insights. Use when the user wants a reusable SQL, semantic, funnel, retention, or segmentation analysis, or needs to understand a saved chart rather than run an unrelated one-off query.</description>
   </skill>
   <skill>
     <name>configure-tasks</name>
-    <description>Drafts, creates, and updates Altertable Tasks that run SQL, code, or AI work on a schedule. Use for recurring analysis, anomaly checks, forecasts, monitoring, or Findings delivered through Notifications.</description>
+    <description>Creates and updates Altertable Tasks that run SQL, code, or AI work on a schedule. Use for recurring analysis, anomaly checks, forecasts, monitoring, or Findings delivered through Notifications.</description>
   </skill>
   <skill>
     <name>ingest-data</name>

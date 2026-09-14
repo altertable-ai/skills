@@ -15,7 +15,9 @@ State the outcome and the non-obvious Altertable context that changes how an age
 
 ## Workflow
 
-1. Start with the smallest platform-specific action that establishes the required context.
+Do not repeat shared MCP bootstrap from `use-altertable`. Start with the first decision or action specific to this workflow.
+
+1. Start with the smallest platform-specific action that advances this workflow.
 2. Use the live tool schema or `search_docs` for evolving arguments and product behavior.
 3. Validate the observable result before reporting completion.
 
@@ -24,7 +26,7 @@ Keep fixed sequences only where order affects correctness, permissions, or side 
 ## Altertable Rules
 
 - Record platform invariants, object boundaries, defaults, and gotchas that are easy to infer incorrectly.
-- Distinguish read-only analysis, drafts, and persistent writes.
+- Distinguish read-only analysis, previews, and persistent writes.
 - Require explicit user intent before creating or updating persistent resources.
 - Prefer live schemas and documentation over copied parameter catalogs.
 

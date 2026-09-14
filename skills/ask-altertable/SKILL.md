@@ -1,5 +1,5 @@
 ---
-name: ask
+name: ask-altertable
 compatibility: Requires Altertable MCP server
 description: "Delegates analytical questions and follow-up investigations to the Altertable Agent. Use as the default fast path for questions about connected data, metrics, changes, causes, or recommendations when exact SQL control is unnecessary."
 metadata:
@@ -13,17 +13,16 @@ Use the Altertable Agent as the default fast path for analytical questions. It c
 
 ## Workflow
 
-1. Call `initialize` to establish the organization, environment, and mandatory context.
-2. Call `ask` with the user's original question and all constraints that affect the answer.
-3. Return the answer, assumptions, and relevant evidence without repeating the investigation through direct tools.
-4. For a follow-up, pass the returned `chat_id` so the Altertable Agent continues the same investigation. Omit it only for a genuinely separate question.
+1. Call `ask` with the user's original question and all constraints that affect the answer.
+2. Return the answer, assumptions, and relevant evidence without repeating the investigation through direct tools.
+3. For a follow-up, pass the returned `chat_id` so the Altertable Agent continues the same investigation. Omit it only for a genuinely separate question.
 
 Do not inspect catalogs or pre-write SQL before `ask` merely to help it. Delegation is valuable because the Altertable Agent performs that work internally.
 
 ## Use Direct Tools Instead When
 
 - The user requests exact SQL, raw rows, a query plan, or reproducible query evidence.
-- The task requires a precisely controlled draft, create, or update operation.
+- The task requires a precisely controlled create or update operation.
 - The caller must return Altertable data to another analysis system rather than an interpreted answer.
 - The request concerns ingestion, application instrumentation, or another operation outside analytical Q&A.
 

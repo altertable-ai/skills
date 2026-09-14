@@ -39,7 +39,7 @@ Assume a capable agent already understands general analytics, SQL, APIs, and sof
 
 - Start with the outcome and the smallest platform-specific workflow.
 - Prefer the live tool schema or `search_docs` for evolving arguments and behavior.
-- Distinguish read-only operations, previews or drafts, and persistent writes.
+- Distinguish read-only operations, previews, and persistent writes.
 - Keep the entry point concise; target fewer than 180 lines.
 - Add sections only when they help the workflow. There is no mandatory body outline.
 - Avoid generic tutorials, exhaustive parameter copies, and taxonomies a capable model can infer.
