@@ -20,8 +20,6 @@ Altertable exposes managed tables and external sources through one governed Duck
 
 Never infer a table or column from a plausible name. Fully qualify data as `catalog.schema.table` so environment defaults cannot redirect a query.
 
-`list_catalogs` may return Altertable databases and external connections such as warehouses or databases. Pass the returned machine identifier to `get_catalog`; do not substitute the display name. Built-in catalogs such as Product Analytics or OpenTelemetry exist only when enabled for the environment.
-
 ## Execute Deliberately
 
 1. Write DuckDB SQL using only inspected identifiers. SELECT only the columns the question named. Do not project anything they did not ask for.
@@ -36,16 +34,14 @@ Do not turn a read request into DDL or data modification. Mutating SQL requires 
 
 ## Altertable-Specific SQL
 
-Use `search_docs` before applying platform extensions:
+Altertable extends DuckDB with operators and catalog features for event streams, text retrieval, history, and storage layout:
 
-- `MATCH_RECOGNIZE` for ordered event sequences and bounded funnels;
-- `SESSIONIZE` for inactivity-gap session construction;
-- time travel for snapshot- or timestamp-bounded historical reads;
-- data change feeds for inserts, updates, and deletions between snapshots;
-- macros, full-text search, views, partitioning, sorted tables, and table optimization.
+- `MATCH_RECOGNIZE` matches ordered row patterns for funnels, journeys, state transitions, and anomaly shapes. Partition by the entity, order deterministically, describe the pattern, and use `WITHIN` when the sequence has a conversion window. It is beta.
+- `SESSIONIZE` groups ordered rows when consecutive events are separated by more than an inactivity gap. It can preserve each event with session metadata or return one row per session with measures. It is beta.
+- Full-text search indexes free-form text with `TNVYX` and queries it with `@@`. Combine it with structured and time predicates to narrow logs, traces, tickets, documents, or event text.
+- Time travel reads full table state at a snapshot version or timestamp. Data change feeds return row-level inserts, updates, and deletions between bounds; committed transactions create the snapshots shared by both.
+- Views and macros store reusable query logic. Partitioning and sorted tables shape new writes; `OPTIMIZE TABLE` rewrites existing files to compact them and apply the current layout.
 
-Do not approximate a sequence funnel with independent per-user event flags: that loses ordering and conversion-window semantics.
+Use `search_docs` when you need detailed syntax or semantics, especially for beta operators and persistent catalog changes.
 
-Cross-catalog federated queries can join multiple catalogs in one DuckDB statement. Inspect both sides first, make join grain explicit, and verify that the join does not multiply rows unexpectedly.
-
-Follow the live tool schema for arguments and result fields rather than copying their current names into the workflow.
+Federated SQL can join Altertable catalogs and external connections in one DuckDB statement. Fully qualify each relation and confirm join-key uniqueness before trusting row counts or aggregates.
