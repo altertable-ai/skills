@@ -58,7 +58,7 @@ Check these primitives before writing a join or self-join for product-event anal
 
 Segmentation `breakdowns` group by stored values of an event `property` or identity `trait`; they do not accept arbitrary semantic dimensions or transformation expressions. Filtering on a semantic dimension does not make that dimension available as a segmentation breakdown.
 
-If the needed grouping and measure are exposed together by a semantic model, use a Semantic Insight. Otherwise use SQL for the derived grouping, cross-catalog joins, or aggregation logic unavailable in native definitions. Explain the specific missing capability when choosing SQL; do not turn one widget's requirement into a SQL default for the whole dashboard.
+If the needed grouping and measure are exposed together by a semantic model, use a Semantic Insight. Choose SQL only when the required capability is unavailable in native definitions, such as derived grouping, cross-catalog joins, or custom aggregation logic. Do not turn one widget's requirement into a SQL default for the whole dashboard.
 
 ## Accuracy Rules
 
