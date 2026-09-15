@@ -11,20 +11,18 @@ metadata:
 
 Altertable has distinct context layers. Put information in the layer whose ownership and lifecycle match it.
 
-| Context | Use |
-| --- | --- |
-| Semantic model | Governed measures, dimensions, timestamps, filters, and relations attached to data |
-| Knowledge entry | Durable source material intentionally maintained by the organization |
-| Knowledge repository | Files and dbt metadata synchronized from a source repository |
-| Memory | High-signal context learned from work that will save effort in later runs |
+| Context              | Use                                                                                                           |
+| -------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Semantic model       | Governed measures, dimensions and relations attached to data                                                  |
+| Knowledge entry      | Durable knowledge material intentionally maintained by the organization                                       |
+| Knowledge repository | Extracted knowledge material synchronized from a source git repository (incl. dbt, code, documentation, etc.) |
+| Memory               | High-signal context learned from work that will save effort in later runs                                     |
 
 ## Recall Context
 
 Use `search_memory` when prior preferences, metric caveats, entity history, or successful techniques are likely to matter. Each returned memory has its access count incremented, so do not search reflexively when past context cannot affect the task.
 
 Memories are scoped by environment. Their usefulness is driven by importance, recency, and retrieval frequency; related memories may consolidate and stale memories may fade. Treat that as relevance behavior, not as a promise of a particular decay schedule.
-
-Use `list_knowledge_repositories` and `search_entities` when maintained documentation or repository material may contain the source of truth. Read the selected entity resource rather than relying on a search snippet.
 
 ## Create Memories
 
