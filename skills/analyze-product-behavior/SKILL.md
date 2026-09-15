@@ -40,7 +40,7 @@ Inspect the environment because enabled views and columns can evolve. Use raw ta
 
 - Use a funnel insight for ordered event progression and drop-off.
 - Use a retention insight for return behavior after a starting event, including its “return on” versus “return on or after” and calendar versus rolling-window choices.
-- Prefer a segmentation insight for event metrics compared across properties, identity attributes, or behavioral cohorts.
+- Prefer a segmentation insight for event metrics over time compared across properties, identity attributes, or behavioral cohorts.
 - Use native breakdowns when the required grouping values are stored on events or identities. Use a semantic or SQL insight when the analysis requires derived dimensions or aggregates unavailable in segmentation.
 - Use direct DuckDB SQL when the analysis requires cross-catalog joins or logic unavailable in the builders.
 

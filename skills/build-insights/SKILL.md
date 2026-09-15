@@ -23,7 +23,7 @@ Do not call `render_insight` as a rendering convenience merely because Altertabl
 - **SQL:** custom DuckDB logic, joins, or calculations unavailable in native definitions.
 - **Funnel:** ordered product-event progression.
 - **Retention:** starting and returning events across cohort offsets.
-- **Segmentation:** product-event metrics with property breakdowns, identity-attribute filters, or behavioral cohort comparisons.
+- **Segmentation:** product-event metrics over time with property breakdowns, identity-attribute filters, or behavioral cohort comparisons.
 
 Choose the kind from the question: ordered progression and drop-off → Funnel; return behavior after a starting event → Retention; event metrics compared across properties or cohorts → Segmentation; governed measures and dimensions → Semantic; logic unavailable in native definitions → SQL. Check the semantic model before choosing SQL for a standard business metric.
 
