@@ -40,11 +40,25 @@ Inspect the environment because enabled views and columns can evolve. Use raw ta
 
 - Use a funnel insight for ordered event progression and drop-off.
 - Use a retention insight for return behavior after a starting event, including its “return on” versus “return on or after” and calendar versus rolling-window choices.
-- Use a segmentation insight for event metrics over time with event, user, or session-property breakdowns.
-- Query `web_sessions` and `web_pageviews` for source, UTM, landing-page, device, and session questions.
+- Prefer a segmentation insight for event metrics compared across properties, identity attributes, or behavioral cohorts.
+- Use native breakdowns when the required grouping values are stored on events or identities. Use a semantic or SQL insight when the analysis requires derived dimensions or aggregates unavailable in segmentation.
 - Use direct DuckDB SQL when the analysis requires cross-catalog joins or logic unavailable in the builders.
 
 For open-ended questions, prefer the `ask-altertable` fast path. For a controlled preview, call `render_insight` with the definition and timeframe required by its live schema. Use `build-insights` when the user requests a reusable persisted analysis.
+
+## Native Cohort and Identity Filters
+
+Check these primitives before writing a join or self-join for product-event analysis. Use the live schema for the full definition and inspect actual event names, property values, dimensions, and relations.
+
+- **Related-model attributes:** use `segmented_by.filters[].dimension_filter` with a `dimension_ref` for the related model's dimension. The engine resolves supported joins through the declared relation; an attribute living outside the events table is not itself a reason to choose SQL. Confirm the dimension and relation exist first.
+- **Behavioral cohort membership:** use `filters[].performed_event_filter` to include or exclude identities based on event performance. To compare complementary cohorts, use two separate `segmented_by` entries with distinct keys and identical membership conditions, setting `including: true` for one and `including: false` for the other. Filtering the events being measured does not filter identities by their event history.
+- **Cohort scope:** set the performed-event filter's `period` to the intended membership window. Without it, membership considers all available history, not just the chart's date range. Membership is identity-based; it does not enforce ordered or same-session conversion. Use a funnel for ordered progression and select the appropriate counting entity. Treat identity attributes and event performance as distinct conditions.
+
+### Breakdown Boundary
+
+Segmentation `breakdowns` group by stored values of an event `property` or identity `trait`; they do not accept arbitrary semantic dimensions or transformation expressions. Filtering on a semantic dimension does not make that dimension available as a segmentation breakdown.
+
+If the needed grouping and measure are exposed together by a semantic model, use a Semantic Insight. Otherwise use SQL for the derived grouping, cross-catalog joins, or aggregation logic unavailable in native definitions. Explain the specific missing capability when choosing SQL; do not turn one widget's requirement into a SQL default for the whole dashboard.
 
 ## Accuracy Rules
 

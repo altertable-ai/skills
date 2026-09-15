@@ -20,12 +20,14 @@ Do not call `render_insight` as a rendering convenience merely because Altertabl
 ## Choose the Definition
 
 - **Semantic:** governed measures and dimensions already defined on a semantic model.
-- **SQL:** custom DuckDB logic, joins, or calculations.
+- **SQL:** custom DuckDB logic, joins, or calculations unavailable in native definitions.
 - **Funnel:** ordered product-event progression.
 - **Retention:** starting and returning events across cohort offsets.
-- **Segmentation:** product-event metrics over time with property breakdowns.
+- **Segmentation:** product-event metrics with property breakdowns, identity-attribute filters, or behavioral cohort comparisons.
 
-Choose the kind from the question: ordered progression and drop-off → Funnel; return behavior after a starting event → Retention; governed measures and dimensions → Semantic; custom joins or calculations → SQL; event metrics compared across properties or cohorts → Segmentation. Check the semantic model before choosing SQL for a standard business metric.
+Choose the kind from the question: ordered progression and drop-off → Funnel; return behavior after a starting event → Retention; event metrics compared across properties or cohorts → Segmentation; governed measures and dimensions → Semantic; logic unavailable in native definitions → SQL. Check the semantic model before choosing SQL for a standard business metric.
+
+Before choosing SQL for identity attributes or “did X / did not do X” cohorts, check Segmentation's `dimension_filter` and `performed_event_filter`. A related-table filter or same-identity self-join does not by itself require a SQL Insight. Read [analyze-product-behavior](../analyze-product-behavior/SKILL.md#native-cohort-and-identity-filters) for relation support, cohort periods, and the boundary between raw breakdowns and derived dimensions. Choose each dashboard widget's kind independently.
 
 Inspect catalogs, semantic models, events, and traits before constructing the definition. Use the live MCP schema for exact fields and enums.
 
