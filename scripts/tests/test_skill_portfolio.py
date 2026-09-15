@@ -118,6 +118,19 @@ def test_dashboard_skill_keeps_copy_concise():
     assert "text widgets" in body
 
 
+def test_insight_skill_requires_an_explicit_altertable_destination():
+    text = (SKILLS_DIR / "build-insights" / "SKILL.md").read_text(encoding="utf-8")
+    _, raw_frontmatter, body = text.split("---", 2)
+    description = yaml.safe_load(raw_frontmatter)["description"].lower()
+    body = body.lower()
+
+    for boundary in ("only when", "altertable", "generic", "client-native"):
+        assert boundary in description
+    assert "does not imply an altertable insight" in body
+    assert "client's native" in body
+    assert "rendering convenience" in body
+
+
 def test_shared_mcp_bootstrap_is_owned_by_the_platform_brief():
     platform = _skill_body("use-altertable")
     repeated_by = {

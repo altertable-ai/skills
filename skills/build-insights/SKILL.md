@@ -1,7 +1,7 @@
 ---
 name: build-insights
 compatibility: Requires Altertable MCP server; saving or updating requires read-write access
-description: "Renders, creates, updates, and explains existing Altertable Insights. Use when the user wants a reusable SQL, semantic, funnel, retention, or segmentation analysis, or needs to understand a saved chart rather than run an unrelated one-off query."
+description: "Renders, creates, updates, and explains Altertable Insights. Use only when the user explicitly requests an Altertable Insight or asks to work on an existing one; do not use for generic or client-native charts, analyses, reports, or visualizations."
 metadata:
   author: Altertable
   requires: "altertable-mcp"
@@ -10,6 +10,12 @@ metadata:
 # Build Insights
 
 An Insight is a persistent analysis and visualization over lakehouse data. It does not need to represent an anomaly or recommendation; it can be a reusable metric, table, or behavioral analysis.
+
+## Routing Boundary
+
+Use this skill only when the intended object or renderer is Altertable: the user explicitly requests an Altertable Insight or identifies an existing one. A generic request for a chart, analysis, report, or visualization does not imply an Altertable Insight. Prefer the client's native analysis or visualization capability unless the user explicitly wants an Altertable Insight.
+
+Do not call `render_insight` as a rendering convenience merely because Altertable supplied the data. `create_insight` and `update_insight` are persistent writes and require explicit user intent.
 
 ## Choose the Definition
 
@@ -27,7 +33,7 @@ Inspect catalogs, semantic models, events, and traits before constructing the de
 
 | Intent | Tool |
 | --- | --- |
-| Show a non-persisted result in conversation | `render_insight` |
+| Preview an unsaved Altertable Insight | `render_insight` |
 | Save a new Insight | `create_insight` |
 | Change an existing Insight | `update_insight` |
 | Execute and inspect a saved Insight | `view_insight` |
