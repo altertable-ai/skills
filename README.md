@@ -26,6 +26,7 @@ Agent Skills are an [open standard](https://agentskills.io/specification) for gi
 | [configure-tasks](skills/configure-tasks/) | Creates and updates Altertable Tasks that run SQL, code, or AI work on a schedule |
 | [ingest-data](skills/ingest-data/) | Loads data into Altertable through the CLI, HTTP API, DataFrame tooling, object storage, or generated pipelines |
 | [instrument-product-analytics](skills/instrument-product-analytics/) | Adds or changes Altertable Product Analytics instrumentation in application code |
+| [investigate-opentelemetry](skills/investigate-opentelemetry/) | Investigates OpenTelemetry logs and traces in Altertable using SQL |
 | [manage-knowledge](skills/manage-knowledge/) | Searches and maintains Altertable memories, knowledge entries, repository context, and semantic-model descriptions |
 | [query-altertable](skills/query-altertable/) | Inspects Altertable catalogs and runs controlled DuckDB SQL across managed and external data |
 | [query-with-chatgpt-data](skills/query-with-chatgpt-data/) | Use when ChatGPT Work's @Data agent, the ChatGPT Data agent, or a Codex workflow coordinating with @Data needs Altertable as a governed read-only source |

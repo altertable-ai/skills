@@ -93,6 +93,10 @@ uv run pre-commit run --all-files
     <description>Adds or changes Altertable Product Analytics instrumentation in application code. Use for SDK setup, event tracking, user identification, traits, consent, session reset, page or screen tracking, and identity aliasing.</description>
   </skill>
   <skill>
+    <name>investigate-opentelemetry</name>
+    <description>Investigates OpenTelemetry logs and traces in Altertable using SQL. Use when analysis involves observability data, including debugging, trace correlation, or joins with business data.</description>
+  </skill>
+  <skill>
     <name>manage-knowledge</name>
     <description>Searches and maintains Altertable memories, knowledge entries, repository context, and semantic-model descriptions. Use when reusable business context, definitions, preferences, or model documentation should guide future agent work.</description>
   </skill>
