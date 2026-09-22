@@ -46,6 +46,14 @@ Inspect the environment because enabled views and columns can evolve. Use raw ta
 
 For open-ended questions, prefer the `ask-altertable` fast path. For a controlled preview, call `render_insight` with the definition and timeframe required by its live schema. Use `build-insights` when the user requests a reusable persisted analysis.
 
+## Behavior-Oriented SQL
+
+Altertable augments DuckDB with behavior-oriented SQL features. Use them when sequence, session, or path semantics would make an investigation more accurate or reveal behavior hidden by ordinary aggregates. Before writing or reviewing a query with one of these features, read its linked reference for the inlined syntax, semantics, output modes, and constraints:
+
+- [`MATCH_RECOGNIZE`](references/match-recognize.md) matches ordered row patterns with a regular-expression-like pattern for funnels, state transitions, journeys, and anomaly shapes. Use it when the sequence to detect is known in advance and needs explicit row roles, alternatives, repetition, and filler events. Partition by the investigated entity, order deterministically with a stable tie-breaker, and bound conversion windows explicitly.
+- [`SESSIONIZE`](references/sessionize.md) groups ordered events into sessions using an inactivity gap without requiring a lag, cumulative sum, and grouping pipeline. It compares each event with the preceding event, so a session can outlast the gap while consecutive events remain close enough. Choose row-preserving output or one row per session with measures according to whether downstream analysis needs individual events or session summaries; use it to reconstruct visits or workflows and to distinguish event-level from session-level behavior.
+- [`JOURNEYS`](references/journeys.md) discovers the paths people take before, after, or between events without defining the path in advance. It aggregates identical paths rather than returning one row per person and reports conversion, truncation, frequency, and duration. Use it to expose detours, loops, unexpected steps, and where successful and failed paths diverge; set the counting mode, time window, and maximum retained steps explicitly.
+
 ## Native Cohort and Identity Filters
 
 Check these primitives before writing a join or self-join for product-event analysis. Use the live schema for the full definition and inspect actual event names, property values, dimensions, and relations.
