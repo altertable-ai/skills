@@ -22,12 +22,12 @@ Keep dashboard copy concise. Use text widgets only for context needed to interpr
 ## Workflow
 
 1. Confirm the intended environment and write scope.
-2. Use `list_insights` and `view_insight` to reuse valid existing analyses. Build or repair missing Insights before laying them out.
-3. Use `view_dashboard` when changing an existing dashboard. Preserve widgets and variables the user did not ask to replace.
+2. Use `list_insights` and `read_resource` at `altertable://ontology/entities/{slug}` to inspect saved analyses. Verify a saved Insight by passing its slug as `insight` to `render_insight` on a user-facing surface, or to `execute_insight` when no viewer should be attached. Build or repair missing Insights before laying them out.
+3. Use `list_dashboards` to discover saved dashboards. Without a query it returns metadata ordered by popularity; pass `query` to filter by title or description. Before changing one, read its full definition with `read_resource` at `altertable://ontology/entities/{slug}`. Preserve widgets and variables the user did not ask to replace.
 4. Define the audience, operating question, refresh cadence, and shared filters.
 5. Arrange the most decision-relevant metrics first, followed by drivers and diagnostic detail.
 6. Call `create_dashboard` for an explicitly requested new dashboard, or `update_dashboard` for an existing slug.
-7. Retrieve the result and visually verify it when layout correctness matters.
+7. Read the saved dashboard back with `read_resource` and check widget references, variables, and grid positions.
 
 ## Altertable Objects
 
@@ -41,7 +41,7 @@ Use the live tool schema for widget kinds, grid coordinates, variable definition
 
 ## Update Semantics
 
-Widget and variable lists replace current values when supplied to `update_dashboard`. Read the existing dashboard first, merge intended changes locally, and send the complete retained lists. Omitting a field leaves it unchanged.
+Widget and variable lists replace current values when supplied to `update_dashboard`. Read the existing dashboard with `read_resource` first, merge intended changes locally, and send the complete retained lists. Omitting a field leaves it unchanged.
 
 Do not silently create duplicate Insights to populate a dashboard. Reuse an existing Insight when its definition and variables match; use an inline definition for dashboard-specific analysis when supported and appropriate.
 
