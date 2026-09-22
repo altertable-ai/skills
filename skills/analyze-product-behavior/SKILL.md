@@ -44,7 +44,7 @@ Inspect the environment because enabled views and columns can evolve. Use raw ta
 - Use native breakdowns when the required grouping values are stored on events or identities. Use a semantic or SQL insight when the analysis requires derived dimensions or aggregates unavailable in segmentation.
 - Use direct DuckDB SQL when the analysis requires cross-catalog joins or logic unavailable in the builders.
 
-For open-ended questions, prefer the `ask-altertable` fast path. For a controlled preview, call `render_insight` with the definition and timeframe required by its live schema. Use `build-insights` when the user requests a reusable persisted analysis.
+For open-ended questions, prefer the `ask-altertable` fast path. For a controlled preview on a user-facing surface, call `render_insight` with a `definition`, including the timeframe its kind requires. Use `execute_insight` with that same `definition` when the caller cannot or should not attach the Insight Viewer, such as a subagent. A `definition` does not persist an Insight. Use `build-insights` when the user requests a reusable persisted analysis.
 
 ## Behavior-Oriented SQL
 
