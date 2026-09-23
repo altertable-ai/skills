@@ -28,7 +28,6 @@ Never infer a table or column from a plausible name. Fully qualify data as `cata
 4. Use `explain_sql` before a potentially expensive scan or join.
 5. Run the statement with `query_lakehouse`.
 6. If the result is truncated, repeat the same statement with the returned offset. Include a deterministic `ORDER BY` before paginating.
-7. Use `optimize_sql` only when performance matters and compare its proven rewrite with the original semantics.
 
 Do not turn a read request into DDL or data modification. Mutating SQL requires explicit user intent and read-write access.
 
