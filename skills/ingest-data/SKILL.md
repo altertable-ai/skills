@@ -21,7 +21,7 @@ Choose the ingestion path based on where the data lives, whether it must be copi
 | Repeatable extraction and loading from a source | Generated or maintained dlt pipeline |
 | Existing database, warehouse, or object catalog should stay in place | External catalog; query it without copying |
 
-Prefer the Altertable CLI for terminal scripts and CI because profiles handle authentication and `--agent` provides structured output. See the [CLI guide](https://altertable.ai/docs/developer-tooling/cli) for installation and authentication, and the [CLI repository](https://github.com/altertable-ai/altertable-cli) for releases and the complete command contract. Do not install the CLI unless the user asks; if it is unavailable, provide the installation link or choose another supported surface.
+Prefer the Altertable CLI for terminal scripts and CI because profiles handle authentication and `--agent` provides structured output. If the CLI is missing, follow the conditional setup in `use-altertable`. See the [CLI guide](https://altertable.ai/docs/developer-tooling/cli) for installation and authentication, and the [CLI repository](https://github.com/altertable-ai/altertable-cli) for releases and the complete command contract.
 
 Prefer the HTTP API for application-controlled ingestion. Use an SDK when it already handles retries, batching, and the relevant data structure.
 
