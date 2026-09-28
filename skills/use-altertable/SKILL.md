@@ -55,6 +55,17 @@ For most Altertable work, start with `ask` for a completed analytical answer or 
 
 Use the narrowest workflow that satisfies the request. Do not reproduce a multi-tool investigation when `ask` can answer it, and do not delegate when exact query or mutation control is the point of the task.
 
+## Set Up the CLI When Needed
+
+The plugin supplies skills and hosted MCP access, not a local CLI executable. Use MCP for agent work it can complete directly. When the user requests terminal automation, CI, local file ingestion, or CLI setup, follow this path:
+
+1. Check whether `altertable` is already on PATH in the execution environment where the command must run. A CLI installed in a hosted or temporary environment is not installed on the user's computer.
+2. If it is missing, explain why the CLI is needed and where it would be installed. Do not install the CLI unless the user explicitly asks. When authorized, follow the current [CLI guide](https://altertable.ai/docs/developer-tooling/cli) for a supported installer, npm package, or release binary; do not assume a package manager or platform.
+3. Verify that the installed command runs. CLI authentication is separate from MCP authentication: use browser login, specifying the target with `altertable login --org <organization> --env <environment>` when it is known. Then check `altertable profile status` and `altertable catalogs`. Query and ingestion commands also require lakehouse credentials.
+4. Use the CLI's `--agent` preset for structured output in agent-driven scripts. Check current command help before using changing flags. Never expose profile credentials or tokens in chat or logs.
+
+If the execution environment has no terminal or persistent installation path, continue through MCP where it supports the task and explain the remaining CLI requirement.
+
 ## Current Documentation
 
 Search the live docs rather than copying large reference sections into the conversation. Useful starting points are [Altertable documentation](https://altertable.ai/docs), [MCP tools](https://altertable.ai/docs/api-references/mcp-tools), [Lakehouse](https://altertable.ai/docs/lakehouse), and the [CLI guide](https://altertable.ai/docs/developer-tooling/cli).
