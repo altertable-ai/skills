@@ -4,7 +4,7 @@
 [![Score Skills](https://github.com/altertable-ai/skills/actions/workflows/score-skills.yml/badge.svg)](https://github.com/altertable-ai/skills/actions/workflows/score-skills.yml)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-8A2BE2)](https://agentskills.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-11-green)](https://github.com/altertable-ai/skills)
+[![Skills](https://img.shields.io/badge/skills-13-green)](https://github.com/altertable-ai/skills)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-3776AB.svg)](https://www.python.org)
 
 This repository is the source of truth for [Altertable](https://altertable.ai) [Agent Skills](https://agentskills.io): portable, version-controlled packages of instructions, scripts, and references.
@@ -23,6 +23,7 @@ Agent Skills are an [open standard](https://agentskills.io/specification) for gi
 | [ask-altertable](skills/ask-altertable/) | Delegates analytical questions and follow-up investigations to the Altertable Agent |
 | [build-dashboards](skills/build-dashboards/) | Creates and updates persistent Altertable Dashboards composed of Insights, text, sections, variables, and grid positions |
 | [build-insights](skills/build-insights/) | Renders, creates, updates, and explains Altertable Insights |
+| [build-local-data-app](skills/build-local-data-app/) | Creates local Altertable data apps with the CLI for data exploration and analysis (beta) |
 | [configure-tasks](skills/configure-tasks/) | Creates and updates Altertable Tasks that run SQL, code, or AI work on a schedule |
 | [ingest-data](skills/ingest-data/) | Loads data into Altertable through the CLI, HTTP API, DataFrame tooling, object storage, or generated pipelines |
 | [instrument-product-analytics](skills/instrument-product-analytics/) | Adds or changes Altertable Product Analytics instrumentation in application code |

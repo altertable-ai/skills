@@ -1,0 +1,3 @@
+interface:
+  display_name: "Build a local data app"
+  short_description: "Beta: Build a local app with Altertable CLI"

@@ -81,6 +81,10 @@ uv run pre-commit run --all-files
     <description>Renders, creates, updates, and explains Altertable Insights. Use only when the user explicitly requests an Altertable Insight or asks to work on an existing one; do not use for generic or client-native charts, analyses, reports, or visualizations.</description>
   </skill>
   <skill>
+    <name>build-local-data-app</name>
+    <description>Creates local Altertable data apps with the CLI for data exploration and analysis (beta). Use when the user asks for an exploration, a data app, or interactive data discovery.</description>
+  </skill>
+  <skill>
     <name>configure-tasks</name>
     <description>Creates and updates Altertable Tasks that run SQL, code, or AI work on a schedule. Use for recurring analysis, anomaly checks, forecasts, monitoring, or Findings delivered through Notifications.</description>
   </skill>
