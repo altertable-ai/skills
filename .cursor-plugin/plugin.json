@@ -1,7 +1,7 @@
 {
   "name": "altertable",
   "displayName": "Altertable",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "Give Cursor governed access to Altertable for querying, ingestion, product analytics, insights, remote data apps, automation, and findings.",
   "author": {
     "name": "Altertable"
