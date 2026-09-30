@@ -82,7 +82,11 @@ uv run pre-commit run --all-files
   </skill>
   <skill>
     <name>build-local-data-app</name>
-    <description>Creates local Altertable data apps with the CLI for data exploration and analysis (beta). Use when the user asks for an exploration, a data app, or interactive data discovery.</description>
+    <description>Builds local Altertable data apps with the CLI (beta). Use for local data exploration, analysis, or interactive discovery.</description>
+  </skill>
+  <skill>
+    <name>build-remote-data-app</name>
+    <description>Creates, validates, updates, and deletes remote Altertable data apps through MCP. Use when the user requests a remote or hosted Altertable data app, or an Altertable data app without a local coding environment or CLI.</description>
   </skill>
   <skill>
     <name>configure-tasks</name>

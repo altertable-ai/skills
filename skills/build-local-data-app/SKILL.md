@@ -1,6 +1,6 @@
 ---
 name: build-local-data-app
-description: "Creates local Altertable data apps with the CLI for data exploration and analysis (beta). Use when the user asks for an exploration, a data app, or interactive data discovery."
+description: "Builds local Altertable data apps with the CLI (beta). Use for local data exploration, analysis, or interactive discovery."
 compatibility: Requires Altertable CLI app commands and authorized lakehouse access
 metadata:
   author: Altertable
@@ -9,10 +9,10 @@ metadata:
 
 # Build a local data app
 
-Use the CLI scaffold for a local app. Its generated `AGENTS.md` covers source analysis, runtime APIs, code, and visual checks. This skill handles scope and verification across MCP and CLI.
+Follow the CLI scaffold's generated `AGENTS.md` for implementation and visual checks. Use `build-remote-data-app` for hosted apps.
 
-1. Check `altertable app --help` for the app commands. Confirm organization and environment through MCP `initialize` when connected and `altertable --profile <profile> profile show`. These use separate credentials; resolve mismatches before querying.
-2. Run `altertable --profile <profile> app create <name> --dir <path>`. Compare `app.json` scope with the available connections; offline scaffolds contain placeholders. Connected proves only that the starter probe succeeded. Validate the selected dataset and actual operation. Follow the generated `AGENTS.md` to build one source-backed answer. MCP supports authoring, not app runtime.
-3. Run `altertable --profile <profile> app check --dir <path>` and `app check --lakehouse` with the same profile. The live check executes fixed `app.json` operation fixtures; choose inputs that exercise the real operation. Start `app dev` and compare the default view with an executed query. Report checks that could not run.
+1. Check `altertable app --help` and confirm scope with `altertable --profile <profile> profile show`. Prefer CLI queries for speed, using the same profile. For MCP fallback, call `initialize` and reconcile scope; its credentials are separate.
+2. Run `altertable --profile <profile> app create <name> --dir <path>`. Verify `app.json` scope and the selected data, then build the app. A connected scaffold confirms only its starter probe.
+3. Run `altertable --profile <profile> app check --dir <path>`, then add `--lakehouse` to execute the fixed `app.json` fixtures against live data. Choose fixtures that exercise the actual operation. Start `app dev` with the same profile and directory, inspect the app, and compare its default view with a query result.
 
-If app commands are missing, lakehouse credentials fail, or the shell cannot access the credential store, identify that blocker before retrying login or installation. Continue bounded source discovery through MCP and record the verified query and scope for resumption. When app commands exist but live access does not, create a `--without-profile` scaffold only if an offline prototype was requested; local checks cannot verify its live data path. Report the blocked command and next action, and do not claim a runnable app.
+If CLI access is blocked, report the failed command and use MCP for source discovery; MCP does not provide the app runtime. Use `--without-profile` only for a requested offline prototype: its scope contains placeholders and local checks cannot verify live data access. Report unrun checks and runtime blockers.

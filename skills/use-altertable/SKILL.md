@@ -50,6 +50,8 @@ For most Altertable work, start with `ask` for a completed analytical answer or 
 | Fast analytical answer or follow-up | `ask` |
 | Exact SQL, raw evidence, validation, or plans | `query_lakehouse` |
 | Governed platform object | Relevant artifact tool |
+| Hosted Altertable data app without a local coding environment | `build-remote-data-app` through MCP |
+| Local Altertable data app or CLI scaffold | `build-local-data-app` |
 | Terminal automation, CI, ingestion, or structured JSON | Altertable CLI |
 | Application integration | HTTP API, SDK, or SQL adapter |
 
