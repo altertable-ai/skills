@@ -82,7 +82,7 @@ uv run pre-commit run --all-files
   </skill>
   <skill>
     <name>build-local-data-app</name>
-    <description>Creates local Altertable data apps with the CLI for data exploration and analysis (beta). Use when the user requests a local app, a CLI scaffold, or interactive data discovery in a local coding environment.</description>
+    <description>Creates local Altertable data apps with the CLI for data exploration and analysis (beta). Use when the user asks for an exploration, a data app, or interactive data discovery, and mentions local.</description>
   </skill>
   <skill>
     <name>build-remote-data-app</name>
