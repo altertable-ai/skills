@@ -1,0 +1,3 @@
+interface:
+  display_name: "Build a remote data app"
+  short_description: "Build hosted Altertable apps through MCP"

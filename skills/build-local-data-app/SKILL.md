@@ -1,6 +1,6 @@
 ---
 name: build-local-data-app
-description: "Creates local Altertable data apps with the CLI for data exploration and analysis (beta). Use when the user asks for an exploration, a data app, or interactive data discovery."
+description: "Creates local Altertable data apps with the CLI for data exploration and analysis (beta). Use when the user requests a local app, a CLI scaffold, or interactive data discovery in a local coding environment."
 compatibility: Requires Altertable CLI app commands and authorized lakehouse access
 metadata:
   author: Altertable
@@ -10,6 +10,8 @@ metadata:
 # Build a local data app
 
 Use the CLI scaffold for a local app. Its generated `AGENTS.md` covers source analysis, runtime APIs, code, and visual checks. This skill handles scope and verification across MCP and CLI.
+
+Use `build-remote-data-app` for a hosted Altertable data app through MCP without a local coding environment or CLI.
 
 1. Check `altertable app --help` for the app commands. Confirm organization and environment through MCP `initialize` when connected and `altertable --profile <profile> profile show`. These use separate credentials; resolve mismatches before querying.
 2. Run `altertable --profile <profile> app create <name> --dir <path>`. Compare `app.json` scope with the available connections; offline scaffolds contain placeholders. Connected proves only that the starter probe succeeded. Validate the selected dataset and actual operation. Follow the generated `AGENTS.md` to build one source-backed answer. MCP supports authoring, not app runtime.
