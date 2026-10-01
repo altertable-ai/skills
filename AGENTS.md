@@ -77,16 +77,16 @@ uv run pre-commit run --all-files
     <description>Creates and updates persistent Altertable Dashboards composed of Insights, text, sections, variables, and grid positions. Use only when the user requests an Altertable-hosted dashboard or changes to an existing Altertable Dashboard; do not use for generic or client-native dashboards, reports, or visualizations.</description>
   </skill>
   <skill>
+    <name>build-data-app</name>
+    <description>Creates, validates, updates, and deletes Altertable data apps through MCP (beta). Use by default when the user requests an Altertable data app; use build-local-data-app only for explicitly requested local development or a CLI scaffold.</description>
+  </skill>
+  <skill>
     <name>build-insights</name>
     <description>Renders, creates, updates, and explains Altertable Insights. Use only when the user explicitly requests an Altertable Insight or asks to work on an existing one; do not use for generic or client-native charts, analyses, reports, or visualizations.</description>
   </skill>
   <skill>
     <name>build-local-data-app</name>
-    <description>Builds local Altertable data apps with the CLI (beta). Use for local data exploration, analysis, or interactive discovery.</description>
-  </skill>
-  <skill>
-    <name>build-remote-data-app</name>
-    <description>Creates, validates, updates, and deletes remote Altertable data apps through MCP. Use when the user requests a remote or hosted Altertable data app, or an Altertable data app without a local coding environment or CLI.</description>
+    <description>Builds local Altertable data apps with the CLI (beta). Use only when the user explicitly requests a local data app, local development, or a CLI scaffold. Default to build-data-app for other Altertable data app requests.</description>
   </skill>
   <skill>
     <name>configure-tasks</name>
