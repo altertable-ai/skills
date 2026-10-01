@@ -20,7 +20,7 @@ To convert a local app to an Altertable-hosted app, use `build-data-app` to adap
 ## Workflow
 
 1. Check `altertable app --help` and confirm scope with `altertable --profile <profile> profile show`. Prefer CLI queries for speed, using the same profile. For MCP fallback, call `initialize` and reconcile scope; its credentials are separate.
-2. For a new app, run `altertable --profile <profile> app create <name> --dir <path>`. For an edit, inspect the existing source first. Verify `app.json` scope and the selected data. A connected scaffold confirms only its starter probe.
+2. For a new app, run `altertable --profile <profile> app create <name> --dir <path>`. For an edit, inspect the existing source first. Verify the app configuration scope and the selected data. A connected scaffold confirms only its starter probe.
 3. Author the app following the upstream instructions. Define check inputs that exercise its actual operations.
 4. Run `altertable --profile <profile> app check --dir <path>`, then add `--lakehouse` to execute the checks against live data. Fix failures and rerun the checks.
 5. Start `app dev` with the same profile and directory. Open the local URL and verify live data, scope, filters, loading, errors, and refresh. Compare results with an independent query; report any runtime verification pending.
