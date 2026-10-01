@@ -22,9 +22,9 @@ Agent Skills are an [open standard](https://agentskills.io/specification) for gi
 | [analyze-product-behavior](skills/analyze-product-behavior/) | Analyzes Altertable Product Analytics events, identities, web sessions, funnels, retention, segmentation, and saved segments |
 | [ask-altertable](skills/ask-altertable/) | Delegates analytical questions and follow-up investigations to the Altertable Agent |
 | [build-dashboards](skills/build-dashboards/) | Creates and updates persistent Altertable Dashboards composed of Insights, text, sections, variables, and grid positions |
+| [build-data-app](skills/build-data-app/) | Creates, validates, updates, and deletes Altertable data apps through MCP (beta) |
 | [build-insights](skills/build-insights/) | Renders, creates, updates, and explains Altertable Insights |
 | [build-local-data-app](skills/build-local-data-app/) | Builds local Altertable data apps with the CLI (beta) |
-| [build-remote-data-app](skills/build-remote-data-app/) | Creates, validates, updates, and deletes remote Altertable data apps through MCP |
 | [configure-tasks](skills/configure-tasks/) | Creates and updates Altertable Tasks that run SQL, code, or AI work on a schedule |
 | [ingest-data](skills/ingest-data/) | Loads data into Altertable through the CLI, HTTP API, DataFrame tooling, object storage, or generated pipelines |
 | [instrument-product-analytics](skills/instrument-product-analytics/) | Adds or changes Altertable Product Analytics instrumentation in application code |

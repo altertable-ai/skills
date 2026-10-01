@@ -1,7 +1,7 @@
 {
   "name": "altertable",
   "displayName": "Altertable",
-  "description": "Give Claude governed access to Altertable for querying, ingestion, product analytics, insights, remote data apps, automation, and findings.",
+  "description": "Give Claude governed access to Altertable for querying, ingestion, product analytics, insights, data apps, automation, and findings.",
   "version": "1.7.0",
   "author": {
     "name": "Altertable",
