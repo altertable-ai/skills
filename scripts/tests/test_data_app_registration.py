@@ -16,7 +16,12 @@ def test_hosted_app_creation_and_updates_submit_complete_registration():
         assert requirement in text
 
 
-def test_local_app_workflow_preserves_statement_execution():
+def test_local_app_workflow_uses_the_hosted_query_contract():
     text = (ROOT / "skills/build-local-data-app/SKILL.md").read_text()
-    assert "arbitrary SQL statements" in text
-    assert "registration" in text
+    for requirement in (
+        "`queries` and `variables`",
+        "`query(id, values)`",
+        "getDataAppRegistration()",
+        "CLI proxy",
+    ):
+        assert requirement in text
