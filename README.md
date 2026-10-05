@@ -31,6 +31,7 @@ Agent Skills are an [open standard](https://agentskills.io/specification) for gi
 | [investigate-opentelemetry](skills/investigate-opentelemetry/) | Investigates OpenTelemetry logs and traces in Altertable using SQL |
 | [manage-knowledge](skills/manage-knowledge/) | Searches and maintains Altertable memories, knowledge entries, repository context, and semantic-model descriptions |
 | [query-altertable](skills/query-altertable/) | Inspects Altertable catalogs and runs controlled DuckDB SQL across managed and external data |
+| [query-dbt-metrics](skills/query-dbt-metrics/) | Discovers and queries dbt Semantic Layer metrics with native MetricFlow inside an Altertable sandbox |
 | [query-with-chatgpt-data](skills/query-with-chatgpt-data/) | Use when ChatGPT Work's @Data agent, the ChatGPT Data agent, or a Codex workflow coordinating with @Data needs Altertable as a governed read-only source |
 | [use-altertable](skills/use-altertable/) | Provides Altertable's foundational operating model, environment and catalog concepts, DuckDB conventions, and MCP-versus-CLI choices |
 

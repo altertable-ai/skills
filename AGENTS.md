@@ -113,6 +113,10 @@ uv run pre-commit run --all-files
     <description>Inspects Altertable catalogs and runs controlled DuckDB SQL across managed and external data. Use for exact queries, raw results, schema inspection, federated joins, query validation, plans, or optimization.</description>
   </skill>
   <skill>
+    <name>query-dbt-metrics</name>
+    <description>Discovers and queries dbt Semantic Layer metrics with native MetricFlow inside an Altertable sandbox. Use for saved metric queries, compatible dimension regrouping, ratios, or cumulative metrics defined in a dbt project.</description>
+  </skill>
+  <skill>
     <name>query-with-chatgpt-data</name>
     <description>Use when ChatGPT Work&#x27;s @Data agent, the ChatGPT Data agent, or a Codex workflow coordinating with @Data needs Altertable as a governed read-only source. Do not use for ordinary Altertable analysis.</description>
   </skill>
