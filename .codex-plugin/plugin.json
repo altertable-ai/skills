@@ -1,6 +1,6 @@
 {
   "name": "altertable",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "Give ChatGPT and Codex governed access to Altertable for querying, ingestion, product analytics, insights, data apps, automation, and findings.",
   "author": {
     "name": "Altertable",
