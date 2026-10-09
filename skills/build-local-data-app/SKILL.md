@@ -17,6 +17,8 @@ For apps involving product events, funnels, retention, sessions, journeys, or be
 
 Before authoring or changing source, **read [the data-app repository's AGENTS.md](https://github.com/altertable-ai/data-app/blob/main/AGENTS.md) and follow its links** for the local workflow. Retrieve the document contents and start from the CLI scaffold.
 
+Use the scaffold's `@altertable/data-app` 0.67.0 contracts. The app declaration imports `defineDataApp` from the package root and owns the SQL `queries` registry, including each query's `params`. Keep the scaffold’s identity and appearance sourced from `app.json`; declare SQL and scalar parameter defaults in the query registry. Define operations through `dataApp.defineOperation()` and use `connectionCheck(dataApp.queries)` for the starter connectivity operation. Never interpolate values into SQL. Dimension filters state `selectionMode: 'single'` or `'multiple'`.
+
 To convert a local app to an Altertable-hosted app, use `build-data-app` to adapt the existing source to its single-file workflow, preserving its queries and UI.
 
 ## Workflow

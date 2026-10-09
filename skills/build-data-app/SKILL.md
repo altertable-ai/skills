@@ -18,6 +18,8 @@ For apps involving product events, funnels, retention, sessions, journeys, or be
 
 Before authoring or changing source, **read [the data-app repository's AGENTS.md](https://github.com/altertable-ai/data-app/blob/main/AGENTS.md) and follow its links** for the intended workflow. Retrieve the document contents and start from the single-file example linked by the guide. Follow its instructions to produce one `index.tsx`.
 
+Use `@altertable/data-app` 0.67.0 APIs. Import `defineDataApp` from the package root and declare exactly one top-level `defineDataApp({ ... })` literal. Its argument contains schema-valid literals only: do not use spreads, computed keys, references, calls, executable expressions, or interpolated templates. Put every SQL statement in its `queries` registry with declared `params`; operations use `dataApp.defineOperation()` and call registered queries by name. Never interpolate values into SQL. Use `connectionCheck(dataApp.queries)` for a connection screen. Give every dimension filter an explicit `selectionMode`.
+
 To convert an existing app to a local app, retrieve its source and use `build-local-data-app` to adapt it to the CLI scaffold, preserving its queries and UI.
 
 ## Workflow
