@@ -12,6 +12,8 @@ metadata:
 
 Build an Altertable data app through MCP, even when a local coding environment is available. Use `build-local-data-app` only for explicitly requested local development or a CLI scaffold. Apply `use-altertable` for shared platform context and `query-altertable` for source discovery and SQL verification.
 
+For apps involving product events, funnels, retention, sessions, journeys, or behavioral cohorts, apply [`analyze-product-behavior`](../analyze-product-behavior/SKILL.md) before designing metrics or queries.
+
 ## Read the authoring instructions
 
 Before authoring or changing source, **read [the data-app repository's AGENTS.md](https://github.com/altertable-ai/data-app/blob/main/AGENTS.md) and follow its links** for the intended workflow. Retrieve the document contents and start from the single-file example linked by the guide. Follow its instructions to produce one `index.tsx`.

@@ -11,6 +11,8 @@ metadata:
 
 Build a local Altertable data app from the CLI scaffold only when explicitly requested. Use `build-data-app` for other Altertable data app requests. Apply `use-altertable` for shared platform context and `query-altertable` for source discovery and SQL verification.
 
+For apps involving product events, funnels, retention, sessions, journeys, or behavioral cohorts, apply [`analyze-product-behavior`](../analyze-product-behavior/SKILL.md) before designing metrics or queries.
+
 ## Read the authoring instructions
 
 Before authoring or changing source, **read [the data-app repository's AGENTS.md](https://github.com/altertable-ai/data-app/blob/main/AGENTS.md) and follow its links** for the local workflow. Retrieve the document contents and start from the CLI scaffold.
