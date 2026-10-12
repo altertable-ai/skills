@@ -23,11 +23,12 @@ Never infer a table or column from a plausible name. Fully qualify data as `cata
 ## Execute Deliberately
 
 1. Write DuckDB SQL using only inspected identifiers. SELECT only the columns the question named. Do not project anything they did not ask for.
-2. Add explicit time bounds and a small `LIMIT` during exploration.
-3. Use `validate_sql` when binding or syntax is uncertain.
-4. Use `explain_sql` before a potentially expensive scan or join.
-5. Run the statement with `query_lakehouse`.
-6. If the result is truncated, repeat the same statement with the returned offset. Include a deterministic `ORDER BY` before paginating.
+2. Always write `AS` before column and table aliases. DuckDB rejects a bare alias that is a keyword, and common names such as `cost`, `name`, `value`, `type`, `year`, `rows`, `first`, and `last` are keywords.
+3. Add explicit time bounds and a small `LIMIT` during exploration.
+4. Use `validate_sql` when binding or syntax is uncertain.
+5. Use `explain_sql` before a potentially expensive scan or join.
+6. Run the statement with `query_lakehouse`.
+7. If the result is truncated, repeat the same statement with the returned offset. Include a deterministic `ORDER BY` before paginating.
 
 Do not turn a read request into DDL or data modification. Mutating SQL requires explicit user intent and read-write access.
 
