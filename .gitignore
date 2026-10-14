@@ -76,3 +76,6 @@ dmypy.json
 node_modules/
 
 .complexipy_cache/
+
+# The whole repository ships as the Claude plugin; the directory holds files over 256 KiB
+uv.lock

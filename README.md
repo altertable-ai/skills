@@ -75,13 +75,7 @@ npx skills add altertable-ai/skills
 
 ## Optional Altertable CLI
 
-The marketplace plugin provides the skills and hosted MCP connection; it does not install the CLI. Install the CLI separately when you need terminal queries, ingestion, CI, or script-friendly output:
-
-```bash
-curl -fsSL https://install.altertable.ai | sh
-```
-
-See the [CLI guide](https://altertable.ai/docs/developer-tooling/cli) for setup and authentication, or the [CLI repository](https://github.com/altertable-ai/altertable-cli) for releases and the complete command reference.
+The marketplace plugin provides the skills and hosted MCP connection; it does not install the CLI. Install the CLI separately when you need terminal queries, ingestion, CI, or script-friendly output by following the [CLI guide](https://altertable.ai/docs/developer-tooling/cli), which also covers authentication. The [CLI repository](https://github.com/altertable-ai/altertable-cli) has releases and the complete command reference.
 
 ## Getting Started
 

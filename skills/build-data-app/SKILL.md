@@ -19,8 +19,8 @@ Before writing code, read [the data-app AGENTS.md](https://github.com/altertable
 Run every command with `run_sandbox_command` in one sandbox, and call `terminate_sandbox` when done. Its `altertable` CLI is already authenticated.
 
 1. Call `create_sandbox`. Keep the source at `/workspace/app/index.tsx`.
-2. New app: start from the example. Existing app: download its source first:
-   `altertable --json api "/environments/$ALTERTABLE_ENV/data_apps/<slug>" | jq -r .data_app.index_tsx > /workspace/app/index.tsx`
+2. New app: start from the example. Existing app: download its source first, passing the environment slug from `initialize`:
+   `altertable --json api --env <environment> "/environments/{environment}/data_apps/<slug>" | jq -r .data_app.index_tsx > /workspace/app/index.tsx`
 3. Write the app and verify its queries against live data. Make targeted edits (`rg`, `sed`, `python3`, `git apply`); never resend the whole file.
 4. Run `altertable app validate --file /workspace/app/index.tsx`. Fix errors and warnings until none remain.
 5. Save:

@@ -41,6 +41,7 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
+          cache-dependency-glob: pyproject.toml
 
       - name: Run pre-commit
         run: uv run pre-commit run --all-files
@@ -61,13 +62,13 @@ jobs:
 
       - name: Install Claude Code
         if: steps.changes.outputs.plugins == 'true'
-        run: curl -fsSL https://claude.ai/install.sh | bash -s 2.1.212
+        run: npm install --global @anthropic-ai/claude-code@2.1.285
 
       - name: Validate Claude plugin manifests
         if: steps.changes.outputs.plugins == 'true'
         run: |
-          ~/.local/bin/claude plugin validate .claude-plugin/plugin.json --strict
-          ~/.local/bin/claude plugin validate .claude-plugin/marketplace.json --strict
+          claude plugin validate .claude-plugin/plugin.json --strict
+          claude plugin validate .claude-plugin/marketplace.json --strict
 
   test:
     runs-on: ubuntu-latest
@@ -78,6 +79,7 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
+          cache-dependency-glob: pyproject.toml
 
       - name: Run tests with coverage
         run: uv run pytest scripts/tests/ -v --cov-report=term-missing --cov-report=xml
