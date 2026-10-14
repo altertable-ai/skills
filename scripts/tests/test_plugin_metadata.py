@@ -17,7 +17,11 @@ def shipped_text_files():
 
 
 def test_plugins_share_the_skill_bundle_and_mcp_configuration():
-    for path in (ROOT / ".codex-plugin" / "plugin.json", ROOT / ".cursor-plugin" / "plugin.json"):
+    for path in (
+        ROOT / ".claude-plugin" / "plugin.json",
+        ROOT / ".codex-plugin" / "plugin.json",
+        ROOT / ".cursor-plugin" / "plugin.json",
+    ):
         metadata = json.loads(path.read_text(encoding="utf-8"))
 
         assert metadata["name"] == "altertable"
