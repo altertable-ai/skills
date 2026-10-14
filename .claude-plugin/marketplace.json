@@ -5,14 +5,14 @@
   },
   "metadata": {
     "description": "Give Claude governed access to Altertable for querying, ingestion, product analytics, insights, data apps, automation, and findings.",
-    "version": "1.9.2"
+    "version": "1.9.3"
   },
   "plugins": [
     {
       "name": "altertable",
       "description": "Give Claude governed access to Altertable for querying, ingestion, product analytics, insights, data apps, automation, and findings.",
       "source": "./",
-      "version": "1.9.2"
+      "version": "1.9.3"
     }
   ]
 }
