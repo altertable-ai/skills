@@ -9,6 +9,7 @@
   },
   "repository": "https://github.com/altertable-ai/skills",
   "homepage": "https://altertable.ai",
+  "icon": "./assets/logo.png",
   "documentationUrl": "https://altertable.ai/docs",
   "supportUrl": "https://github.com/altertable-ai/skills/issues",
   "privacyPolicyUrl": "https://altertable.ai/privacy-policy",

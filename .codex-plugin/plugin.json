@@ -43,7 +43,8 @@
       "Use Altertable to explain this month's metrics with read-only DuckDB SQL.",
       "Use Altertable as the data source for an adoption and retention dashboard."
     ],
-    "composerIcon": "./assets/icon.png",
+    "composerIcon": "./assets/icon.svg",
+    "composerIconDark": "./assets/icon-dark.svg",
     "logo": "./assets/logo.png"
   }
 }
