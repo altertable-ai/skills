@@ -17,6 +17,7 @@ Altertable exposes managed tables and external sources through one governed Duck
 2. Call `get_catalog` for candidate schemas and tables. Start with its automatic or overview detail, then request specific tables or columns.
 3. Profile only selected tables when sampled null rates, cardinality, ranges, and frequent values will change the query.
 4. Prefer verified semantic measures and dimensions when they express the requested business definition. Treat unverified definitions cautiously and do not use excluded models.
+5. For a business KPI or metric, check `list_semantic_metrics` when available, before writing the aggregation yourself. Run the matching metric's returned `query` with `query_lakehouse`, and extend that query as the tool describes to break down or filter.
 
 Never infer a table or column from a plausible name. Fully qualify data as `catalog.schema.table` so environment defaults cannot redirect a query.
 
