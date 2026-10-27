@@ -1,0 +1,3 @@
+interface:
+  display_name: "Instrument product analytics"
+  short_description: "Add Altertable event tracking and user identification"

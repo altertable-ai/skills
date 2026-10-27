@@ -1,0 +1,3 @@
+interface:
+  display_name: "Ingest data"
+  short_description: "Load and synchronize data in Altertable"
