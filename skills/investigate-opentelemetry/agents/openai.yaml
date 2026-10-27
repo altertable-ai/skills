@@ -1,0 +1,3 @@
+interface:
+  display_name: "Investigate OpenTelemetry"
+  short_description: "Investigate logs and traces in Altertable with SQL"

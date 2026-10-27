@@ -99,3 +99,20 @@ def test_shared_mcp_configuration_uses_the_hosted_altertable_endpoint():
     assert mcp["mcpServers"]["altertable-mcp"]["url"].rstrip("/") == (
         "https://mcp.altertable.ai/mcp"
     )
+
+
+def test_all_skills_have_readable_display_metadata_and_stable_ids():
+    import yaml
+
+    for skill_file in sorted((ROOT / "skills").glob("*/SKILL.md")):
+        skill_dir = skill_file.parent
+        frontmatter = yaml.safe_load(skill_file.read_text(encoding="utf-8").split("---", 2)[1])
+        assert frontmatter["name"] == skill_dir.name
+
+        metadata_file = skill_dir / "agents" / "openai.yaml"
+        assert metadata_file.is_file(), f"{skill_dir.name} needs display metadata"
+        interface = yaml.safe_load(metadata_file.read_text(encoding="utf-8"))["interface"]
+        display_name = interface["display_name"]
+        assert display_name[0].isupper(), skill_dir.name
+        assert " " in display_name and "-" not in display_name, skill_dir.name
+        assert 25 <= len(interface["short_description"]) <= 64, skill_dir.name

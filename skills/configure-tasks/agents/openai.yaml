@@ -1,0 +1,3 @@
+interface:
+  display_name: "Configure tasks"
+  short_description: "Schedule Altertable tasks and deliver findings"
