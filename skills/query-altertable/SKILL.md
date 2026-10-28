@@ -13,9 +13,7 @@ Altertable exposes managed tables and external sources through one governed Duck
 
 ## Inspect Before Querying
 
-For a business metric or KPI, call `list_semantic_metrics` first. The tool is available to all organizations and lists metrics whose data the caller can read.
-
-Run a matching metric's returned `query` with `query_lakehouse`. Use `expression` only to explain the metric or distinguish definitions. Follow the tool's instructions to combine, break down, or filter metrics using the listed dimensions and supported columns. If no metric matches or it has no `query`, continue with catalog inspection below.
+For business metrics and KPIs, start with `list_semantic_metrics`. Run a matching metric's `query` with `query_lakehouse`; follow the tool's instructions for breakdowns, filters, or combinations. Use `expression` only to explain or distinguish metrics. If no metric matches or its `query` is absent, inspect catalogs below.
 
 1. Call `list_catalogs` to identify the available managed and external catalogs.
 2. Call `get_catalog` for candidate schemas and tables. Start with its automatic or overview detail, then request specific tables or columns.
