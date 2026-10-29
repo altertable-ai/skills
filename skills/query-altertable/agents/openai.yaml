@@ -1,0 +1,3 @@
+interface:
+  display_name: "Query Altertable"
+  short_description: "Inspect catalogs and query Altertable with DuckDB SQL"

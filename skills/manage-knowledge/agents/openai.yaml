@@ -1,0 +1,3 @@
+interface:
+  display_name: "Manage knowledge"
+  short_description: "Maintain Altertable memories and semantic model context"
