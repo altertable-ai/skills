@@ -54,7 +54,7 @@ Keep the Finding's structure: headings and paragraphs stay, markdown tables beco
 
 A metric's own app, rebuilt from the starter whenever the metric changes. Always build it from the starter, and when the user asks to edit it, say that the next metric change replaces the edit.
 
-Render only charts: no introductory text, headings, KPI cards, standalone numbers, or repeated metric metadata; drop the starter's text, widgets, and tables. Chart titles carry only the unit and the filters in the metric's expression; caveats go in chart descriptions or tooltips.
+Render only charts: no introductory text, headings, KPI cards, standalone numbers, tables, or repeated metric metadata. Chart titles carry only the unit and the filters in the metric's expression; caveats go in chart descriptions or tooltips.
 
 - Lead with one main chart; with a time dimension, choose an appropriate range and grain.
 - Add up to two charts that break the metric down by complementary business dimensions, fewer when none fit.
