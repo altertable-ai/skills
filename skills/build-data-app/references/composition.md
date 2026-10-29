@@ -48,7 +48,7 @@ Choose export datasets that support the app's purpose and preserve the displayed
 grain. Verify every exposed story and export against the displayed result.
 
 Respect the installed SDK's actual contracts. The current bound `DataApp` requires
-a story callback and a nonempty export dataset list. An empty story callback keeps
-a disabled presentation action; it does not remove the toolbar. Do not promise
+a story callback and a nonempty export dataset list. A story callback returning
+`[]` keeps a disabled presentation action; it does not remove the toolbar. Do not promise
 optional controls that the installed version does not support. Use the documented
 composition options until configurable frame support is available.

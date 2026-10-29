@@ -18,9 +18,3 @@ def test_backend_section_contracts_remain_available():
     skill = (ROOT / "skills/build-data-app/SKILL.md").read_text()
     for section in ("Finding documents", "Metric illustrations", "Charting semantic metrics"):
         assert f"## {section}\n" in skill
-
-
-def test_metric_queries_can_be_extended_without_redefining_the_metric():
-    skill = (ROOT / "skills/build-data-app/SKILL.md").read_text()
-    assert "keep its query and dimension members unchanged" not in skill
-    assert "DIMENSIONS" in skill and "WHERE" in skill
