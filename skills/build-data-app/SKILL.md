@@ -24,8 +24,8 @@ Use `query-altertable` to find and verify data, and `analyze-product-behavior` f
 
 ## Workflow
 
-1. Read the data-app `AGENTS.md` and follow its links to the guides and available starters the app needs: with `github_read` on `altertable-ai/data-app`, otherwise from `https://raw.githubusercontent.com/altertable-ai/data-app/main/<path>`.
-2. New app: select a release-matched hosted starter for the app's kind when the SDK provides one. Currently the shared boilerplate is `packages/data-app-examples/templates/starter-data-app/index.tsx`; adapt its content to the selected kind rather than treating its sample composition as required. Keep its client, styles, and mounting code, and replace its sample title, description, queries, and widgets with what the app's kind needs, since the saved app's title, description, and queries come from its `defineDataApp` call. Existing app: start from its current `index_tsx`; with only a slug, read it with `read_resource` on `altertable://ontology/entities/<slug>`.
+1. Read the data-app `AGENTS.md`, `docs/hosted-apps.md`, and the guides the app needs: with `github_read` on `altertable-ai/data-app`, otherwise from `https://raw.githubusercontent.com/altertable-ai/data-app/main/<path>`.
+2. New app: use a release-matched hosted starter for the app's kind when available; otherwise start from `packages/data-app-examples/templates/starter-data-app/index.tsx`, a shared boilerplate. Keep its client, styles, and mounting code, and replace its sample title, description, queries, and widgets with what the app's kind needs, since the saved app's title, description, and queries come from its `defineDataApp` call. Existing app: start from its current `index_tsx`; with only a slug, read it with `read_resource` on `altertable://ontology/entities/<slug>`.
 3. Confirm tables and columns with `get_catalog`. Run every query the app declares with `query_lakehouse` under a small `LIMIT`, and never declare a query you did not run.
 4. Call `validate_data_app` with the complete source until `errors` is empty.
 5. Save the validated source: `create_data_app` for a new app, `update_data_app` with its slug otherwise. Without a save tool, return the validated source.
@@ -45,9 +45,9 @@ Answer the user's question first, with as few focused views as the answer needs.
 
 ## Finding documents
 
-On the Finding page, this app replaces the Finding's text beneath its title and summary. Avoid repeating that title and summary in the body. Fit sections to the available column and let the parent page scroll; avoid full-height page layouts or a second document scrollbar. Tables and menus may retain their own scrolling. Preserve app identity for standalone viewing and use the SDK's supported host presentation behavior.
+The Finding page shows this app in place of the Finding's text, under its title and summary, in a narrow column that the page scrolls. Skip the title and summary in the body, stack sections in one column, and keep heights automatic: no full-height layouts or nested document scroll areas. Tables and menus may retain their own scrolling.
 
-Keep the Finding's structure: headings and paragraphs stay, markdown tables become data tables, and bold, code, and lists become tags. Keep it mostly text, and add a small chart only where it best shows a trend, distribution, or correlation. Make the reported value and its supporting evidence easy to follow without replacing the Finding's structure with a dashboard sequence.
+Keep the Finding's structure: headings and paragraphs stay, markdown tables become data tables, and bold, code, and lists become tags. Keep it mostly text, and add a small chart only where it best shows a trend, distribution, or correlation.
 
 - When the Finding is not in your context, read it with `read_resource` on its entity URI. It does not return the run's transcript or SQL: read the entities in its `context_slugs` and write the queries yourself.
 - When a transcript is supplied, its SQL is the starting point; drop failed or exploratory statements.
@@ -63,7 +63,7 @@ Render only charts: no introductory text, headings, KPI cards, standalone number
 
 ## Charting semantic metrics
 
-- `list_semantic_metrics` takes no arguments. Pick each metric from its output by name and layer. Preserve its semantic definition and exact metric and dimension member identifiers. Extend the supplied query with supported `DIMENSIONS`, `WHERE` filters, and time grain to produce trends or breakdowns; do not recompute the metric from raw tables. Its `data_app_slug` is on the metric entity, not in this list. When data is missing, never switch to a similar metric or another environment.
+- `list_semantic_metrics` takes no arguments. Pick each metric from its output by name and layer, and keep its semantic definition and metric and dimension member identifiers unchanged. Extend the supplied query with supported `DIMENSIONS`, `WHERE` filters, and time grain to produce trends or breakdowns; do not recompute the metric from raw tables. Its `data_app_slug` is on the metric entity, not in this list. When data is missing, never switch to a similar metric or another environment.
 - A plain SUM or COUNT adds up across groups and periods, so stacking and shares of the total are valid. Otherwise (distinct counts, ratios, averages, percentiles, min or max), compare groups against the overall value, and never stack, sum, chart a pie or a share of the total, or group a remainder as "Other".
 - For balances, snapshots, or running totals, show the latest value of each period, never a sum over time.
 - Label units, periods, grain, and active filters, and show missing values as gaps or "No data", never as zero.
