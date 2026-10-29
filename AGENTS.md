@@ -78,7 +78,7 @@ uv run pre-commit run --all-files
   </skill>
   <skill>
     <name>build-data-app</name>
-    <description>Creates, updates, and deletes Altertable-hosted data apps through MCP (beta). Use by default for any Altertable data app request; use build-local-data-app only when the user explicitly wants local development or a CLI scaffold.</description>
+    <description>Creates, updates, and deletes Altertable-hosted data apps through MCP (beta), including Finding documents and metric illustrations. Use by default for any Altertable data app request; use build-local-data-app only when the user explicitly wants local development or a CLI scaffold.</description>
   </skill>
   <skill>
     <name>build-insights</name>

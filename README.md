@@ -56,7 +56,7 @@ Ask in plain language:
 | [analyze-product-behavior](skills/analyze-product-behavior/) | Analyzes Altertable Product Analytics events, identities, web sessions, funnels, retention, segmentation, and saved segments |
 | [ask-altertable](skills/ask-altertable/) | Delegates analytical questions and follow-up investigations to the Altertable Agent |
 | [build-dashboards](skills/build-dashboards/) | Creates and updates persistent Altertable Dashboards composed of Insights, text, sections, variables, and grid positions |
-| [build-data-app](skills/build-data-app/) | Creates, updates, and deletes Altertable-hosted data apps through MCP (beta) |
+| [build-data-app](skills/build-data-app/) | Creates, updates, and deletes Altertable-hosted data apps through MCP (beta), including Finding documents and metric illustrations |
 | [build-insights](skills/build-insights/) | Renders, creates, updates, and explains Altertable Insights |
 | [build-local-data-app](skills/build-local-data-app/) | Builds and runs Altertable data apps locally with the CLI (beta) |
 | [configure-tasks](skills/configure-tasks/) | Creates and updates Altertable Tasks that run SQL, code, or AI work on a schedule |
