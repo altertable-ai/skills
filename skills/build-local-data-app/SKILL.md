@@ -13,6 +13,8 @@ Build Altertable data apps locally with the CLI, only when the user explicitly w
 
 Before writing code, read [the data-app AGENTS.md](https://github.com/altertable-ai/data-app/blob/main/AGENTS.md) and its links, then start from the CLI scaffold. Use `query-altertable` to find and verify data, and `analyze-product-behavior` for product analytics metrics.
 
+Use the shared [composition guidance](../build-data-app/references/composition.md) for the app's purpose. For a Finding document or metric illustration, also read the corresponding section of [build-data-app](../build-data-app/SKILL.md), including its semantic-metric guidance when applicable; keep the local CLI workflow below. Local versus hosted execution does not determine the content structure.
+
 ## Workflow
 
 Pass the same `--profile <profile>` to every `altertable` command.
