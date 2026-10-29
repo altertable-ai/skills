@@ -18,8 +18,6 @@ An app is one `index.tsx`. Follow the section for its kind, plus [Charting seman
 - [Finding documents](#finding-documents) present a Finding.
 - [Metric illustrations](#metric-illustrations) chart one semantic metric.
 
-For content structure, framing, and story/export choices, read [composition guidance](references/composition.md). SDK documentation owns component usage and constraints; this skill owns the use-case brief.
-
 Use `query-altertable` to find and verify data, and `analyze-product-behavior` for product analytics metrics.
 
 ## Workflow
@@ -39,9 +37,17 @@ Use `query-altertable` to find and verify data, and `analyze-product-behavior` f
 - Saving needs an analyst or read-write connection. On a read-only connection, say the app was not saved.
 - Call `delete_data_app` only when the user explicitly asks.
 
+## Framing, presentation, and export
+
+Keep app identity in the declaration, including when the app is embedded. Avoid repeating title, summary, or scope in the body when the containing page already supplies them. Use the SDK's supported frame configuration for the viewing surface.
+
+Explanatory prose does not require an SDK Present story. Add an authored presentation when it serves the request. Choose export datasets that support the app's purpose and preserve the displayed grain. Verify exposed stories and exports against the displayed result. Follow the SDK documentation for component selection, frame options, and story/export contracts.
+
 ## Standalone apps
 
 Answer the user's question first, with as few focused views as the answer needs. Tell a story of the strongest results only when the user asks for an analysis of a topic.
+
+For example, an investigation of signup conversion might show overall conversion, its trend, differences by funnel step or channel, then supporting counts and rates. Use only the parts that answer the request; this is not a required app layout.
 
 ## Finding documents
 
