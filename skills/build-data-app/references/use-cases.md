@@ -6,7 +6,7 @@ Use this guidance for hosted and local apps. Choose the app's kind from the requ
 - [Finding documents](#finding-documents) present a Finding.
 - [Metric illustrations](#metric-illustrations) chart one semantic metric.
 
-Follow the corresponding section below, plus [Charting semantic metrics](#charting-semantic-metrics) whenever the app shows a semantic metric.
+Follow the corresponding section below.
 
 ## Presentation and export
 
@@ -37,10 +37,3 @@ Render only charts: no introductory text, headings, KPI cards, standalone number
 
 - Lead with one main chart; with a time dimension, choose an appropriate range and grain.
 - Add up to two charts that break the metric down by complementary business dimensions, fewer when none fit.
-
-## Charting semantic metrics
-
-- `list_semantic_metrics` takes no arguments. Pick each metric from its output by name and layer, and keep its semantic definition and metric and dimension member identifiers unchanged. Extend the supplied query with supported `DIMENSIONS`, `WHERE` filters, and time grain to produce trends or breakdowns; do not recompute the metric from raw tables. Its `data_app_slug` is on the metric entity, not in this list. When data is missing, never switch to a similar metric or another environment.
-- A plain SUM or COUNT adds up across groups and periods, so stacking and shares of the total are valid. Otherwise (distinct counts, ratios, averages, percentiles, min or max), compare groups against the overall value, and never stack, sum, chart a pie or a share of the total, or group a remainder as "Other".
-- For balances, snapshots, or running totals, show the latest value of each period, never a sum over time.
-- Label units, periods, grain, and active filters, and show missing values as gaps or "No data", never as zero.

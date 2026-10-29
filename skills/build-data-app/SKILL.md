@@ -12,7 +12,7 @@ metadata:
 
 Build Altertable-hosted apps with the data app MCP tools, never with `create_sandbox` or `run_sandbox_command`. Use `build-local-data-app` only when the user explicitly wants local development or a CLI scaffold, including converting a hosted app to a local one.
 
-An app is one `index.tsx`. Read [Data-app use cases](references/use-cases.md) and follow its `Standalone apps`, `Finding documents`, or `Metric illustrations` section, plus `Charting semantic metrics` whenever the app shows a semantic metric.
+An app is one `index.tsx`. Read [Data-app use cases](references/use-cases.md) and follow its `Standalone apps`, `Finding documents`, or `Metric illustrations` section.
 
 Use `query-altertable` to find and verify data, and `analyze-product-behavior` for product analytics metrics.
 
