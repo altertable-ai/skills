@@ -1,6 +1,6 @@
 # Data-app use cases
 
-Use this guidance for hosted and local apps. Choose the app's kind from the request, independently of its execution workflow:
+Use this guidance for hosted and local data apps. Choose the app's kind from the request, independently of its execution workflow:
 
 - [Standalone apps](#standalone-apps) answer a user's request, including a request about a Finding or metric that does not edit the app it owns.
 - [Finding documents](#finding-documents) present a Finding.
