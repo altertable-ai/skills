@@ -6,7 +6,17 @@ Use this guidance for hosted and local apps. Choose the app's kind from the requ
 - [Finding documents](#finding-documents) present a Finding.
 - [Metric illustrations](#metric-illustrations) chart one semantic metric.
 
-Follow the corresponding section below.
+Follow the corresponding section below. Select the starter for the app's kind and execution mode:
+
+| Use case | Hosted | Local |
+| --- | --- | --- |
+| Standalone | `starter-data-app/index.tsx` | `starter-local-data-app/` |
+| Finding document | `starter-finding-data-app/index.tsx` | `starter-local-finding-data-app/` |
+| Metric illustration | `starter-metric-data-app/index.tsx` | `starter-local-metric-data-app/` |
+
+Paths are relative to `packages/data-app-examples/templates/` in the SDK repository or `templates/` in a release-matched `@altertable/data-app-examples` package. Use only starters available in the target SDK version; otherwise adapt that version's shared runtime starter. Replace fixture queries and content with verified evidence. Keep declared app identity even when the host omits its header.
+
+The metric and Finding starters omit page actions and presentation/export configuration. Enable those features only when the app brief needs them, using the installed SDK's supported props.
 
 ## Presentation and export
 
