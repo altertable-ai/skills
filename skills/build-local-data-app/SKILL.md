@@ -13,12 +13,14 @@ Build Altertable data apps locally with the CLI, only when the user explicitly w
 
 Before writing code, read [the data-app AGENTS.md](https://github.com/altertable-ai/data-app/blob/main/AGENTS.md) and its links, then start from the CLI scaffold. Use `query-altertable` to find and verify data, and `analyze-product-behavior` for product analytics metrics.
 
+Follow [Data-app use cases](../build-data-app/references/use-cases.md) for content guidance, and the local CLI workflow below to build and run the app.
+
 ## Workflow
 
 Pass the same `--profile <profile>` to every `altertable` command.
 
 1. Run `altertable profile show` to confirm the organization and environment, and `altertable app --help` for available commands.
-2. New app: `altertable app create <name> --dir <path>`. Existing app: read its source first.
+2. New app: `altertable app create <name> --dir <path>`. Preserve the CLI-configured identity, scope, credentials, and server/client wiring. Do not assume a starter-selection flag exists; check the CLI help. Existing app: read its source first.
 3. Write the app and verify its queries against live data. Define check inputs that exercise those queries.
 4. Run `altertable app check --dir <path>`, then again with `--lakehouse` to run against live data. Fix failures until both pass.
 5. Run `altertable app dev --dir <path>`.
