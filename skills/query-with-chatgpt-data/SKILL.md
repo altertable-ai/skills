@@ -14,7 +14,7 @@ Altertable supplies governed catalogs, semantic context, and query evidence; Cha
 ## Read-Only Workflow
 
 1. Follow the inspection, validation, and execution procedure in `query-altertable`.
-2. Prefer verified semantic measures and dimensions. Avoid excluded models and personally identifiable sample values.
+2. Avoid personally identifiable sample values.
 3. Write bounded DuckDB SQL with fully qualified `catalog.schema.table` names and explicit date ranges.
 4. Run focused corroborating queries when needed to test likely drivers or data-quality concerns.
 5. Return the metric definition, date range, sources, SQL or query description, results, and unsupported conclusions to ChatGPT Data.
