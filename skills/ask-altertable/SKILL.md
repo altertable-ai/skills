@@ -30,7 +30,7 @@ When a request combines analysis with persistence, use `ask` for the analysis an
 
 ## Guardrails
 
-- Preserve the user's timeframe, timezone, metric definition, and requested scope in the delegated prompt.
+- Preserve the user's timeframe, timezone, metric definition, and requested scope, and any table or catalog they named, in the delegated prompt.
 - Do not start a new chat for every follow-up; continuity is the purpose of `chat_id`.
 - Do not present the Altertable Agent's assumptions as established facts.
 - If `ask` reports missing context or ambiguous data, surface that limitation or continue the same chat with the necessary clarification.
