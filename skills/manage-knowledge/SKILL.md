@@ -46,5 +46,6 @@ Descriptions should state business meaning, grain, ownership, and known caveats.
 
 - Do not store secrets or sensitive row values in any context layer.
 - Do not duplicate a semantic definition as a memory.
+- Do not record which tables to prefer or avoid as a memory or knowledge entry. Endorsement status on the table or catalog carries that into discovery for every agent.
 - Do not turn one unverified query result into durable organizational context.
 - Do not overwrite maintained knowledge to resolve a temporary contradiction; surface the conflict.
