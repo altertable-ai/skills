@@ -20,7 +20,7 @@ Follow [Data-app use cases](../build-data-app/references/use-cases.md) for conte
 Pass the same `--profile <profile>` to every `altertable` command.
 
 1. Run `altertable profile show` to confirm the organization and environment, and `altertable app --help` for available commands.
-2. New app: `altertable app create <name> --dir <path>`. Preserve the CLI-configured identity, scope, credentials, and server/client wiring. Do not assume a starter-selection flag exists; check the CLI help. Existing app: read its source first.
+2. New app: `altertable app create <name> --dir <path>`. Keep the scaffold's generated app identity, scope, and configuration as created. Do not assume a starter-selection flag exists; check the CLI help. Existing app: read its source first.
 3. Write the app and verify its queries against live data. Define check inputs that exercise those queries.
 4. Run `altertable app check --dir <path>`, then again with `--lakehouse` to run against live data. Fix failures until both pass.
 5. Run `altertable app dev --dir <path>`.

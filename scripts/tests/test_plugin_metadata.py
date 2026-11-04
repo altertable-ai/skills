@@ -83,6 +83,21 @@ def test_skills_do_not_forward_environment_variables_to_altertable():
     assert offenders == []
 
 
+def test_skills_do_not_pair_credentials_with_server_wiring_or_headers():
+    # The Claude directory scanner reads such sentences as forwarding the
+    # installer's credential to a server and holds the release for review.
+    sentence = re.compile(r"[^.\n]*\b(credentials?|tokens?|api keys?)\b[^.\n]*", re.IGNORECASE)
+    transport = re.compile(r"\b(server|headers?|wiring)\b", re.IGNORECASE)
+    offenders = [
+        f"{path.relative_to(ROOT)}: {match.group(0).strip()}"
+        for path in (ROOT / "skills").rglob("*.md")
+        for match in sentence.finditer(path.read_text(encoding="utf-8"))
+        if transport.search(match.group(0))
+    ]
+
+    assert offenders == []
+
+
 def test_cursor_marketplace_points_to_the_root_plugin():
     marketplace = json.loads(
         (ROOT / ".cursor-plugin" / "marketplace.json").read_text(encoding="utf-8")
