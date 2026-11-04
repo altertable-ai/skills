@@ -38,7 +38,7 @@ Never summarize, synthesize, translate, reformat, or infer organization-wide kno
 
 ## Document Semantic Models
 
-Use `document_semantic_model` for a table-level natural-language description and `document_semantic_model_dimension` for a specific dimension. Retrieve the catalog first and pass the exact catalog, schema, table, and projection names.
+Use `document_semantic_model` for a table-level natural-language description and `document_semantic_model_dimension` for a specific dimension. Retrieve the catalog first and use the exact catalog, schema, table, and projection names.
 
 Descriptions should state business meaning, grain, ownership, and known caveats. Do not encode a governed calculation only in prose when it belongs in a measure, dimension, filter, or relation definition.
 
