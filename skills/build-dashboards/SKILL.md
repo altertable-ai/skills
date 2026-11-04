@@ -23,7 +23,7 @@ Keep dashboard copy concise. Use text widgets only for context needed to interpr
 
 1. Confirm the intended environment and write scope.
 2. Use `list_insights` and `read_resource` at `altertable://ontology/entities/{slug}` to inspect saved analyses. Verify a saved Insight by passing its slug as `insight` to `render_insight` on a user-facing surface, or to `execute_insight` when no viewer should be attached. Build or repair missing Insights before laying them out.
-3. Use `list_dashboards` to discover saved dashboards. Without a query it returns metadata ordered by popularity; pass `query` to filter by title or description. Before changing one, read its full definition with `read_resource` at `altertable://ontology/entities/{slug}`. Preserve widgets and variables the user did not ask to replace.
+3. Use `list_dashboards` to discover saved dashboards. Without a query it returns metadata ordered by popularity; set `query` to filter by title or description. Before changing one, read its full definition with `read_resource` at `altertable://ontology/entities/{slug}`. Preserve widgets and variables the user did not ask to replace.
 4. Define the audience, operating question, refresh cadence, and shared filters.
 5. Arrange the most decision-relevant metrics first, followed by drivers and diagnostic detail.
 6. Call `create_dashboard` for an explicitly requested new dashboard, or `update_dashboard` for an existing slug.
