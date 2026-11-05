@@ -3,7 +3,7 @@
 Use this guidance for hosted and local data apps. Choose the app's kind from the request, independently of its execution workflow:
 
 - [Standalone apps](#standalone-apps) answer a user's request, including a request about a Finding or metric that does not edit the app it owns.
-- [Finding documents](#finding-documents) present a Finding.
+- [Finding explorations](#finding-explorations) let readers explore the evidence behind a Finding.
 - [Metric illustrations](#metric-illustrations) chart one semantic metric.
 
 Follow the corresponding section below. Select the starter for the app's kind and execution mode:
@@ -11,7 +11,7 @@ Follow the corresponding section below. Select the starter for the app's kind an
 | Use case | Hosted | Local |
 | --- | --- | --- |
 | Standalone | `starter-data-app/index.tsx` | `starter-local-data-app/` |
-| Finding document | `starter-finding-data-app/index.tsx` | `starter-local-finding-data-app/` |
+| Finding exploration | `starter-finding-data-app/index.tsx` | `starter-local-finding-data-app/` |
 | Metric illustration | `starter-metric-data-app/index.tsx` | `starter-local-metric-data-app/` |
 
 Paths are relative to `packages/data-app-examples/templates/` in the SDK repository or `templates/` in a release-matched `@altertable/data-app-examples` package. Use only starters available in the target SDK version; otherwise adapt that version's shared runtime starter. The metric and Finding examples use demo objects seeded by the SDK mock, including a semantic view for the metric starter. Replace those queries and content with verified evidence from the requested metric or Finding; never create demo objects in the user's lakehouse. Keep the app's declared identity even when the host does not provide one.
@@ -30,14 +30,21 @@ Answer the user's question first, with as few focused views as the answer needs.
 
 For example, an investigation of signup conversion might show overall conversion, its trend, differences by funnel step or channel, then supporting counts and rates. Use only the parts that answer the request; this is not a required app layout.
 
-## Finding documents
+## Finding explorations
 
-The Finding page shows this app in place of the Finding's text, under its title and summary, in a narrow column that the page scrolls. Skip the title and summary in the body, stack sections in one column, and keep heights automatic: no full-height layouts or nested document scroll areas. Tables and menus may retain their own scrolling.
+The Finding page shows this app below the Finding's title, summary, and text. The app lets the reader check and dig into the Finding. Limit prose to chart titles, captions, and caveats.
 
-Keep the Finding's structure: headings and paragraphs stay, markdown tables become data tables, and bold, code, and lists become tags. Keep it mostly text, and add a small chart only where it best shows a trend, distribution, or correlation.
+The default view reproduces the Finding's scope, period, grain, and headline numbers; if it disagrees with the Finding, fix the queries. Then, where the data supports them, add controls that drive the queries through variables:
+
+- the time range or grain around the event;
+- a breakdown by the Finding's dimensions;
+- a comparison with a baseline, such as the previous period or expected value;
+- the underlying rows.
+
+Unless the user asks for more, stay on the Finding's own metric and entities, with one primary view and at most three breakdowns.
 
 - When the Finding is not in your context, read it with `read_resource` on its entity URI. It does not return the run's transcript or SQL: read the entities in its `context_slugs` and write the queries yourself.
-- When a transcript is supplied, its SQL is the starting point; drop failed or exploratory statements.
+- When a transcript is supplied, its SQL is the starting point; parameterize it for the controls and drop failed or exploratory statements.
 
 ## Metric illustrations
 
