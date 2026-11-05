@@ -34,7 +34,7 @@ For example, an investigation of signup conversion might show overall conversion
 
 The Finding page shows this app below the Finding's title, summary, and text. The app lets the reader check and dig into the Finding. Limit prose to chart titles, captions, and caveats.
 
-The default view reproduces the Finding's scope, period, grain, and headline numbers; if it disagrees with the Finding, fix the queries. Then, where the data supports them, add controls that drive the queries through variables:
+The default view reproduces the Finding's scope, grain, and headline numbers over the Finding's own dates. Set the default date range to those fixed dates, never to a range relative to today, so the app keeps opening on the Finding's period. If the default view disagrees with the Finding, fix the queries. Then, where the data supports them, add controls that drive the queries through variables:
 
 - the time range or grain around the event;
 - a breakdown by the Finding's dimensions;
