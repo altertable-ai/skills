@@ -29,6 +29,29 @@ opentelemetry.main.spans
 
 Start with the smallest useful query: time range, environment, service or deployment, then error/trace filters.
 
+Spans and logs are wide: `attributes`, `resource_attributes`, and the span `events` and `links` hold large VARIANT payloads. Never `SELECT *` from them. Select only the columns the question needs, and extract single attributes with `variant_extract`.
+
+## Aggregate First
+
+Count, rate, and rank in SQL over the whole window before reading any rows. A few rows of a busy service rarely contain the incident:
+
+```sql
+SELECT
+  service_name,
+  date_trunc('minute', start_time) AS minute,
+  count(*) AS spans,
+  count(*) FILTER (WHERE status_code = 'STATUS_CODE_ERROR') AS errors,
+  quantile_cont(duration_ns / 1e6, 0.95) AS p95_ms
+FROM opentelemetry.main.spans
+WHERE start_time >= now() - INTERVAL '1 hour'
+  AND variant_extract(resource_attributes, 'env') = 'production'
+GROUP BY ALL
+ORDER BY errors DESC, minute
+LIMIT 50;
+```
+
+Then fetch a few example rows or trace IDs from the windows the aggregate points to.
+
 ## Filter Attributes
 
 Resource attributes are stored in `resource_attributes` VARIANT. Span/log attributes are stored in `attributes` VARIANT.
@@ -63,25 +86,27 @@ message @@ 'error'
 Use `timestamp` for log time filters:
 
 ```sql
-SELECT *
+SELECT timestamp, severity_text, trace_id, message
 FROM opentelemetry.main.logs
 WHERE timestamp >= now() - INTERVAL '1 hour'
   AND variant_extract(resource_attributes, 'env') = 'production'
   AND service_name = 'api'
+  AND severity_number >= 17
 ORDER BY timestamp DESC
-LIMIT 500;
+LIMIT 20;
 ```
 
 Use `start_time` for trace time filters:
 
 ```sql
-SELECT *
+SELECT start_time, trace_id, span_id, name, status_code, duration_ns / 1e6 AS duration_ms
 FROM opentelemetry.main.spans
 WHERE start_time >= now() - INTERVAL '1 hour'
   AND variant_extract(resource_attributes, 'env') = 'production'
   AND service_name = 'api'
+  AND status_code = 'STATUS_CODE_ERROR'
 ORDER BY start_time DESC
-LIMIT 100;
+LIMIT 20;
 ```
 
 ## Pivot by Trace ID
@@ -89,14 +114,14 @@ LIMIT 100;
 Pivot by `trace_id` when available:
 
 ```sql
-SELECT *
+SELECT start_time, span_id, parent_span_id, service_name, name, status_code, status_message, duration_ns / 1e6 AS duration_ms
 FROM opentelemetry.main.spans
 WHERE trace_id = '<trace-id>'
 ORDER BY start_time ASC;
 ```
 
 ```sql
-SELECT *
+SELECT timestamp, span_id, service_name, severity_text, message
 FROM opentelemetry.main.logs
 WHERE trace_id = '<trace-id>'
 ORDER BY timestamp ASC;
