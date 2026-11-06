@@ -1,6 +1,6 @@
 ---
 name: build-data-app
-description: "Creates, updates, and deletes Altertable-hosted data apps through MCP (beta), including Finding documents and metric illustrations. Use by default for any Altertable data app request; use build-local-data-app only when the user explicitly wants local development or a CLI scaffold."
+description: "Creates, updates, and deletes Altertable-hosted data apps through MCP (beta), including Finding explorations and metric illustrations. Use by default for any Altertable data app request; use build-local-data-app only when the user explicitly wants local development or a CLI scaffold."
 compatibility: Requires the Altertable MCP server
 metadata:
   author: Altertable
@@ -12,7 +12,7 @@ metadata:
 
 Build Altertable-hosted apps with the data app MCP tools, never with `create_sandbox` or `run_sandbox_command`. Use `build-local-data-app` only when the user explicitly wants local development or a CLI scaffold, including converting a hosted app to a local one.
 
-An app is one `index.tsx`. Read [Data-app use cases](references/use-cases.md) and follow its `Standalone apps`, `Finding documents`, or `Metric illustrations` section.
+An app is one `index.tsx`. Read [Data-app use cases](references/use-cases.md) and follow its `Standalone apps`, `Finding explorations`, or `Metric illustrations` section.
 
 Use `query-altertable` to find and verify data, and `analyze-product-behavior` for product analytics metrics.
 
