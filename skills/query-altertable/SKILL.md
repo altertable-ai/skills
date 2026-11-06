@@ -32,9 +32,18 @@ Never infer a table or column from a plausible name. Fully qualify data as `cata
 6. Use `validate_sql` when binding or syntax is uncertain.
 7. Use `explain_sql` before a potentially expensive scan or join.
 8. Run the statement with `query_lakehouse`.
-9. If the result is truncated, repeat the same statement with the returned offset. Include a deterministic `ORDER BY` before paginating.
 
 Do not turn a read request into DDL or data modification. Mutating SQL requires explicit user intent and read-write access.
+
+## Keep Results Small
+
+Every returned row enters the conversation and is reread on each later turn. Return the smallest result that answers the question.
+
+- Compute totals, rates, baselines, percentiles, rankings, and joins in SQL over the full relevant population. Never fetch raw rows to count, rank, or scan them yourself.
+- Fetch raw rows only as a few targeted examples or IDs, with filters, a deterministic `ORDER BY`, and `LIMIT`. Avoid `SELECT *` on wide tables such as spans, logs, and events.
+- A truncated or limited result is a preview, not the population: the first rows say nothing about the rest. When `query_lakehouse` reports truncation, aggregate, narrow, or project instead of paging. Paginate with the returned offset only to return a specific page that was asked for, after a deterministic `ORDER BY`.
+- When it matters, state the population analyzed (filters, time window, row count) separately from the rows shown.
+- For a full export, such as every row as CSV, keep the rows out of the conversation. Run `count(*)` over the export query, then give the row count and the exact [Altertable CLI](https://altertable.ai/docs/developer-tooling/cli) command, `altertable query --format csv --output <file> "<SQL>"`. Use `--format parquet` for typed columns.
 
 ## Altertable-Specific SQL
 
