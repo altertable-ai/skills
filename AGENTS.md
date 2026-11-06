@@ -39,12 +39,13 @@ There is no mandatory body outline. Start from [the template](templates/SKILL_TE
 
 ## Updating the Repository
 
-1. Read the affected skill, nearby tests, and current Altertable documentation.
-2. Add or update a behavior-level portfolio test and observe it fail before changing shipped content.
-3. Make the smallest coherent skill and metadata changes.
-4. When skill names or descriptions change, run `uv run python scripts/sync-agents-md.py`. The Available Skills sections below and in `README.md` are generated from skill frontmatter; do not edit those inventories manually.
-5. If the portfolio's advertised scope changes, keep `.claude-plugin`, `.codex-plugin/plugin.json`, and `.cursor-plugin` descriptions aligned.
-6. Run the complete validation commands before committing.
+1. Read the affected skill and current Altertable documentation.
+2. Make the smallest coherent skill and metadata changes.
+3. When skill names or descriptions change, run `uv run python scripts/sync-agents-md.py`. The Available Skills sections below and in `README.md` are generated from skill frontmatter; do not edit those inventories manually.
+4. If the portfolio's advertised scope changes, keep `.claude-plugin`, `.codex-plugin/plugin.json`, and `.cursor-plugin` descriptions aligned.
+5. Run the complete validation commands before committing.
+
+Do not add tests that assert a skill's wording, phrases, or example SQL. Such tests only restate the edit and break on every rewrite; the validator and the LLM scorer judge skill content. `scripts/tests/` covers the repository's scripts and metadata.
 
 The marketplace plugin provides skills and hosted MCP access; it does not install the Altertable CLI. The CLI is optional and installed separately for terminal, CI, ingestion, or structured-output workflows. Link to the [CLI guide](https://altertable.ai/docs/developer-tooling/cli) for setup and the [CLI repository](https://github.com/altertable-ai/altertable-cli) for releases and its command contract. Do not run an installer unless the user explicitly asks.
 
