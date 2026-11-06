@@ -1,4 +1,3 @@
-import os
 import subprocess
 import sys
 import tempfile
@@ -41,7 +40,7 @@ def test_validate_only_works_without_litellm():
         f.write("import sys; sys.modules['litellm'] = None\n")
         startup = f.name
 
-    env = {**os.environ, "PYTHONSTARTUP": startup}
+    env = {"PYTHONSTARTUP": startup}
     result = _run_score(SAMPLE_SKILL, "--validate_only", env=env)
 
     assert result.returncode == 0, result.stderr
