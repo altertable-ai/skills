@@ -1,0 +1,3 @@
+interface:
+  display_name: "Use semantic layer"
+  short_description: "Query governed metrics through Altertable semantic views"

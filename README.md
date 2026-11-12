@@ -67,6 +67,7 @@ Ask in plain language:
 | [query-altertable](skills/query-altertable/) | Inspects Altertable catalogs and runs controlled DuckDB SQL across managed and external data |
 | [query-with-chatgpt-data](skills/query-with-chatgpt-data/) | Use when ChatGPT Work's @Data agent, the ChatGPT Data agent, or a Codex workflow coordinating with @Data needs Altertable as a governed read-only source |
 | [use-altertable](skills/use-altertable/) | Provides Altertable's foundational operating model, environment and catalog concepts, DuckDB conventions, and MCP-versus-CLI choices |
+| [use-semantic-layer](skills/use-semantic-layer/) | Discovers, queries, verifies, and creates Altertable semantic views with SEMANTIC_VIEW(...) and AGG(...), including breakdowns, metric filters, period-over-period, running totals, and fan-out-safe metrics across joined tables |
 
 ## Optional CLI
 
