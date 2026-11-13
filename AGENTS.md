@@ -121,4 +121,8 @@ uv run pre-commit run --all-files
     <name>use-altertable</name>
     <description>Provides Altertable&#x27;s foundational operating model, environment and catalog concepts, DuckDB conventions, and MCP-versus-CLI choices. Use for platform orientation, setup, tool selection, or any Altertable workflow needing shared context.</description>
   </skill>
+  <skill>
+    <name>use-semantic-layer</name>
+    <description>Discovers, queries, verifies, and creates Altertable semantic views with SEMANTIC_VIEW(...) and AGG(...), including breakdowns, metric filters, period-over-period, running totals, and fan-out-safe metrics across joined tables. Use for governed metrics and KPIs, defining reusable metrics, or Snowflake semantic view syntax.</description>
+  </skill>
 </available_skills>

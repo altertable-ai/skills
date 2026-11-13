@@ -13,7 +13,7 @@ Altertable exposes managed tables and external sources through one governed Duck
 
 ## Inspect Before Querying
 
-For business metrics and KPIs, start with `list_semantic_metrics`. Run a matching metric's `query` with `query_lakehouse`; follow the tool's instructions for breakdowns, filters, or combinations. Use `expression` only to explain or distinguish metrics. If no metrics match, continue below.
+For business metrics and KPIs, start with `list_semantic_metrics`. When a metric matches, query its semantic view with the `use-semantic-layer` skill rather than rebuilding the aggregation. Use `expression` only to explain or distinguish metrics. If no metrics match, continue below.
 
 1. Call `list_catalogs` to identify the available managed and external catalogs.
 2. Call `get_catalog` for candidate schemas and tables. Start with its automatic or overview detail, then request specific tables or columns.
@@ -53,6 +53,7 @@ Altertable extends DuckDB with operators and catalog features for event streams,
 - `SESSIONIZE` groups ordered rows when consecutive events are separated by more than an inactivity gap. It can preserve each event with session metadata or return one row per session with measures. It is beta.
 - Full-text search indexes free-form text with `TNVYX` and queries it with `@@`. Combine it with structured and time predicates to narrow logs, traces, tickets, documents, or event text.
 - Time travel reads full table state at a snapshot version or timestamp. Data change feeds return row-level inserts, updates, and deletions between bounds; committed transactions create the snapshots shared by both.
+- Semantic views (`SEMANTIC_VIEW(...)`, `AGG(...)`) compute governed metrics at their own grain without fan-out; the `use-semantic-layer` skill covers them.
 - Views and macros store reusable query logic. Partitioning and sorted tables shape new writes; `OPTIMIZE TABLE` rewrites existing files to compact them and apply the current layout.
 
 Use `search_docs` when you need detailed syntax or semantics, especially for beta operators and persistent catalog changes.
