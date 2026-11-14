@@ -28,10 +28,12 @@ Never infer a table or column from a plausible name. Fully qualify data as `cata
 2. Always write `AS` before column and table aliases. DuckDB rejects a bare alias that is a keyword, and common names such as `cost`, `name`, `value`, `type`, `year`, `rows`, `first`, and `last` are keywords.
 3. Cast every named parameter explicitly, as in `$member::VARCHAR` and `$org::VARCHAR`. DuckDB cannot always infer their types. Bind them through `query_lakehouse` `params`.
 4. Parenthesize `->>` before `=`. `properties->>'x' = $org` is misparsed because `->>` binds next to `=`. Write `(properties->>'x') = $org::VARCHAR`.
-5. Add explicit time bounds and a small `LIMIT` during exploration.
-6. Use `validate_sql` when binding or syntax is uncertain.
-7. Use `explain_sql` before a potentially expensive scan or join.
-8. Run the statement with `query_lakehouse`.
+5. Quote a JSON key that starts with `$` or contains `.` or `[`. DuckDB reads `$` as the JSONPath root, so `properties->>'$utm_source'` fails with `JSON path error near 'utm_source'`. Write `json_extract_string(properties, '$."$utm_source"')`.
+6. Name every `GROUP BY` column when that `SELECT` also uses `QUALIFY`. `GROUP BY ALL` in that query fails with `Combining QUALIFY with GROUP BY ALL is not supported yet`.
+7. Add explicit time bounds and a small `LIMIT` during exploration.
+8. Use `validate_sql` when binding or syntax is uncertain.
+9. Use `explain_sql` before a potentially expensive scan or join. Queries run under a default timeout, and scanning too much data can reach it. On a timeout, narrow the time window, filters, or projected columns instead of rerunning the same statement.
+10. Run the statement with `query_lakehouse`.
 
 Do not turn a read request into DDL or data modification. Mutating SQL requires explicit user intent and read-write access.
 
