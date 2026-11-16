@@ -30,6 +30,10 @@ The built-in catalog commonly contains:
 
 Inspect the environment because enabled views and columns can evolve. Use raw tables to verify ingestion and resolved views for person-level analysis unless the question explicitly needs raw identity semantics.
 
+Some `properties` keys start with `$`, such as `$utm_source`. DuckDB reads `$` as the JSONPath root, so `properties->>'$utm_source'` fails with `JSON path error near 'utm_source'`. For UTM, referrer, and device breakdowns, use inspected `web_pageviews` columns. When the value lives only in `properties`, quote the key: `json_extract_string(properties, '$."$utm_source"')`. Quote any key that contains `.` or `[` the same way.
+
+Treat `distinct_id`, `anonymous_id`, `session_id`, and `device_id` as opaque text. Their values are not always UUIDs, so do not cast them to `UUID`.
+
 ## Web, Funnel, and Segment Semantics
 
 - Use `web_sessions` for session-level volume and engagement, and `web_pageviews` for page-level paths, landing or exit pages, referrers, UTM attribution, and device or geography breakdowns. Inspect the current columns instead of assuming a session timeout or attribution rule.
