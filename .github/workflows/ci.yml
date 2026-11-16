@@ -59,6 +59,7 @@ jobs:
           filters: |
             plugins:
               - '.claude-plugin/**'
+              - 'plugins/altertable/.claude-plugin/**'
 
       - name: Install Claude Code
         if: steps.changes.outputs.plugins == 'true'
@@ -67,7 +68,7 @@ jobs:
       - name: Validate Claude plugin manifests
         if: steps.changes.outputs.plugins == 'true'
         run: |
-          claude plugin validate .claude-plugin/plugin.json --strict
+          claude plugin validate plugins/altertable/.claude-plugin/plugin.json --strict
           claude plugin validate .claude-plugin/marketplace.json --strict
 
   test:

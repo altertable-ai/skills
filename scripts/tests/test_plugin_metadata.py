@@ -4,23 +4,72 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+PLUGIN = ROOT / "plugins" / "altertable"
+PLUGIN_SOURCE = "./plugins/altertable"
+
+# The Claude directory only accepts these file types from organizations that aren't Verified.
+DIRECTORY_ALLOWED_SUFFIXES = {
+    ".md",
+    ".txt",
+    ".json",
+    ".yaml",
+    ".yml",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".webp",
+    ".ico",
+}
+DIRECTORY_ALLOWED_NAMES = {"LICENSE"}
 
 
-def shipped_text_files():
+def shipped_files():
     tracked = subprocess.run(
-        ["git", "ls-files"], cwd=ROOT, capture_output=True, text=True, check=True
+        ["git", "ls-files", "--", PLUGIN.relative_to(ROOT).as_posix()],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
     ).stdout.splitlines()
     for name in tracked:
         path = ROOT / name
-        if path.suffix != ".png" and path.is_file():
+        if path.is_file():
             yield path
+
+
+def shipped_text_files():
+    for path in shipped_files():
+        if path.suffix != ".png":
+            yield path
+
+
+def test_plugin_folder_ships_only_file_types_the_directory_accepts():
+    offenders = [
+        str(path.relative_to(ROOT))
+        for path in shipped_files()
+        if path.suffix.lower() not in DIRECTORY_ALLOWED_SUFFIXES
+        and path.name not in DIRECTORY_ALLOWED_NAMES
+    ]
+
+    assert offenders == []
+
+
+def test_plugin_folder_ships_no_executable_scripts():
+    offenders = [
+        str(path.relative_to(ROOT))
+        for path in shipped_text_files()
+        if path.read_bytes().startswith(b"#!")
+    ]
+
+    assert offenders == []
 
 
 def test_plugins_share_the_skill_bundle_and_mcp_configuration():
     for path in (
-        ROOT / ".claude-plugin" / "plugin.json",
-        ROOT / ".codex-plugin" / "plugin.json",
-        ROOT / ".cursor-plugin" / "plugin.json",
+        PLUGIN / ".claude-plugin" / "plugin.json",
+        PLUGIN / ".codex-plugin" / "plugin.json",
+        PLUGIN / ".cursor-plugin" / "plugin.json",
     ):
         metadata = json.loads(path.read_text(encoding="utf-8"))
 
@@ -29,8 +78,39 @@ def test_plugins_share_the_skill_bundle_and_mcp_configuration():
         assert metadata["mcpServers"] == "./.mcp.json"
 
 
+def test_plugin_manifest_assets_exist_inside_the_plugin_folder():
+    claude = json.loads((PLUGIN / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
+    codex = json.loads((PLUGIN / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
+    cursor = json.loads((PLUGIN / ".cursor-plugin" / "plugin.json").read_text(encoding="utf-8"))
+
+    assets = [
+        claude["icon"],
+        cursor["logo"],
+        *(codex["interface"][key] for key in ("composerIcon", "composerIconDark", "logo")),
+    ]
+    for asset in assets:
+        assert (PLUGIN / asset).resolve().is_file(), asset
+        assert (PLUGIN / asset).resolve().is_relative_to(PLUGIN), asset
+
+
+def test_marketplaces_point_to_the_plugin_folder():
+    claude = json.loads((ROOT / ".claude-plugin" / "marketplace.json").read_text(encoding="utf-8"))
+    cursor = json.loads((ROOT / ".cursor-plugin" / "marketplace.json").read_text(encoding="utf-8"))
+    codex = json.loads(
+        (ROOT / ".agents" / "plugins" / "marketplace.json").read_text(encoding="utf-8")
+    )
+
+    for marketplace in (claude, cursor, codex):
+        assert marketplace["name"] == "altertable-ai"
+        assert marketplace["plugins"][0]["name"] == "altertable"
+
+    assert claude["plugins"][0]["source"] == PLUGIN_SOURCE
+    assert cursor["plugins"][0]["source"] == PLUGIN_SOURCE
+    assert codex["plugins"][0]["source"]["path"] == PLUGIN_SOURCE
+
+
 def test_claude_plugin_metadata_keeps_the_current_findings_scope():
-    metadata = json.loads((ROOT / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
+    metadata = json.loads((PLUGIN / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
 
     assert metadata["name"] == "altertable"
     assert "findings" in metadata["description"].lower()
@@ -38,14 +118,14 @@ def test_claude_plugin_metadata_keeps_the_current_findings_scope():
 
 
 def test_claude_plugin_metadata_has_directory_listing_links():
-    metadata = json.loads((ROOT / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
+    metadata = json.loads((PLUGIN / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
 
     for field in ("privacyPolicyUrl", "termsOfServiceUrl", "documentationUrl", "supportUrl"):
         assert metadata[field].startswith("https://"), field
 
 
 def test_codex_plugin_interface_has_listing_links():
-    metadata = json.loads((ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
+    metadata = json.loads((PLUGIN / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
 
     for field in ("websiteURL", "privacyPolicyURL", "termsOfServiceURL"):
         assert metadata["interface"][field].startswith("https://"), field
@@ -76,25 +156,15 @@ def test_shipped_files_do_not_pipe_downloads_into_a_shell():
 def test_skills_do_not_forward_environment_variables_to_altertable():
     offenders = [
         str(path.relative_to(ROOT))
-        for path in (ROOT / "skills").rglob("*.md")
+        for path in (PLUGIN / "skills").rglob("*.md")
         if re.search(r"\$\{?ALTERTABLE_[A-Z_]+", path.read_text(encoding="utf-8"))
     ]
 
     assert offenders == []
 
 
-def test_cursor_marketplace_points_to_the_root_plugin():
-    marketplace = json.loads(
-        (ROOT / ".cursor-plugin" / "marketplace.json").read_text(encoding="utf-8")
-    )
-
-    assert marketplace["name"] == "altertable-ai"
-    assert marketplace["plugins"][0]["name"] == "altertable"
-    assert marketplace["plugins"][0]["source"] == "./"
-
-
 def test_shared_mcp_configuration_uses_the_hosted_altertable_endpoint():
-    mcp = json.loads((ROOT / ".mcp.json").read_text(encoding="utf-8"))
+    mcp = json.loads((PLUGIN / ".mcp.json").read_text(encoding="utf-8"))
 
     assert mcp["mcpServers"]["altertable-mcp"]["url"].rstrip("/") == (
         "https://mcp.altertable.ai/mcp"
@@ -104,7 +174,7 @@ def test_shared_mcp_configuration_uses_the_hosted_altertable_endpoint():
 def test_all_skills_have_readable_display_metadata_and_stable_ids():
     import yaml
 
-    for skill_file in sorted((ROOT / "skills").glob("*/SKILL.md")):
+    for skill_file in sorted((PLUGIN / "skills").glob("*/SKILL.md")):
         skill_dir = skill_file.parent
         frontmatter = yaml.safe_load(skill_file.read_text(encoding="utf-8").split("---", 2)[1])
         assert frontmatter["name"] == skill_dir.name

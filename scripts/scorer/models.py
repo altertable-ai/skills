@@ -6,7 +6,7 @@ from typing import Final, Literal
 from pydantic import BaseModel, Field
 
 SKILL_FILENAME: Final[str] = "SKILL.md"
-SKILLS_DIR: Final[str] = "skills"
+SKILLS_DIR: Final[str] = "plugins/altertable/skills"
 DEFAULT_MIN_SCORE: Final[int] = 70
 # Tracks the newest Flash release, so scores can shift without a commit here.
 # Gemini 3.x is optimized for default sampling, so judges.py sends no temperature.

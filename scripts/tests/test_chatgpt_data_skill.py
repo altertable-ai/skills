@@ -3,7 +3,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
-SKILL_DIR = ROOT / "skills" / "query-with-chatgpt-data"
+SKILL_DIR = ROOT / "plugins" / "altertable" / "skills" / "query-with-chatgpt-data"
 
 
 def _frontmatter(path: Path) -> tuple[dict, str]:

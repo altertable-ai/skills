@@ -14,16 +14,21 @@ Do not preserve an obsolete product concept merely because an older skill or doc
 ## Repository Map
 
 ```text
-skills/{skill-name}/SKILL.md       Shipped skill entry points
-skills/{skill-name}/references/   Optional conditional detail
-templates/SKILL_TEMPLATE/         Starting point for a new skill
-.claude-plugin/                   Claude plugin metadata
-.codex-plugin/plugin.json         Codex plugin metadata
-.cursor-plugin/                   Cursor plugin metadata
-scripts/sync-agents-md.py         Regenerates skill inventories
-scripts/scorer/                   LLM quality scorer
-scripts/tests/                    Repository and portfolio checks
+plugins/altertable/                          The shipped plugin; the only folder submitted to directories
+plugins/altertable/skills/{name}/SKILL.md    Shipped skill entry points
+plugins/altertable/skills/{name}/references/ Optional conditional detail
+plugins/altertable/.claude-plugin/           Claude plugin manifest
+plugins/altertable/.codex-plugin/            Codex plugin manifest
+plugins/altertable/.cursor-plugin/           Cursor plugin manifest
+plugins/altertable/.mcp.json                 Hosted MCP server shared by all plugins
+.claude-plugin/ .cursor-plugin/ .agents/     Marketplaces pointing at plugins/altertable
+templates/SKILL_TEMPLATE/                    Starting point for a new skill
+scripts/sync-agents-md.py                    Regenerates skill inventories
+scripts/scorer/                              LLM quality scorer
+scripts/tests/                               Repository and portfolio checks
 ```
+
+Only ship Markdown, text, JSON, YAML, and PNG/JPEG/GIF/WebP/ICO files in `plugins/altertable/`; no scripts, SVGs, or files starting with `#!`. The Claude directory refuses other file types from organizations that aren't Verified. Keep tooling at the repository root.
 
 ## Portfolio Principles
 
@@ -32,7 +37,7 @@ scripts/tests/                    Repository and portfolio checks
 - Keep `SKILL.md` concise; target fewer than 180 lines. Add a focused reference only when conditional detail warrants loading it separately.
 - Distinguish read-only analysis, previews, and persistent writes. Authentication never implies permission for an unrequested mutation.
 - Use imperative lowercase names with hyphens. Write third-person descriptions with discriminating trigger language.
-- Treat [use-altertable](skills/use-altertable/SKILL.md) as the shared platform brief and [ask-altertable](skills/ask-altertable/SKILL.md) as the fast path for delegated analytical questions.
+- Treat [use-altertable](plugins/altertable/skills/use-altertable/SKILL.md) as the shared platform brief and [ask-altertable](plugins/altertable/skills/ask-altertable/SKILL.md) as the fast path for delegated analytical questions.
 - Tasks produce Findings delivered through Notifications. Do not reintroduce retired feature terminology or workflows.
 
 There is no mandatory body outline. Start from [the template](templates/SKILL_TEMPLATE/SKILL.md), then retain only the sections useful to that workflow.
@@ -42,7 +47,7 @@ There is no mandatory body outline. Start from [the template](templates/SKILL_TE
 1. Read the affected skill and current Altertable documentation.
 2. Make the smallest coherent skill and metadata changes.
 3. When skill names or descriptions change, run `uv run python scripts/sync-agents-md.py`. The Available Skills sections below and in `README.md` are generated from skill frontmatter; do not edit those inventories manually.
-4. If the portfolio's advertised scope changes, keep `.claude-plugin`, `.codex-plugin/plugin.json`, and `.cursor-plugin` descriptions aligned.
+4. If the portfolio's advertised scope changes, keep the plugin manifests in `plugins/altertable/` and the marketplace descriptions in `.claude-plugin/` and `.cursor-plugin/` aligned.
 5. Run the complete validation commands before committing.
 
 Do not add tests that assert a skill's wording, phrases, or example SQL. Such tests only restate the edit and break on every rewrite; the validator and the LLM scorer judge skill content. `scripts/tests/` covers the repository's scripts and metadata.
@@ -57,8 +62,8 @@ The marketplace plugin provides skills and hosted MCP access; it does not instal
 uv sync
 uv run python scripts/sync-agents-md.py
 uv run pytest scripts/tests/
-uv run skills validate ./skills/skill-name
-uv run python scripts/score-skills.py skills --scan_all --validate_only
+uv run skills validate ./plugins/altertable/skills/skill-name
+uv run python scripts/score-skills.py plugins/altertable/skills --scan_all --validate_only
 uv run pre-commit run --all-files
 ```
 
