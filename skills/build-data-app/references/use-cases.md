@@ -14,7 +14,7 @@ Follow the corresponding section below. Select the starter for the app's kind an
 | Finding exploration | `starter-finding-data-app/index.tsx` | `starter-local-finding-data-app/` |
 | Metric illustration | `starter-metric-data-app/index.tsx` | `starter-local-metric-data-app/` |
 
-Paths are relative to `packages/data-app-examples/templates/` in the SDK repository or `templates/` in a release-matched `@altertable/data-app-examples` package. Use only starters available in the target SDK version; otherwise adapt that version's shared runtime starter. The metric and Finding examples use demo objects seeded by the SDK mock, including a semantic view for the metric starter. Replace those queries and content with verified evidence from the requested metric or Finding; never create demo objects in the user's lakehouse. Keep the app's declared identity even when the host does not provide one.
+Read a hosted starter with `read_resource`, for example `altertable://data-app/templates/starter-metric-data-app/index.tsx`. Local paths are relative to `packages/data-app-examples/templates/` in the SDK repository or `templates/` in a release-matched `@altertable/data-app-examples` package. Use only starters available in the target SDK version; otherwise adapt that version's shared runtime starter. The metric and Finding examples use demo objects seeded by the SDK mock, including a semantic view for the metric starter. Replace those queries and content with verified evidence from the requested metric or Finding; never create demo objects in the user's lakehouse. Keep the app's declared identity even when the host does not provide one.
 
 The metric and Finding starters omit page actions and presentation/export configuration. Enable those features only when the app brief needs them, using the installed SDK's supported props.
 
@@ -34,7 +34,7 @@ For example, an investigation of signup conversion might show overall conversion
 
 The Finding page shows this app below the Finding's title, summary, and text. The app lets the reader check and dig into the Finding. Limit prose to chart titles, captions, and caveats.
 
-The default view reproduces the Finding's scope, grain, and headline numbers over the Finding's own dates. Set the default date range to those fixed dates, never to a range relative to today, so the app keeps opening on the Finding's period. If the default view disagrees with the Finding, fix the queries. Then, where the data supports them, add controls that drive the queries through variables:
+The default view reproduces the Finding's scope, grain, and headline numbers over the Finding's own dates. Set the default date range to those fixed dates, never to a range relative to today, so the app keeps opening on the Finding's period. If the default view disagrees with the Finding, fix the queries. Then, where the data supports them, add controls that drive the queries through filters:
 
 - the time range or grain around the event;
 - a breakdown by the Finding's dimensions;
