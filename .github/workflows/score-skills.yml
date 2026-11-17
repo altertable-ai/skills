@@ -20,8 +20,8 @@ jobs:
           list-files: shell
           filters: |
             skills:
-              - 'skills/*/SKILL.md'
-              - 'skills/*/references/**'
+              - 'plugins/altertable/skills/*/SKILL.md'
+              - 'plugins/altertable/skills/*/references/**'
 
       - name: Install uv
         if: steps.changes.outputs.skills == 'true'
@@ -37,7 +37,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           CHANGED_FILES: ${{ steps.changes.outputs.skills_files }}
         run: |
-          skills=$(echo "$CHANGED_FILES" | tr ' ' '\n' | awk -F/ 'NF>=2 {print $1"/"$2}' | sort -u | grep -v 'SKILL_TEMPLATE' \
+          skills=$(echo "$CHANGED_FILES" | tr ' ' '\n' | awk -F/ 'NF>=4 {print $1"/"$2"/"$3"/"$4}' | sort -u | grep -v 'SKILL_TEMPLATE' \
             | while read -r dir; do if [ -f "$dir/SKILL.md" ]; then printf '%s ' "$dir"; fi; done)
           if [ -z "$skills" ]; then
             echo "No skills to score (changed skills were deleted, moved, or excluded)"

@@ -53,21 +53,21 @@ Ask in plain language:
 
 | Skill | Description |
 | ----- | ----------- |
-| [analyze-product-behavior](skills/analyze-product-behavior/) | Analyzes Altertable Product Analytics events, identities, web sessions, funnels, retention, segmentation, and saved segments |
-| [ask-altertable](skills/ask-altertable/) | Delegates analytical questions and follow-up investigations to the Altertable Agent |
-| [build-dashboards](skills/build-dashboards/) | Creates and updates persistent Altertable Dashboards composed of Insights, text, sections, variables, and grid positions |
-| [build-data-app](skills/build-data-app/) | Creates, updates, and deletes Altertable-hosted data apps through MCP (beta), including Finding explorations and metric illustrations |
-| [build-insights](skills/build-insights/) | Renders, creates, updates, and explains Altertable Insights |
-| [build-local-data-app](skills/build-local-data-app/) | Builds and runs Altertable data apps locally with the CLI (beta) |
-| [configure-tasks](skills/configure-tasks/) | Creates and updates Altertable Tasks that run SQL, code, or AI work on a schedule |
-| [ingest-data](skills/ingest-data/) | Loads data into Altertable through the CLI, HTTP API, DataFrame tooling, object storage, or generated pipelines |
-| [instrument-product-analytics](skills/instrument-product-analytics/) | Adds or changes Altertable Product Analytics instrumentation in application code |
-| [investigate-opentelemetry](skills/investigate-opentelemetry/) | Investigates OpenTelemetry logs and traces in Altertable using SQL |
-| [manage-knowledge](skills/manage-knowledge/) | Searches and maintains Altertable memories, knowledge entries, repository context, and semantic-model descriptions |
-| [query-altertable](skills/query-altertable/) | Inspects Altertable catalogs and runs controlled DuckDB SQL across managed and external data |
-| [query-with-chatgpt-data](skills/query-with-chatgpt-data/) | Use when ChatGPT Work's @Data agent, the ChatGPT Data agent, or a Codex workflow coordinating with @Data needs Altertable as a governed read-only source |
-| [use-altertable](skills/use-altertable/) | Provides Altertable's foundational operating model, environment and catalog concepts, DuckDB conventions, and MCP-versus-CLI choices |
-| [use-semantic-layer](skills/use-semantic-layer/) | Discovers, queries, verifies, and creates Altertable semantic views with SEMANTIC_VIEW(...) and AGG(...), including breakdowns, metric filters, period-over-period, running totals, and fan-out-safe metrics across joined tables |
+| [analyze-product-behavior](plugins/altertable/skills/analyze-product-behavior/) | Analyzes Altertable Product Analytics events, identities, web sessions, funnels, retention, segmentation, and saved segments |
+| [ask-altertable](plugins/altertable/skills/ask-altertable/) | Delegates analytical questions and follow-up investigations to the Altertable Agent |
+| [build-dashboards](plugins/altertable/skills/build-dashboards/) | Creates and updates persistent Altertable Dashboards composed of Insights, text, sections, variables, and grid positions |
+| [build-data-app](plugins/altertable/skills/build-data-app/) | Creates, updates, and deletes Altertable-hosted data apps through MCP (beta), including Finding explorations and metric illustrations |
+| [build-insights](plugins/altertable/skills/build-insights/) | Renders, creates, updates, and explains Altertable Insights |
+| [build-local-data-app](plugins/altertable/skills/build-local-data-app/) | Builds and runs Altertable data apps locally with the CLI (beta) |
+| [configure-tasks](plugins/altertable/skills/configure-tasks/) | Creates and updates Altertable Tasks that run SQL, code, or AI work on a schedule |
+| [ingest-data](plugins/altertable/skills/ingest-data/) | Loads data into Altertable through the CLI, HTTP API, DataFrame tooling, object storage, or generated pipelines |
+| [instrument-product-analytics](plugins/altertable/skills/instrument-product-analytics/) | Adds or changes Altertable Product Analytics instrumentation in application code |
+| [investigate-opentelemetry](plugins/altertable/skills/investigate-opentelemetry/) | Investigates OpenTelemetry logs and traces in Altertable using SQL |
+| [manage-knowledge](plugins/altertable/skills/manage-knowledge/) | Searches and maintains Altertable memories, knowledge entries, repository context, and semantic-model descriptions |
+| [query-altertable](plugins/altertable/skills/query-altertable/) | Inspects Altertable catalogs and runs controlled DuckDB SQL across managed and external data |
+| [query-with-chatgpt-data](plugins/altertable/skills/query-with-chatgpt-data/) | Use when ChatGPT Work's @Data agent, the ChatGPT Data agent, or a Codex workflow coordinating with @Data needs Altertable as a governed read-only source |
+| [use-altertable](plugins/altertable/skills/use-altertable/) | Provides Altertable's foundational operating model, environment and catalog concepts, DuckDB conventions, and MCP-versus-CLI choices |
+| [use-semantic-layer](plugins/altertable/skills/use-semantic-layer/) | Discovers, queries, verifies, and creates Altertable semantic views with SEMANTIC_VIEW(...) and AGG(...), including breakdowns, metric filters, period-over-period, running totals, and fan-out-safe metrics across joined tables |
 
 ## Optional CLI
 
@@ -75,7 +75,7 @@ For terminal queries, ingestion, and CI, install the [Altertable CLI](https://al
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). CI validates every skill and scores changed ones with an LLM judge (minimum 70/100).
+The plugin shipped to Claude Code, Codex, and Cursor lives in [`plugins/altertable/`](plugins/altertable/); everything else is repository tooling. See [CONTRIBUTING.md](CONTRIBUTING.md). CI validates every skill and scores changed ones with an LLM judge (minimum 70/100).
 
 ## License
 

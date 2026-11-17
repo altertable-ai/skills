@@ -66,7 +66,7 @@ def build_skills_table(skills: list[tuple[str, str]]) -> str:
     lines = ["| Skill | Description |", "| ----- | ----------- |"]
     for name, description in skills:
         summary = description.split(". ")[0].rstrip(".").replace("|", r"\|")
-        lines.append(f"| [{name}](skills/{name}/) | {summary} |")
+        lines.append(f"| [{name}]({_SKILLS_DIR_NAME}/{name}/) | {summary} |")
     return "\n".join(lines)
 
 

@@ -23,7 +23,10 @@ def test_build_skills_table_uses_the_first_sentence(sync):
     table = sync.build_skills_table(skills)
 
     # then
-    assert "| [query-altertable](skills/query-altertable/) | Runs DuckDB SQL |" in table
+    assert (
+        "| [query-altertable](plugins/altertable/skills/query-altertable/) | Runs DuckDB SQL |"
+        in table
+    )
     assert "Use when" not in table
 
 
