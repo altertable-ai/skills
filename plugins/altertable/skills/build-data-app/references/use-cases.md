@@ -18,8 +18,6 @@ Paths are relative to `packages/data-app-examples/templates/` in the SDK reposit
 
 The metric and Finding starters omit page actions and presentation/export configuration. Enable those features only when the app brief needs them, using the installed SDK's supported props.
 
-Make the app responsive to its container's available width, whether it fills a page, a panel, or an embed. A primary view sets reading priority; it does not prescribe a column count or a fixed layout. Implement the behaviors below with the target SDK version's starter and documentation; do not assume newer SDK symbols exist.
-
 ## Presentation and export
 
 Explanatory prose does not require an SDK Present story. Add an authored presentation when it serves the request. Choose export datasets that support the app's purpose and preserve the displayed grain. Verify exposed stories and exports against the displayed result. Follow the SDK documentation for component selection, frame options, and story/export contracts.
