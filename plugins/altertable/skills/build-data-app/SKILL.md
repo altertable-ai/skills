@@ -18,7 +18,7 @@ Use `query-altertable` to find and verify data, and `analyze-product-behavior` f
 
 ## Workflow
 
-1. Read the data-app `AGENTS.md`, `docs/hosted-apps.md`, and the guides the app needs: with `github_read` on `altertable-ai/data-app`, otherwise from `https://raw.githubusercontent.com/altertable-ai/data-app/main/<path>`.
+1. Read the data-app SDK's `docs/hosted-apps.md` and the guides it links that the app needs: from the SDK copy your instructions provide, otherwise with `github_read` on `altertable-ai/data-app`, otherwise from `https://raw.githubusercontent.com/altertable-ai/data-app/main/<path>`. After a GitHub read, when `validate_data_app` reports an unknown export or prop, read the starter or `REFERENCE.md` again at ref `v<sdk_version>` from its result.
 2. New app: select the release-matched hosted starter from [Data-app use cases](references/use-cases.md). Keep its client, styles, and mounting code, and replace its sample title, description, queries, and widgets with what the app's kind needs, since the saved app's title, description, and queries come from its `defineDataApp` call. Existing app: start from its current `index_tsx`; with only a slug, read it with `read_resource` on `altertable://ontology/entities/<slug>`.
 3. Confirm tables and columns with `get_catalog`. Run every query the app declares with `query_lakehouse` under a small `LIMIT`, and never declare a query you did not run.
 4. Call `validate_data_app` with the complete source until `errors` is empty.
