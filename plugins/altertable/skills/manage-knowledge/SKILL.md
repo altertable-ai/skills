@@ -36,6 +36,8 @@ Attach the source and related entities when available so the memory can be retri
 
 Never summarize, synthesize, translate, reformat, or infer organization-wide knowledge for these tools. If scope, title, source, or exact content is unclear, ask before writing. Prefer a repository sync when the maintained source already lives in version control.
 
+Never call `update_knowledge` on an entry with a `knowledge_repository_slug`: its content comes from the repository at its `source_path`. When the user asks to fix one, or your work shows it is wrong with evidence, open a pull request on that source if a pull request tool is available, otherwise give the user the correction and the evidence.
+
 ## Document Semantic Models
 
 Use `document_semantic_model` for a table-level natural-language description and `document_semantic_model_dimension` for a specific dimension. Retrieve the catalog first and use the exact catalog, schema, table, and projection names.
