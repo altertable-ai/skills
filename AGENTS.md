@@ -79,16 +79,8 @@ uv run pre-commit run --all-files
     <description>Delegates analytical questions and follow-up investigations to the Altertable Agent. Use as the default fast path for questions about connected data, metrics, changes, causes, or recommendations when exact SQL control is unnecessary.</description>
   </skill>
   <skill>
-    <name>build-dashboards</name>
-    <description>Creates and updates persistent Altertable Dashboards composed of Insights, text, sections, variables, and grid positions. Use only when the user requests an Altertable-hosted dashboard or changes to an existing Altertable Dashboard; do not use for generic or client-native dashboards, reports, or visualizations.</description>
-  </skill>
-  <skill>
     <name>build-data-app</name>
     <description>Creates, updates, and deletes Altertable-hosted data apps through MCP (beta), including Finding explorations and metric illustrations. Use by default for any Altertable data app request; use build-local-data-app only when the user explicitly wants local development or a CLI scaffold.</description>
-  </skill>
-  <skill>
-    <name>build-insights</name>
-    <description>Renders, creates, updates, and explains Altertable Insights. Use only when the user explicitly requests an Altertable Insight or asks to work on an existing one; do not use for generic or client-native charts, analyses, reports, or visualizations.</description>
   </skill>
   <skill>
     <name>build-local-data-app</name>

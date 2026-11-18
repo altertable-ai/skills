@@ -16,11 +16,11 @@ Altertable is one governed data runtime for managed lakehouse tables, live exter
 Altertable is an AI-native data platform: DuckDB compute and lakehouse storage sit behind a governed SQL layer that humans, applications, analytics, and agents can share. The useful conceptual flow is:
 
 ```text
-Data → Catalogs → Semantic models + knowledge → Insights/Dashboards
+Data → Catalogs → Semantic models + knowledge → Data apps
     → Tasks → Findings/Notifications → Memories and better future analysis
 ```
 
-The conversational Altertable Agent handles an open-ended question or investigation. Insights and Dashboards are persistent analysis artifacts. Tasks are scheduled work attached to a context such as an Insight, Dashboard, connection, database, segment, or semantic model; when scheduled work finds something worth attention, it produces a Finding delivered through Notifications.
+The conversational Altertable Agent handles an open-ended question or investigation. Data apps are persistent analysis artifacts. Tasks are scheduled work attached to a context such as a connection, database, segment, or semantic model; when scheduled work finds something worth attention, it produces a Finding delivered through Notifications.
 
 ## Operating Model
 
@@ -30,7 +30,7 @@ The conversational Altertable Agent handles an open-ended question or investigat
 - Workers execute DuckDB SQL. Cross-catalog joins are federated automatically.
 - Semantic models define governed measures, dimensions, timestamps, filters, and relations.
 - Knowledge entries provide maintained source material; memories capture reusable context learned from work.
-- Insights are saved analyses; dashboards arrange insights and shared variables; Tasks run recurring work and produce Findings delivered through Notifications.
+- Data apps are saved, interactive analyses; Tasks run recurring work and produce Findings delivered through Notifications.
 
 ## MCP Invariants
 

@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-3776AB.svg)](https://www.python.org)
 
-[Agent Skills](https://agentskills.io) for working with [Altertable](https://altertable.ai): explore catalogs, run DuckDB SQL, analyze product behavior, and build insights, dashboards, data apps, and tasks.
+[Agent Skills](https://agentskills.io) for working with [Altertable](https://altertable.ai): explore catalogs, run DuckDB SQL, analyze product behavior, and build data apps and tasks.
 
 Skills are guidance, not access. Live work goes through the hosted Altertable MCP server, which needs an Altertable account. The Claude Code, Codex, and Cursor plugins register it; `npx skills add` does not.
 
@@ -38,7 +38,7 @@ Start a new session and ask:
 Use Altertable to list my available catalogs.
 ```
 
-The first tool call opens a browser sign-in: pick the organization, the environment, and an access level (Read-only by default). Read-only explores and queries. Analyst also saves insights, dashboards, data apps, and knowledge. Full access also creates tasks and writes to the lakehouse.
+The first tool call opens a browser sign-in: pick the organization, the environment, and an access level (Read-only by default). Read-only explores and queries. Analyst also saves data apps and knowledge. Full access also creates tasks and writes to the lakehouse.
 
 ## Use the skills
 
@@ -55,9 +55,7 @@ Ask in plain language:
 | ----- | ----------- |
 | [analyze-product-behavior](plugins/altertable/skills/analyze-product-behavior/) | Analyzes Altertable Product Analytics events, identities, web sessions, funnels, retention, segmentation, and saved segments |
 | [ask-altertable](plugins/altertable/skills/ask-altertable/) | Delegates analytical questions and follow-up investigations to the Altertable Agent |
-| [build-dashboards](plugins/altertable/skills/build-dashboards/) | Creates and updates persistent Altertable Dashboards composed of Insights, text, sections, variables, and grid positions |
 | [build-data-app](plugins/altertable/skills/build-data-app/) | Creates, updates, and deletes Altertable-hosted data apps through MCP (beta), including Finding explorations and metric illustrations |
-| [build-insights](plugins/altertable/skills/build-insights/) | Renders, creates, updates, and explains Altertable Insights |
 | [build-local-data-app](plugins/altertable/skills/build-local-data-app/) | Builds and runs Altertable data apps locally with the CLI (beta) |
 | [configure-tasks](plugins/altertable/skills/configure-tasks/) | Creates and updates Altertable Tasks that run SQL, code, or AI work on a schedule |
 | [ingest-data](plugins/altertable/skills/ingest-data/) | Loads data into Altertable through the CLI, HTTP API, DataFrame tooling, object storage, or generated pipelines |
