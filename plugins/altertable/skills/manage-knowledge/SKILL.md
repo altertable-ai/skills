@@ -1,6 +1,6 @@
 ---
 name: manage-knowledge
-compatibility: Requires Altertable MCP server; knowledge and semantic-model writes require read-write access
+compatibility: Requires Altertable MCP server; knowledge writes require read-write access
 description: "Searches and maintains Altertable memories, knowledge entries, repository context, and semantic-model descriptions. Use when reusable business context, definitions, preferences, or model documentation should guide future agent work."
 metadata:
   author: Altertable
@@ -38,7 +38,8 @@ Never summarize, synthesize, translate, reformat, or infer organization-wide kno
 
 ## Document Semantic Models
 
-Use `document_semantic_model` for a table-level natural-language description and `document_semantic_model_dimension` for a specific dimension. Retrieve the catalog first and use the exact catalog, schema, table, and projection names.
+- For dbt-managed models, update the descriptions in the dbt YAML, regenerate `target/manifest.json`, and commit the YAML and manifest to the connected branch before syncing the knowledge repository. See [dbt model enrichment](https://altertable.ai/docs/lakehouse/modeling/dbt#enrich-existing-semantic-models).
+- For models maintained in Altertable, direct the user to the table in Catalogs to edit its table or column descriptions. If Catalogs shows that a source knowledge entry manages the descriptions, update that source instead.
 
 Descriptions should state business meaning, grain, ownership, and known caveats. Do not encode a governed calculation only in prose when it belongs in a measure, dimension, filter, or relation definition.
 
