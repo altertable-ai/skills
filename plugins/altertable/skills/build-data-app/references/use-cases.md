@@ -33,7 +33,7 @@ Build around the user's question and audience; standalone apps have no prescribe
 
 The page supplies the dated Finding's title, summary, and full text. The app supplies interactive evidence; limit prose to titles, captions, and necessary caveats.
 
-- **Initial view:** reproduce the Finding's scope, absolute dates, grain, comparison, and headline numbers. Avoid dates relative to today. Fixed dates do not freeze source data; investigate and resolve or disclose discrepancies.
+- **Initial view:** reproduce the Finding's scope, absolute dates, grain, comparison, and headline numbers. Fixed dates do not freeze source data; investigate and resolve or disclose discrepancies.
 - **Views:** support a claim, test a hypothesis, or enable a check. For example, lead with the main evidence, add a relevant decomposition, and offer secondary access to detail. Adapt to the Finding, including evidence without a time dimension. Decomposition does not establish causality.
 - **Controls:** stay on the Finding's metric and entities unless asked otherwise. Offer query-backed period, grain, dimension, or baseline controls where supported. Identify changed dates or filters as exploration and provide a return to the original scope.
 - **Rates:** expose numerator and denominator when needed to verify a change.
