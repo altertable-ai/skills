@@ -14,7 +14,7 @@ Altertable Tasks run scheduled work and produce a Finding only when something is
 ## Workflow
 
 1. Confirm the intended environment and use `list_tasks` to avoid duplicating an existing task on the same context.
-2. Resolve the target and read its current definition. A task can run on an insight, dashboard, connection, database, segment, or semantic model.
+2. Resolve the target and read its current definition. A task can run on a connection, database, segment, or semantic model.
 3. Inspect the current creation schema for supported task types and targets. Do not copy enum values from memory.
 4. Write instructions that define what to examine, what is noteworthy, relevant thresholds, comparison periods, and when silence is correct.
 5. Use `create_task` only after the schedule, target, and instructions are settled and persistence is requested.
