@@ -32,24 +32,24 @@ For example, an investigation of signup conversion might show overall conversion
 
 ## Finding explorations
 
-The Finding page supplies the title, summary, and full text of a dated observation. The app supplies interactive evidence to check and explore it. Limit prose to titles, captions, and necessary caveats.
+The page supplies the dated Finding's title, summary, and full text. The app supplies interactive evidence; limit prose to titles, captions, and necessary caveats.
 
-The initial view must reproduce the Finding's scope, absolute dates, grain, comparison, and headline numbers. Use the Finding's dates rather than a range relative to today. Fixed dates preserve the period, not an immutable data snapshot. If the initial results disagree with the Finding, verify the queries and source data, and resolve or disclose the discrepancy before presenting the app as evidence.
+- **Initial view:** reproduce the Finding's scope, absolute dates, grain, comparison, and headline numbers. Avoid dates relative to today. Fixed dates do not freeze source data; investigate and resolve or disclose discrepancies.
+- **Views:** support a claim, test a hypothesis, or enable a check. For example: main evidence, relevant decomposition, secondary access to detail. Adapt to the Finding, including non-temporal evidence; no fixed stack of views. Decomposition does not establish causality.
+- **Controls:** stay on the Finding's metric and entities unless asked otherwise. Offer query-backed period, grain, dimension, or baseline controls where supported. Identify changed dates or filters as exploration and provide a return to the original scope.
+- **Rates:** expose numerator and denominator when needed to verify a change.
 
-Choose each visualization to support a claim, test a hypothesis, or enable a check. For example, lead with the main evidence, add a relevant decomposition, and make detailed data available as a secondary view. Adapt the representation to the Finding, including Findings without a time dimension. This is not a required stack of KPIs, trends, breakdowns, and tables. A decomposition reveals differences or contributions; it does not establish causality.
+For source evidence:
 
-Unless the user asks for more, keep the exploration on the Finding's own metric and entities. Add query-backed controls only where the evidence supports them, such as period, grain, dimensions, or baseline. When dates or filters change, clearly identify the result as an exploration distinct from the original Finding and provide a way to return to the Finding's initial scope. For rate changes, let readers inspect the numerator and denominator when needed to verify the claim.
-
-- When the Finding is not in your context, read it with `read_resource` on its entity URI. It does not return the run's transcript or SQL: read the entities in its `context_slugs` and write the queries yourself.
-- When a transcript is supplied, its SQL is the starting point; parameterize it for the controls and drop failed or exploratory statements.
+- Read a missing Finding with `read_resource` on its entity URI. It excludes the run's transcript and SQL; read its `context_slugs` entities and write verified queries.
+- When a transcript is supplied, start from its SQL, parameterize controls, and discard failed or exploratory statements.
 
 ## Metric illustrations
 
-A metric's own app explores a reusable metric with a stable semantic definition. It is embedded in the metric page, which supplies the metric context. Query that definition consistently across views. The app is regenerated from the starter when the metric's definition changes. Always build it from the starter, and when the user asks to edit it, explain that the next definition change replaces the edit.
+The app explores one reusable semantic metric; the metric page supplies its context. Build from the starter. Definition changes regenerate the app, so explain that they replace manual edits when the user requests one.
 
-Keep the app focused on charts, without introductory text, page headings, extra KPI cards, standalone headline numbers, or repeated metric metadata. Use chart titles to identify what is plotted, including units and relevant filters; put caveats in descriptions or tooltips. For rates, allow inspection of the numerator and denominator when needed, for example in tooltips or secondary detail.
-
-- Lead with a temporal view when time is relevant; otherwise choose a suitable categorical view.
-- Add one useful decomposition by default when the metric's dimensions support it. Add a second only when it supplies complementary information.
-- Keep period, grain, comparison, and filters coherent across views and controls.
-- Respect aggregation semantics: additive measures can show contributions; averages and rates must be recomputed at the displayed grain, never summed across groups or periods.
+- **Main view:** use time when relevant; otherwise choose a suitable categorical view.
+- **Decomposition:** add one useful breakdown when supported; a second only if complementary.
+- **Consistency:** query the same semantic definition across views; align period, grain, comparison, and filters.
+- **Aggregation:** additive measures can show contributions. Recompute averages and rates at the displayed grain; never sum them across groups or periods. Expose rate numerators and denominators when needed, through tooltips or secondary detail.
+- **Presentation:** focus on charts. Omit introductory text, page headings, extra KPI cards, standalone headline numbers, and repeated metric metadata. Titles identify the plotted measure, units, and relevant filters; descriptions or tooltips carry caveats.
