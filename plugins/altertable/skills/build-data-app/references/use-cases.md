@@ -24,11 +24,10 @@ Explanatory prose does not require an SDK Present story. Add an authored present
 
 ## Standalone apps
 
-Provide enough title, description, and scope context for the app to make sense on its own.
+Build around the user's question and audience; standalone apps have no prescribed structure.
 
-Answer the user's question first, with as few focused views as the answer needs. Tell a story of the strongest results only when the user asks for an analysis of a topic.
-
-For example, an investigation of signup conversion might show overall conversion, its trend, differences by funnel step or channel, then supporting counts and rates. Use only the parts that answer the request; this is not a required app layout.
+- **Context:** supply the title, description, and scope needed to understand the app independently of a Finding or metric page.
+- **Views and controls:** choose representations and interactions that help answer or explore the question. Include only useful views; add an analytical narrative when requested.
 
 ## Finding explorations
 
