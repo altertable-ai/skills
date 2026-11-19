@@ -24,31 +24,25 @@ Explanatory prose does not require an SDK Present story. Add an authored present
 
 ## Standalone apps
 
-Build around the user's question and audience; standalone apps have no prescribed structure.
-
-- **Context:** provide a title, description, and scope so the app makes sense on its own.
-- **Views and controls:** choose the charts, tables, and interactions the question needs. Add an analytical narrative when requested.
+Build a self-contained app around the user's question and audience, with no prescribed structure.
 
 ## Finding explorations
 
-The page supplies the dated Finding's title, summary, and full text. The app supplies interactive evidence; limit prose to titles, captions, and necessary caveats.
+Help readers verify and explore the evidence behind a dated Finding.
 
 - **Initial view:** reproduce the Finding's scope, absolute dates, grain, comparison, and headline numbers. Fixed dates do not freeze source data; investigate and resolve or disclose discrepancies.
 - **Views:** support a claim, test a hypothesis, or enable a check. For example, lead with the main evidence, add a relevant decomposition, and offer secondary access to detail. Adapt to the Finding, including evidence without a time dimension. Decomposition does not establish causality.
 - **Controls:** stay on the Finding's metric and entities unless asked otherwise. Offer query-backed period, grain, dimension, or baseline controls where supported. Identify changed dates or filters as exploration and provide a return to the original scope.
 - **Rates:** expose numerator and denominator when needed to verify a change.
 
-Use the available source evidence:
-
-- If the Finding is absent from context, read it with `read_resource` on its entity URI. The response excludes the run's transcript and SQL; read the entities in `context_slugs` and write verified queries.
-- When a transcript is supplied, start from its SQL, parameterize controls, and discard failed or exploratory statements.
+If the Finding is absent from context, read it with `read_resource` on its entity URI. The response excludes the run's transcript and SQL; use its `context_slugs` for supporting evidence. If a transcript is supplied, adapt its successful SQL to the controls.
 
 ## Metric illustrations
 
-The app explores one reusable semantic metric; the metric page supplies its context. Build from the starter. When asked to edit the app, explain that the next metric definition change regenerates it and replaces manual edits.
+Explore one reusable semantic metric. When asked to edit its app, explain that the next metric definition change regenerates it and replaces manual edits.
 
 - **Main view:** show the metric over time when relevant; otherwise choose a suitable categorical view.
 - **Decomposition:** add one useful breakdown when supported; a second only if complementary.
 - **Consistency:** query the same semantic definition across views; align period, grain, comparison, and filters.
 - **Aggregation:** additive measures can show contributions. Recompute averages and rates at the displayed grain; never sum them across groups or periods. Expose rate numerators and denominators when needed, through tooltips or secondary detail.
-- **Presentation:** focus on charts. Omit introductory text, page headings, extra KPI cards, standalone headline numbers, and repeated metric metadata. Titles identify the plotted measure, units, and relevant filters; descriptions or tooltips carry caveats.
+- **Presentation:** focus on charts, without extra KPI cards.
