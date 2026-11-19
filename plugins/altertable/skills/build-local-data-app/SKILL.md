@@ -11,7 +11,7 @@ metadata:
 
 Build Altertable data apps locally with the CLI, only when the user explicitly wants local development or a CLI scaffold. Use `build-data-app` for any other request, including converting a local app to a hosted one.
 
-A hosted app authored with `create_sandbox` still follows `build-data-app`; a temporary sandbox is not local development on the user's computer.
+Authoring through `create_sandbox` follows `build-data-app`.
 
 Before writing code, read [the data-app AGENTS.md](https://github.com/altertable-ai/data-app/blob/main/AGENTS.md) and its links, then start from the CLI scaffold. Use `query-altertable` to find and verify data, and `analyze-product-behavior` for product analytics metrics.
 
