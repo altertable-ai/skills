@@ -24,33 +24,25 @@ Explanatory prose does not require an SDK Present story. Add an authored present
 
 ## Standalone apps
 
-Provide enough title, description, and scope context for the app to make sense on its own.
-
-Answer the user's question first, with as few focused views as the answer needs. Tell a story of the strongest results only when the user asks for an analysis of a topic.
-
-For example, an investigation of signup conversion might show overall conversion, its trend, differences by funnel step or channel, then supporting counts and rates. Use only the parts that answer the request; this is not a required app layout.
+Build a self-contained app around the user's question and audience, with no prescribed structure.
 
 ## Finding explorations
 
-The Finding page shows this app below the Finding's title, summary, and text. The app lets the reader check and dig into the Finding. Limit prose to chart titles, captions, and caveats.
+Help readers verify and explore the evidence behind a dated Finding.
 
-The default view reproduces the Finding's scope, grain, and headline numbers over the Finding's own dates. Set the default date range to those fixed dates, never to a range relative to today, so the app keeps opening on the Finding's period. If the default view disagrees with the Finding, fix the queries. Then, where the data supports them, add controls that drive the queries through variables:
+- **Initial view:** reproduce the Finding's scope, absolute dates, grain, comparison, and headline numbers. Fixed dates do not freeze source data; investigate and resolve or disclose discrepancies.
+- **Views:** support a claim, test a hypothesis, or enable a check. For example, lead with the main evidence, add a relevant decomposition, and offer secondary access to detail. Adapt to the Finding, including evidence without a time dimension. Decomposition does not establish causality.
+- **Controls:** stay on the Finding's metric and entities unless asked otherwise. Offer query-backed period, grain, dimension, or baseline controls where supported. Identify changed dates or filters as exploration and provide a return to the original scope.
+- **Rates:** expose numerator and denominator when needed to verify a change.
 
-- the time range or grain around the event;
-- a breakdown by the Finding's dimensions;
-- a comparison with a baseline, such as the previous period or expected value;
-- the underlying rows.
-
-Unless the user asks for more, stay on the Finding's own metric and entities, with one primary view and at most three breakdowns.
-
-- When the Finding is not in your context, read it with `read_resource` on its entity URI. It does not return the run's transcript or SQL: read the entities in its `context_slugs` and write the queries yourself.
-- When a transcript is supplied, its SQL is the starting point; parameterize it for the controls and drop failed or exploratory statements.
+If the Finding is absent from context, read it with `read_resource` on its entity URI. The response excludes the run's transcript and SQL; use its `context_slugs` for supporting evidence. If a transcript is supplied, adapt its successful SQL to the controls.
 
 ## Metric illustrations
 
-A metric's own app, embedded in the metric page, which supplies the metric context. It is rebuilt from the starter whenever the metric changes. Always build it from the starter, and when the user asks to edit it, say that the next metric change replaces the edit.
+Explore one reusable semantic metric. When asked to edit its app, explain that the next metric definition change regenerates it and replaces manual edits.
 
-Render only charts: no introductory text, headings, KPI cards, standalone numbers, tables, or repeated metric metadata. Chart titles carry only the unit and the filters in the metric's expression; caveats go in chart descriptions or tooltips.
-
-- Lead with one main chart; with a time dimension, choose an appropriate range and grain.
-- Add up to two charts that break the metric down by complementary business dimensions, fewer when none fit.
+- **Main view:** show the metric over time when relevant; otherwise choose a suitable categorical view.
+- **Decomposition:** add one useful breakdown when supported; a second only if complementary.
+- **Consistency:** query the same semantic definition across views; align period, grain, comparison, and filters.
+- **Aggregation:** additive measures can show contributions. Recompute averages and rates at the displayed grain; never sum them across groups or periods. Expose rate numerators and denominators when needed, through tooltips or secondary detail.
+- **Presentation:** focus on charts, without extra KPI cards.
