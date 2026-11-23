@@ -104,7 +104,7 @@ uv run pre-commit run --all-files
   </skill>
   <skill>
     <name>manage-knowledge</name>
-    <description>Searches and maintains Altertable memories, knowledge entries, repository context, and semantic-model descriptions. Use when reusable business context, definitions, preferences, or model documentation should guide future agent work.</description>
+    <description>Searches and maintains Altertable memories, knowledge entries, and repository context. Use when reusable business context, definitions, or preferences should guide future agent work.</description>
   </skill>
   <skill>
     <name>query-altertable</name>

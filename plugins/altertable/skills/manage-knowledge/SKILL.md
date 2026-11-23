@@ -1,7 +1,7 @@
 ---
 name: manage-knowledge
-compatibility: Requires Altertable MCP server; knowledge and semantic-model writes require read-write access
-description: "Searches and maintains Altertable memories, knowledge entries, repository context, and semantic-model descriptions. Use when reusable business context, definitions, preferences, or model documentation should guide future agent work."
+compatibility: Requires Altertable MCP server; knowledge writes require read-write access
+description: "Searches and maintains Altertable memories, knowledge entries, and repository context. Use when reusable business context, definitions, or preferences should guide future agent work."
 metadata:
   author: Altertable
   requires: "altertable-mcp"
@@ -35,12 +35,6 @@ Attach the source and related entities when available so the memory can be retri
 `create_knowledge` and `update_knowledge` require explicit human intent. The title and content must be text the human supplied or text fetched verbatim from a source they explicitly identified.
 
 Never summarize, synthesize, translate, reformat, or infer organization-wide knowledge for these tools. If scope, title, source, or exact content is unclear, ask before writing. Prefer a repository sync when the maintained source already lives in version control.
-
-## Document Semantic Models
-
-Use `document_semantic_model` for a table-level natural-language description and `document_semantic_model_dimension` for a specific dimension. Retrieve the catalog first and use the exact catalog, schema, table, and projection names.
-
-Descriptions should state business meaning, grain, ownership, and known caveats. Do not encode a governed calculation only in prose when it belongs in a measure, dimension, filter, or relation definition.
 
 ## Boundaries
 
