@@ -111,12 +111,13 @@ LIMIT 20;
 
 ## Pivot by Trace ID
 
-Pivot by `trace_id` when available:
+Pivot by `trace_id` when available, keeping the time window that surfaced the trace. A trace ID alone does not narrow the scan, so without the window the lookup reads the whole table:
 
 ```sql
 SELECT start_time, span_id, parent_span_id, service_name, name, status_code, status_message, duration_ns / 1e6 AS duration_ms
 FROM opentelemetry.main.spans
 WHERE trace_id = '<trace-id>'
+  AND start_time >= now() - INTERVAL '1 hour'
 ORDER BY start_time ASC;
 ```
 
@@ -124,5 +125,27 @@ ORDER BY start_time ASC;
 SELECT timestamp, span_id, service_name, severity_text, message
 FROM opentelemetry.main.logs
 WHERE trace_id = '<trace-id>'
+  AND timestamp >= now() - INTERVAL '1 hour'
 ORDER BY timestamp ASC;
+```
+
+## Join Business Data
+
+Aggregate the telemetry inside the time window first, then join the small result to the business table. Cast the extracted key to the business column's type: compared raw against a UUID column, the VARIANT matches no rows and raises no error.
+
+```sql
+WITH spans_by_customer AS (
+  SELECT
+    TRY_CAST(variant_extract(attributes, 'customer.id') AS UUID) AS customer_id,
+    count(*) AS spans,
+    count(*) FILTER (WHERE status_code = 'STATUS_CODE_ERROR') AS errors
+  FROM opentelemetry.main.spans
+  WHERE start_time >= now() - INTERVAL '1 hour'
+  GROUP BY 1
+)
+SELECT c.name, s.spans, s.errors
+FROM spans_by_customer s
+JOIN <catalog>.<schema>.customers c ON c.id = s.customer_id
+ORDER BY s.errors DESC
+LIMIT 20;
 ```
