@@ -2,7 +2,7 @@
   "name": "altertable",
   "displayName": "Altertable",
   "description": "Give Claude governed access to Altertable for querying, ingestion, product analytics, data apps, automation, and findings.",
-  "version": "1.14.0",
+  "version": "1.15.0",
   "author": {
     "name": "Altertable",
     "url": "https://github.com/altertable-ai"
