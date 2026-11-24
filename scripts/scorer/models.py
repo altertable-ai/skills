@@ -8,9 +8,9 @@ from pydantic import BaseModel, Field
 SKILL_FILENAME: Final[str] = "SKILL.md"
 SKILLS_DIR: Final[str] = "plugins/altertable/skills"
 DEFAULT_MIN_SCORE: Final[int] = 70
-# Tracks the newest Flash release, so scores can shift without a commit here.
-# Gemini 3.x is optimized for default sampling, so judges.py sends no temperature.
-DEFAULT_MODEL: Final[str] = "gemini/gemini-flash-latest"
+# No dated Neon release exists, so Google can still shift scores under this name.
+# Neon varies even at temperature 0, so judges.py sends no temperature.
+DEFAULT_MODEL: Final[str] = "gemini/gemini-4-neon"
 MAX_RETRIES: Final[int] = 3
 RETRY_DELAY: Final[float] = 1.0
 
