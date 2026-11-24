@@ -56,20 +56,6 @@ Then fetch a few example rows or trace IDs from the windows the aggregate points
 
 Resource attributes are stored in `resource_attributes` VARIANT. Span/log attributes are stored in `attributes` VARIANT.
 
-Keys depend on the instrumentation, so the keys below (such as `env`) are examples that may not exist. A missing key extracts as NULL and silently filters out every row. List the keys present first, swapping in `resource_attributes` for resource keys:
-
-```sql
-SELECT key, count(*) AS spans
-FROM (
-  SELECT unnest(json_keys(attributes::JSON)) AS key
-  FROM opentelemetry.main.spans
-  WHERE start_time >= now() - INTERVAL '10 minutes'
-  LIMIT 10000
-)
-GROUP BY ALL
-ORDER BY spans DESC;
-```
-
 Use `variant_extract` for filters:
 
 ```sql
@@ -145,7 +131,7 @@ ORDER BY timestamp ASC;
 
 ## Join Business Data
 
-Find the attribute holding the business key with the key listing above; there is no standard key for it. Aggregate the telemetry inside the time window first, then join the small result to the business table. Cast the extracted key to the business column's type: compared raw against a UUID column, the VARIANT matches no rows and raises no error.
+Aggregate the telemetry inside the time window first, then join the small result to the business table. Cast the extracted key to the business column's type: compared raw against a UUID column, the VARIANT matches no rows and raises no error.
 
 ```sql
 WITH spans_by_key AS (
