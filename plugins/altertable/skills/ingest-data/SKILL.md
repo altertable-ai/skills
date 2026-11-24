@@ -21,7 +21,7 @@ Choose the ingestion path based on where the data lives, whether it must be copi
 | Repeatable extraction and loading from a source | Generated or maintained dlt pipeline |
 | Existing database, warehouse, or object catalog should stay in place | External catalog; query it without copying |
 
-Prefer the Altertable CLI for terminal scripts and CI because profiles handle authentication and `--agent` provides structured output. If the CLI is missing, follow the conditional setup in `use-altertable`. See the [CLI guide](https://altertable.ai/docs/developer-tooling/cli) for installation and authentication, and the [CLI repository](https://github.com/altertable-ai/altertable-cli) for releases and the complete command contract.
+Prefer the Altertable CLI (`altertable`) for terminal scripts and CI because profiles handle authentication and `--agent` provides structured output. If the CLI is missing, follow the conditional setup in `use-altertable`. See the [CLI guide](https://altertable.ai/docs/developer-tooling/cli) for installation and authentication, and the [CLI repository](https://github.com/altertable-ai/altertable-cli) for releases and the complete command contract.
 
 Prefer the HTTP API for application-controlled ingestion. Use an SDK when it already handles retries, batching, and the relevant data structure.
 
@@ -33,7 +33,7 @@ Prefer the HTTP API for application-controlled ingestion. Use an SDK when it alr
 - `upload --mode overwrite` replaces table contents; use it only when replacement is explicit.
 - `upsert` matches existing rows by the supplied primary key and requires a stable, unique key.
 
-Inspect the current CLI help or API schema before constructing a request. Do not guess flags, payload limits, supported formats, or asynchronous behavior from an old example.
+Inspect the current CLI help (`altertable <command> --help`) or API schema before constructing a request. Do not guess flags, payload limits, supported formats, or asynchronous behavior from an old example.
 
 ## Workflow
 
