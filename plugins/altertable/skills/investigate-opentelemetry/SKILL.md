@@ -150,7 +150,7 @@ Find the attribute holding the business key with the key listing above; there is
 ```sql
 WITH spans_by_key AS (
   SELECT
-    TRY_CAST(variant_extract(attributes, '<attribute-key>') AS UUID) AS business_key,
+    TRY_CAST(variant_extract(attributes, '<attribute>') AS UUID) AS business_key,
     count(*) AS spans,
     count(*) FILTER (WHERE status_code = 'STATUS_CODE_ERROR') AS errors
   FROM opentelemetry.main.spans
