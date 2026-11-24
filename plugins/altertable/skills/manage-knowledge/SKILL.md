@@ -24,6 +24,8 @@ Use `search_memory` when prior preferences, metric caveats, entity history, or s
 
 Memories are scoped by environment. Their usefulness is driven by importance, recency, and retrieval frequency; related memories may consolidate and stale memories may fade. Treat that as relevance behavior, not as a promise of a particular decay schedule.
 
+`initialize` returns existing knowledge entries: some in full, the rest listed by description under "Read on demand". Read a listed entry with `read_resource` on its URI before relying on or updating it, and find entries missing from the list with `search_entities`.
+
 ## Create Memories
 
 Use `create_memory` for a high-signal fact, decision, Finding, preference, caveat, or reusable technique that is likely to matter later. Skip routine outcomes and details easily recovered from the schema or data.
