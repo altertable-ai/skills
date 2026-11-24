@@ -35,7 +35,7 @@ Do not tell a task to report on every run unless the user explicitly wants a sch
 
 ## Task Modes
 
-Choose among general AI analysis, anomaly detection, and forecasting according to the live schema. Use the direct `ask` tool or a query for a one-off forecast or anomaly investigation; use a Task only when the user wants recurring work.
+Choose among general AI analysis, anomaly detection, and forecasting according to the live schema. Answer a one-off forecast or anomaly investigation with queries, or with `ask` when it is available; use a Task only when the user wants recurring work.
 
 ## Scheduling and Scope
 
