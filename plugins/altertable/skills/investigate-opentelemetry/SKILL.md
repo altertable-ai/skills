@@ -56,6 +56,20 @@ Then fetch a few example rows or trace IDs from the windows the aggregate points
 
 Resource attributes are stored in `resource_attributes` VARIANT. Span/log attributes are stored in `attributes` VARIANT.
 
+Keys depend on the instrumentation, so the keys below (such as `env`) are examples that may not exist. A missing key extracts as NULL and silently filters out every row. List the keys present first, swapping in `resource_attributes` for resource keys:
+
+```sql
+SELECT key, count(*) AS spans
+FROM (
+  SELECT unnest(json_keys(attributes::JSON)) AS key
+  FROM opentelemetry.main.spans
+  WHERE start_time >= now() - INTERVAL '10 minutes'
+  LIMIT 10000
+)
+GROUP BY ALL
+ORDER BY spans DESC;
+```
+
 Use `variant_extract` for filters:
 
 ```sql
@@ -131,21 +145,21 @@ ORDER BY timestamp ASC;
 
 ## Join Business Data
 
-Aggregate the telemetry inside the time window first, then join the small result to the business table. Cast the extracted key to the business column's type: compared raw against a UUID column, the VARIANT matches no rows and raises no error.
+Find the attribute holding the business key with the key listing above; there is no standard key for it. Aggregate the telemetry inside the time window first, then join the small result to the business table. Cast the extracted key to the business column's type: compared raw against a UUID column, the VARIANT matches no rows and raises no error.
 
 ```sql
-WITH spans_by_customer AS (
+WITH spans_by_key AS (
   SELECT
-    TRY_CAST(variant_extract(attributes, 'customer.id') AS UUID) AS customer_id,
+    TRY_CAST(variant_extract(attributes, '<attribute-key>') AS UUID) AS business_key,
     count(*) AS spans,
     count(*) FILTER (WHERE status_code = 'STATUS_CODE_ERROR') AS errors
   FROM opentelemetry.main.spans
   WHERE start_time >= now() - INTERVAL '1 hour'
   GROUP BY 1
 )
-SELECT c.name, s.spans, s.errors
-FROM spans_by_customer s
-JOIN <catalog>.<schema>.customers c ON c.id = s.customer_id
+SELECT t.<label-column>, s.spans, s.errors
+FROM spans_by_key s
+JOIN <catalog>.<schema>.<table> t ON t.<key-column> = s.business_key
 ORDER BY s.errors DESC
 LIMIT 20;
 ```
