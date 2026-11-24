@@ -1,7 +1,7 @@
 ---
 name: manage-knowledge
-compatibility: Requires Altertable MCP server; knowledge and semantic-model writes require read-write access
-description: "Searches and maintains Altertable memories, knowledge entries, repository context, and semantic-model descriptions. Use when reusable business context, definitions, preferences, or model documentation should guide future agent work."
+compatibility: Requires Altertable MCP server; knowledge writes require read-write access
+description: "Searches and maintains Altertable memories, knowledge entries, and repository context, and interviews users to capture business context. Use when reusable business context, definitions, or preferences should guide future agent work, or when the user wants to write down business context or teach the agent about their data."
 metadata:
   author: Altertable
   requires: "altertable-mcp"
@@ -32,15 +32,25 @@ Attach the source and related entities when available so the memory can be retri
 
 ## Maintain Knowledge Entries
 
-`create_knowledge` and `update_knowledge` require explicit human intent. The title and content must be text the human supplied or text fetched verbatim from a source they explicitly identified.
+`create_knowledge` and `update_knowledge` require explicit human intent. The title and content must be text the human supplied, text fetched verbatim from a source they explicitly identified, or a draft they approved unchanged (below).
 
-Never summarize, synthesize, translate, reformat, or infer organization-wide knowledge for these tools. If scope, title, source, or exact content is unclear, ask before writing. Prefer a repository sync when the maintained source already lives in version control.
+Otherwise never summarize, synthesize, translate, reformat, or infer organization-wide knowledge for these tools. If scope, title, source, or exact content is unclear, ask before writing. Prefer a repository sync when the maintained source already lives in version control.
 
-## Document Semantic Models
+## Capture Business Context
 
-Use `document_semantic_model` for a table-level natural-language description and `document_semantic_model_dimension` for a specific dimension. Retrieve the catalog first and use the exact catalog, schema, table, and projection names.
+Use this only when the user asks to write down or update business context or to teach the agent about their data, or accepts your offer to do so. Never start it unprompted.
 
-Descriptions should state business meaning, grain, ownership, and known caveats. Do not encode a governed calculation only in prose when it belongs in a measure, dimension, filter, or relation definition.
+1. Ground first. Call `get_catalog`, and `profile_columns` only for columns you are about to ask about. Every question names real tables or columns and the specific ambiguity found: two similar amount columns, several timestamps, test data.
+2. Ask whenever you are unsure. Never guess. Use `ask_question` only when the catalog evidence gives real options to choose from. Otherwise ask plainly. Cover these topics, skipping any the catalog, semantic layer, or existing knowledge already answers:
+   1. What the business does, and who uses these answers to decide what.
+   2. The rules behind the key metrics: what counts as a sale or an active customer, and what each excludes.
+   3. Known traps, as rules: test or internal accounts, duplicated sources, periods where the data is unreliable.
+   4. Defaults: currency, timezone, fiscal calendar, and the date range when none is given.
+   5. Internal terms and acronyms that never appear in the schema.
+3. If the user does not know an answer, leave it out.
+4. Do not ask which tables to prefer or avoid. Point the user to marking tables Verified or Excluded in the Catalog.
+
+Then show the full draft, holding only what the user stated or confirmed, and use `ask_question` to ask whether to save it as environment knowledge. On approval, call `create_knowledge` with exactly that document, or `update_knowledge` with the full revised entry built from its current content, and share the returned `url` so they can review or edit it. If they ask for changes, revise it and ask again. A user who cannot add knowledge can pass the document to someone who can.
 
 ## Boundaries
 
