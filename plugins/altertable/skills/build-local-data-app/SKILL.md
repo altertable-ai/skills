@@ -1,10 +1,9 @@
 ---
 name: build-local-data-app
-description: "Builds and runs Altertable data apps locally with the CLI (beta). Use only when the user explicitly wants local development or a CLI scaffold; use build-data-app for any other Altertable data app request."
+description: "Builds and runs Altertable data apps locally with the CLI. Use only when the user explicitly wants local development or a CLI scaffold; use build-data-app for any other Altertable data app request."
 compatibility: Requires Altertable CLI app commands and authorized lakehouse access
 metadata:
   author: Altertable
-  status: beta
 ---
 
 # Build a local data app
