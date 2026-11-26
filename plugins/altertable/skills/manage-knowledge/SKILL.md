@@ -1,7 +1,7 @@
 ---
 name: manage-knowledge
 compatibility: Requires Altertable MCP server; knowledge writes require read-write access
-description: "Searches and maintains Altertable memories, knowledge entries, and repository context, and interviews users to capture business context. Use when reusable business context, definitions, or preferences should guide future agent work, or when the user wants to write down business context or teach the agent about their data."
+description: "Searches and maintains Altertable memories, knowledge entries, and repository context, and interviews users to capture business context. Use when reusable business context, definitions, or preferences should guide future agent work, when the user wants to write down business context or teach the agent about their data, or when the user asks to document or describe a table or its columns."
 metadata:
   author: Altertable
   requires: "altertable-mcp"
@@ -51,6 +51,17 @@ Use this only when the user asks to write down or update business context or to 
 4. Do not ask which tables to prefer or avoid. Point the user to marking tables Verified or Excluded in the Catalog.
 
 Then show the full draft, holding only what the user stated or confirmed, and use `ask_question` to ask whether to save it as environment knowledge. On approval, call `create_knowledge` with exactly that document, or `update_knowledge` with the full revised entry built from its current content, and share the returned `url` so they can review or edit it. If they ask for changes, revise it and ask again. A user who cannot add knowledge can pass the document to someone who can.
+
+## Document a Table
+
+Use this when the user asks to document or describe a table or its columns.
+
+1. Read the table's current definition from the attached table or `get_catalog`. A table or column without a description is missing one. Never overwrite an existing description.
+2. Gather evidence only for the columns you will describe: `profile_columns`, and `query_lakehouse` sparingly.
+3. Ask the user when the meaning is unclear. Leave a column out rather than guess.
+4. Write what the table or column means: grain (one row per ...), units, caveats, and the allowed values of a categorical column. Never row-level values (ids, amounts, names, free text) or personal data.
+5. Propose, never write directly. When the `draft_table_descriptions` tool is available, call it with only the missing descriptions so the user reviews and applies them. Otherwise present them as a list the user can apply.
+6. When the table's descriptions are managed in a dbt or LookML repository (the draft tool rejects it, or the user says so), write the YAML for the user to commit instead. Open a pull request only if a pull-request tool is available.
 
 ## Boundaries
 
