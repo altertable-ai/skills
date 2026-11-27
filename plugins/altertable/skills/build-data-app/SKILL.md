@@ -1,10 +1,9 @@
 ---
 name: build-data-app
-description: "Creates, updates, and deletes Altertable-hosted data apps through MCP (beta). Use by default for any Altertable data app request; use build-local-data-app only when the user explicitly wants local development or a CLI scaffold."
+description: "Creates, updates, and deletes Altertable-hosted data apps through MCP. Use by default for any Altertable data app request; use build-local-data-app only when the user explicitly wants local development or a CLI scaffold."
 compatibility: Requires the Altertable MCP server
 metadata:
   author: Altertable
-  status: beta
   requires: "altertable-mcp"
 ---
 
